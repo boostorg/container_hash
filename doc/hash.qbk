@@ -180,7 +180,7 @@ And you can now use __boost_hash with book:
     assert(books.find(dandelion) == books.end());
 
 The full example can be found in:
-[@../../libs/functional/hash/examples/books.cpp /libs/functional/hash/examples/books.hpp]
+[@../../libs/functional/hash/examples/books.hpp /libs/functional/hash/examples/books.hpp]
 and
 [@../../libs/functional/hash/examples/books.cpp /libs/functional/hash/examples/books.cpp].
 
