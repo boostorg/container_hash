@@ -41,6 +41,14 @@ namespace boost
     std::size_t hash_value(long);
     std::size_t hash_value(unsigned long);
 
+#if defined(BOOST_MSVC) && defined(_WIN64)
+    // On 64-bit windows std::size_t is a typedef for unsigned long long, which
+    // isn't due to be supported until Boost 1.35. So add support here.
+    // (Technically, Boost.Hash isn't actually documented as supporting
+    // std::size_t. But it would be pretty silly not to).
+    std::size_t hash_value(std::size_t);
+#endif
+
 #if !BOOST_WORKAROUND(__DMC__, BOOST_TESTED_AT(0x847))
     template <class T> std::size_t hash_value(T* const&);
 #else
@@ -107,6 +115,13 @@ namespace boost
     {
         return static_cast<std::size_t>(v);
     }
+
+#if defined(BOOST_MSVC) && defined(_WIN64)
+    inline std::size_t hash_value(std::size_t v)
+    {
+        return v;
+    }
+#endif
 
     // Implementation by Alberto Barbati and Dave Harris.
 #if !BOOST_WORKAROUND(__DMC__, BOOST_TESTED_AT(0x847))
