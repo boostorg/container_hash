@@ -116,8 +116,13 @@ namespace boost
         return static_cast<std::size_t>(v);
     }
 
-#if defined(BOOST_MSVC) && defined(_WIN64)
-    inline std::size_t hash_value(std::size_t v)
+#if defined(_M_X64) && defined(_WIN64)
+    inline std::size_t hash_value(long long v)
+    {
+        return v;
+    }
+
+    inline std::size_t hash_value(unsigned long long v)
     {
         return v;
     }
