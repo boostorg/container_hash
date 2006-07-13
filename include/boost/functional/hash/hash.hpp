@@ -49,7 +49,7 @@ namespace boost
     std::size_t hash_value(std::size_t);
 #endif
 
-#if !BOOST_WORKAROUND(__DMC__, BOOST_TESTED_AT(0x847))
+#if !BOOST_WORKAROUND(__DMC__, <= 0x848)
     template <class T> std::size_t hash_value(T* const&);
 #else
     template <class T> std::size_t hash_value(T*);
@@ -129,7 +129,7 @@ namespace boost
 #endif
 
     // Implementation by Alberto Barbati and Dave Harris.
-#if !BOOST_WORKAROUND(__DMC__, BOOST_TESTED_AT(0x847))
+#if !BOOST_WORKAROUND(__DMC__, <= 0x848)
     template <class T> std::size_t hash_value(T* const& v)
 #else
     template <class T> std::size_t hash_value(T* v)
@@ -488,7 +488,7 @@ namespace boost
 #endif
     };
 
-#if BOOST_WORKAROUND(__DMC__, BOOST_TESTED_AT(0x847))
+#if BOOST_WORKAROUND(__DMC__, <= 0x848)
     template <class T, unsigned int n> struct hash<T[n]>
         : std::unary_function<T[n], std::size_t>
     {
