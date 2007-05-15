@@ -1,5 +1,5 @@
 
-//  Copyright Daniel James 2005-2007. Use, modification, and distribution are
+//  Copyright Daniel James 2005-2006. Use, modification, and distribution are
 //  subject to the Boost Software License, Version 1.0. (See accompanying
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -28,11 +28,6 @@
 #include <boost/type_traits/is_const.hpp>
 #endif
 
-#if defined(BOOST_MSVC)
-#   pragma warning(push)
-#   pragma warning(disable:4267)
-#endif
-
 namespace boost
 {
 #if BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x551))
@@ -46,13 +41,12 @@ namespace boost
     std::size_t hash_value(long);
     std::size_t hash_value(unsigned long);
 
-#if defined(_M_X64) && defined(_WIN64)
+#if defined(BOOST_MSVC) && defined(_WIN64)
     // On 64-bit windows std::size_t is a typedef for unsigned long long, which
     // isn't due to be supported until Boost 1.35. So add support here.
     // (Technically, Boost.Hash isn't actually documented as supporting
     // std::size_t. But it would be pretty silly not to).
-    std::size_t hash_value(long long);
-    std::size_t hash_value(unsigned long long);
+    std::size_t hash_value(std::size_t);
 #endif
 
 #if !BOOST_WORKAROUND(__DMC__, <= 0x848)
@@ -593,10 +587,6 @@ namespace boost
     }
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 }
-
-#if defined(BOOST_MSVC)
-#   pragma warning(pop)
-#endif
 
 #endif
 
