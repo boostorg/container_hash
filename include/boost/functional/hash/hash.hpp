@@ -46,7 +46,7 @@ namespace boost
     std::size_t hash_value(long);
     std::size_t hash_value(unsigned long);
 
-#if BOOST_HAS_LONG_LONG && defined(_M_X64) && defined(_WIN64)
+#if defined(BOOST_HAS_LONG_LONG) && defined(_M_X64) && defined(_WIN64)
     // On 64-bit windows std::size_t is a typedef for unsigned long long, which
     // isn't due to be supported until Boost 1.35. So add support here.
     // (Technically, Boost.Hash isn't actually documented as supporting
@@ -122,7 +122,7 @@ namespace boost
         return static_cast<std::size_t>(v);
     }
 
-#if BOOST_HAS_LONG_LONG && defined(_M_X64) && defined(_WIN64)
+#if defined(BOOST_HAS_LONG_LONG) && defined(_M_X64) && defined(_WIN64)
     inline std::size_t hash_value(long long v)
     {
         return v;
