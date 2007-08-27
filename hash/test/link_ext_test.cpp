@@ -17,7 +17,6 @@ int f(std::size_t hash1, int* x1) {
     std::vector<std::size_t> x;
     x.push_back(*x1);
     HASH_NAMESPACE::hash<std::vector<std::size_t> > vector_hasher;
-    BOOST_TEST(vector_hasher(x) == HASH_NAMESPACE::hash_value(x));
-    return boost::report_errors();
+    return vector_hasher(x) != HASH_NAMESPACE::hash_value(x);
 }
 
