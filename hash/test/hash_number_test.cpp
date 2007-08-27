@@ -55,8 +55,8 @@ void numeric_test(T*)
 
     if (limits::is_integer)
     {
-        BOOST_TEST(HASH_NAMESPACE::hash_value(T((std::size_t)-5))
-                == (std::size_t)T(-5));
+        if(limits::is_signed || limits::digits <= boost::hash_detail::numeric_limits<std::size_t>::digits)
+            BOOST_TEST(HASH_NAMESPACE::hash_value(T(-5)) == (std::size_t)T(-5));
         BOOST_TEST(HASH_NAMESPACE::hash_value(T(0)) == (std::size_t)T(0u));
         BOOST_TEST(HASH_NAMESPACE::hash_value(T(10)) == (std::size_t)T(10u));
         BOOST_TEST(HASH_NAMESPACE::hash_value(T(25)) == (std::size_t)T(25u));
