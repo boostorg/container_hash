@@ -19,20 +19,24 @@
 #include <boost/limits.hpp>
 #include <boost/assert.hpp>
 
-// Don't use fpclassify or _fpclass for stlport.
-// Also don't use it for cygwin as it doesn't support long double.
-#if !defined(__SGI_STL_PORT) && !defined(_STLPORT_VERSION) && !defined(__CYGWIN__)
-#  if defined(__GLIBCPP__) || defined(__GLIBCXX__)
+#if defined(__CYGWIN__)
+#  define BOOST_HASH_USE_X86
+
+// STLport
+#elif defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)
+// _fpclass and fpclassify aren't good enough on STLport.
+
 // GNU libstdc++ 3
-#    if (defined(__USE_ISOC99) || defined(_GLIBCXX_USE_C99_MATH)) && \
-        !(defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__))
-#      define BOOST_HASH_USE_FPCLASSIFY
-#    endif
-#  elif (defined(_YVALS) && !defined(__IBMCPP__)) || defined(_CPPLIB_VER)
+#elif defined(__GLIBCPP__) || defined(__GLIBCXX__)
+#  if (defined(__USE_ISOC99) || defined(_GLIBCXX_USE_C99_MATH)) && \
+      !(defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__))
+#    define BOOST_HASH_USE_FPCLASSIFY
+#  endif
+
 // Dinkumware Library, on Visual C++ 
-#    if defined(BOOST_MSVC)
-#      define BOOST_HASH_USE_FPCLASS
-#    endif
+#elif (defined(_YVALS) && !defined(__IBMCPP__)) || defined(_CPPLIB_VER)
+#  if defined(BOOST_MSVC)
+#    define BOOST_HASH_USE_FPCLASS
 #  endif
 #endif
 
@@ -78,8 +82,8 @@ namespace boost
             seed ^= value + (seed<<6) + (seed>>2);
         }
 
-// On CYGWIN use a simple, utterly non-portable hash algorithm.
-#if defined(__CYGWIN__)
+// A simple, utterly non-portable hash algorithm for x86.
+#if defined(BOOST_HASH_USE_X86)
         inline std::size_t float_hash_impl(float v)
         {
             unsigned* ptr = (unsigned*)&v;
@@ -103,7 +107,8 @@ namespace boost
             hash_float_combine(seed, *(unsigned short*)ptr);
             return seed;
         }
-#endif
+
+#else
 
         template <class T>
         inline std::size_t float_hash_impl(T v)
@@ -146,6 +151,7 @@ namespace boost
 
             return seed;
         }
+#endif
 
         template <class T>
         inline std::size_t float_hash_value(T v)
