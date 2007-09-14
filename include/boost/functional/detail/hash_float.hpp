@@ -20,7 +20,8 @@
 #include <boost/assert.hpp>
 
 // Don't use fpclassify or _fpclass for stlport.
-#if !defined(__SGI_STL_PORT) && !defined(_STLPORT_VERSION)
+// Also don't use it for cygwin as it doesn't support long double.
+#if !defined(__SGI_STL_PORT) && !defined(_STLPORT_VERSION) && !defined(__CYGWIN__)
 #  if defined(__GLIBCPP__) || defined(__GLIBCXX__)
 // GNU libstdc++ 3
 #    if (defined(__USE_ISOC99) || defined(_GLIBCXX_USE_C99_MATH)) && \
@@ -76,6 +77,33 @@ namespace boost
         {
             seed ^= value + (seed<<6) + (seed>>2);
         }
+
+// On CYGWIN use a simple, utterly non-portable hash algorithm.
+#if defined(__CYGWIN__)
+        inline std::size_t float_hash_impl(float v)
+        {
+            unsigned* ptr = (unsigned*)&v;
+            std::size_t seed = *ptr;
+            return seed;
+        }
+
+        inline std::size_t float_hash_impl(double v)
+        {
+            unsigned* ptr = (unsigned*)&v;
+            std::size_t seed = *ptr++;
+            hash_float_combine(seed, *ptr);
+            return seed;
+        }
+
+        inline std::size_t float_hash_impl(long double v)
+        {
+            unsigned* ptr = (unsigned*)&v;
+            std::size_t seed = *ptr++;
+            hash_float_combine(seed, *ptr++);
+            hash_float_combine(seed, *(unsigned short*)ptr);
+            return seed;
+        }
+#endif
 
         template <class T>
         inline std::size_t float_hash_impl(T v)
