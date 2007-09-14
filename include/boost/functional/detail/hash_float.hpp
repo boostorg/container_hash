@@ -19,7 +19,7 @@
 #include <boost/limits.hpp>
 #include <boost/assert.hpp>
 
-#if defined(__CYGWIN__)
+#if (defined(__i386__) || defined(_M_IX86)) && !defined(BOOST_HASH_CROSS_PLATFORM)
 #  define BOOST_HASH_USE_X86
 
 // STLport
