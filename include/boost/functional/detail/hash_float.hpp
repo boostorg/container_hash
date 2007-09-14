@@ -16,6 +16,7 @@
 
 #include <boost/functional/detail/float_functions.hpp>
 #include <boost/integer/static_log2.hpp>
+#include <boost/cstdint.hpp>
 #include <boost/limits.hpp>
 #include <boost/assert.hpp>
 
@@ -86,14 +87,14 @@ namespace boost
 #if defined(BOOST_HASH_USE_X86)
         inline std::size_t float_hash_impl(float v)
         {
-            unsigned* ptr = (unsigned*)&v;
+            boost::uint32_t* ptr = (boost::uint32_t*)&v;
             std::size_t seed = *ptr;
             return seed;
         }
 
         inline std::size_t float_hash_impl(double v)
         {
-            unsigned* ptr = (unsigned*)&v;
+            boost::uint32_t* ptr = (boost::uint32_t*)&v;
             std::size_t seed = *ptr++;
             hash_float_combine(seed, *ptr);
             return seed;
@@ -101,10 +102,10 @@ namespace boost
 
         inline std::size_t float_hash_impl(long double v)
         {
-            unsigned* ptr = (unsigned*)&v;
+            boost::uint32_t* ptr = (boost::uint32_t*)&v;
             std::size_t seed = *ptr++;
             hash_float_combine(seed, *ptr++);
-            hash_float_combine(seed, *(unsigned short*)ptr);
+            hash_float_combine(seed, *(boost::uint16_t*)ptr);
             return seed;
         }
 
