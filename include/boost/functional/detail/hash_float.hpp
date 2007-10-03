@@ -20,8 +20,11 @@
 #include <boost/limits.hpp>
 #include <boost/assert.hpp>
 
-#if (defined(__i386__) || defined(_M_IX86)) && !defined(BOOST_HASH_CROSS_PLATFORM)
-#  define BOOST_HASH_USE_X86
+// Cygwin
+#if defined(__CYGWIN__)
+#  if defined(__i386__) || defined(_M_IX86)
+#    define BOOST_HASH_USE_X86
+#  endif
 
 // STLport
 #elif defined(__SGI_STL_PORT) || defined(_STLPORT_VERSION)
@@ -39,6 +42,7 @@
 #  if defined(BOOST_MSVC)
 #    define BOOST_HASH_USE_FPCLASS
 #  endif
+
 #endif
 
 // On OpenBSD, numeric_limits is not reliable for long doubles, but
