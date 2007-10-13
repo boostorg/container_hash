@@ -20,10 +20,13 @@
 #include <boost/limits.hpp>
 #include <boost/assert.hpp>
 
-// Cygwin
+
+// Select implementation for the current platform.
+
+// Cygwn
 #if defined(__CYGWIN__)
 #  if defined(__i386__) || defined(_M_IX86)
-#    define BOOST_HASH_USE_X86
+#    define BOOST_HASH_USE_x86_BINARY_HASH
 #  endif
 
 // STLport
@@ -87,8 +90,9 @@ namespace boost
             seed ^= value + (seed<<6) + (seed>>2);
         }
 
-// A simple, utterly non-portable hash algorithm for x86.
-#if defined(BOOST_HASH_USE_X86)
+
+// A simple, non-portable hash algorithm for x86.
+#if defined(BOOST_HASH_USE_x86_BINARY_HASH)
         inline std::size_t float_hash_impl(float v)
         {
             boost::uint32_t* ptr = (boost::uint32_t*)&v;

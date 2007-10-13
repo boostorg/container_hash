@@ -794,16 +794,15 @@ return seed;</programlisting></entry>
                 </row>
                 <row>
                   <entry>
-                    <code>std::complex&lt;val[N]&gt;</code>
+                    <code>std::complex&lt;T&gt;</code>
                   </entry>
-                  <entry>For built in types when <code>val.imag() == 0</code>, <code>hash_value(val.real())</code></entry>
+                  <entry>When <code>T</code> is a built in type and <code>val.imag() == 0</code>, the result is equal to <code>hash_value(val.real())</code>. Otherwise an unspecified value, except that equal arguments shall yield the same result.</entry>
                 </row>
               </tbody>
             </tgroup>
           </informaltable>
         </returns>
       </overloaded-function>
-
       </free-function-group>
     </namespace>
   </header>

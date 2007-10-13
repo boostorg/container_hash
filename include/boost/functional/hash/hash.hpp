@@ -219,6 +219,7 @@ namespace boost
     {
         std::size_t x = static_cast<std::size_t>(
            reinterpret_cast<std::ptrdiff_t>(v));
+
         return x + (x >> 3);
     }
 
@@ -472,10 +473,14 @@ namespace boost
     struct hash<T*>
         : public std::unary_function<T*, std::size_t>
     {
-        std::size_t operator()(T* v) const \
-        { \
-            return boost::hash_value(v); \
-        } \
+        std::size_t operator()(T* v) const
+        {
+#if !BOOST_WORKAROUND(__SUNPRO_CC, <= 0x590)
+            return boost::hash_value(v);
+#else
+            return boost::hash_value<T*>(v);
+#endif
+        }
     };
 #else
     namespace hash_detail
@@ -492,7 +497,11 @@ namespace boost
             {
                 std::size_t operator()(T val) const
                 {
+#if !BOOST_WORKAROUND(__SUNPRO_CC, <= 590)
                     return boost::hash_value(val);
+#else
+                    return boost::hash_value<T>(val);
+#endif
                 }
             };
         };
