@@ -20,7 +20,6 @@
 #include <boost/limits.hpp>
 #include <boost/assert.hpp>
 
-
 // Select implementation for the current platform.
 
 // Cygwn
@@ -90,7 +89,6 @@ namespace boost
             seed ^= value + (seed<<6) + (seed>>2);
         }
 
-
 // A simple, non-portable hash algorithm for x86.
 #if defined(BOOST_HASH_USE_x86_BINARY_HASH)
         inline std::size_t float_hash_impl(float v)
@@ -124,19 +122,19 @@ namespace boost
         {
             int exp = 0;
 
+            v = boost::hash_detail::call_frexp(v, &exp);
+
+            // A postive value is easier to hash, so combine the
+            // sign with the exponent.
+            if(v < 0) {
+                v = -v;
+                exp += limits<T>::max_exponent -
+                    limits<T>::min_exponent;
+            }
+
             // The result of frexp is always between 0.5 and 1, so its
             // top bit will always be 1. Subtract by 0.5 to remove that.
-            if(v >= 0) {
-                v = boost::hash_detail::call_frexp(v, &exp) - T(0.5);
-            }
-            else {
-                v = -boost::hash_detail::call_frexp(v, &exp) - T(0.5);
-                exp = ~exp;
-            }
-
-            // TODO: Of course, this doesn't pass when hashing infinity or NaN.
-            //BOOST_ASSERT(0 <= v && v < 0.5);
-
+            v -= T(0.5);
             v = boost::hash_detail::call_ldexp(v,
                     limits<std::size_t>::digits + 1);
             std::size_t seed = static_cast<std::size_t>(v);
@@ -150,7 +148,8 @@ namespace boost
 
             for(std::size_t i = 0; i != length; ++i)
             {
-                v = boost::hash_detail::call_ldexp(v, limits<std::size_t>::digits);
+                v = boost::hash_detail::call_ldexp(v,
+                        limits<std::size_t>::digits);
                 std::size_t part = static_cast<std::size_t>(v);
                 v -= part;
                 hash_float_combine(seed, part);
