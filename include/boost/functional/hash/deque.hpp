@@ -1,5 +1,5 @@
 
-// Copyright 2005-2006 Daniel James.
+// Copyright 2005-2007 Daniel James.
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -14,8 +14,14 @@
 # pragma once
 #endif
 
+#if defined(__EDG__)
+#elif defined(_MSC_VER) || defined(__BORLANDC__) || defined(__DMC__)
+#pragma message("Warning: boost/functional/hash/deque.hpp is deprecated, use boost/functional/hash.hpp instead.")
+#elif defined(__GNUC__) || defined(__HP_aCC) || \
+    defined(__SUNPRO_CC) || defined(__IBMCPP__)
 #warning "boost/functional/hash/deque.hpp is deprecated, use boost/functional/hash.hpp instead."
+#endif
+
 #include <boost/functional/hash.hpp>
 
 #endif
-
