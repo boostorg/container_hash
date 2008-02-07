@@ -49,7 +49,7 @@
 // > 1.34 release of the Boost distribution (www.boost.org) needs uniform
 // > license and copyright information. For more information please see:
 // >
-// > <http://beta.boost.org/users/license.html>
+// > <http://www.boost.org/more/license_info.html>
 // >
 // > You are receiving this email because several files you contributed
 // > lack such information or have an old license:
