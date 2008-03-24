@@ -10,10 +10,6 @@
 #if !defined(BOOST_FUNCTIONAL_HASH_HASH_HPP)
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
-# pragma once
-#endif
-
 #include <boost/functional/hash_fwd.hpp>
 #include <functional>
 #include <boost/functional/detail/hash_float.hpp>
@@ -522,3 +518,12 @@ namespace boost
 }
 
 #endif // BOOST_FUNCTIONAL_HASH_HASH_HPP
+
+// Include this outside of the include guards in case the file is included
+// twice - once with BOOST_HASH_NO_EXTENSIONS defined, and then with it
+// undefined.
+
+#if !defined(BOOST_HASH_NO_EXTENSIONS) \
+    && !defined(BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP)
+#include <boost/functional/hash/extensions.hpp>
+#endif

@@ -9,6 +9,3 @@
 
 #include <boost/functional/hash/hash.hpp>
 
-#if !defined(BOOST_HASH_NO_EXTENSIONS)
-#include <boost/functional/hash/extensions.hpp>
-#endif
