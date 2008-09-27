@@ -1,5 +1,5 @@
 
-// Copyright 2005-2007 Daniel James.
+// Copyright 2005-2008 Daniel James.
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -61,9 +61,13 @@
 
 // Dinkumware.
 #elif (defined(_YVALS) && !defined(__IBMCPP__)) || defined(_CPPLIB_VER)
-// Overloaded float functions were probably introduced in an earlier version
-// than this.
-#  if defined(_CPPLIB_VER) && (_CPPLIB_VER >= 402)
+// Some versions of Visual C++ don't seem to have the C++ overloads but they
+// all seem to have the c99 float overloads
+#  if defined(BOOST_MSVC)
+#    define BOOST_HASH_USE_C99_FLOAT_FUNCS
+// On other platforms the C++ overloads seem to have been introduced sometime
+// before 402.
+#  elif defined(_CPPLIB_VER) && (_CPPLIB_VER >= 402)
 #    define BOOST_HASH_USE_OVERLOAD_FLOAT_FUNCS
 #  else
 #    define BOOST_HASH_USE_C99_FLOAT_FUNCS

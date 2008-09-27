@@ -1,5 +1,5 @@
 
-// Copyright 2005-2007 Daniel James.
+// Copyright 2005-2008 Daniel James.
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -8,6 +8,11 @@
 #else
 
 #include <boost/preprocessor/cat.hpp>
+
+#if defined(BOOST_MSVC)
+#pragma warning(push)
+#pragma warning(disable:4245) // signed/unsigned mismatch
+#endif
 
 namespace BOOST_PP_CAT(CONTAINER_TYPE, _tests)
 {
@@ -62,6 +67,10 @@ namespace BOOST_PP_CAT(CONTAINER_TYPE, _tests)
         integer_tests((CONTAINER_TYPE<double>*) 0);
     }
 }
+
+#if defined(BOOST_MSVC)
+#pragma warning(pop)
+#endif
 
 #undef CONTAINER_TYPE
 #endif

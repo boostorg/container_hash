@@ -1,5 +1,5 @@
 
-// Copyright 2005-2007 Daniel James.
+// Copyright 2005-2008 Daniel James.
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -21,17 +21,24 @@
 
 #include "./compile_time.hpp"
 
+#if defined(BOOST_MSVC)
+#pragma warning(push)
+#pragma warning(disable:4127) // conditional expression is constant
+#pragma warning(disable:4309) // truncation of constant value
+#pragma warning(disable:4310) // cast truncates constant value
+#endif
+
 template <class T>
 void numeric_test(T*)
 {
-    typedef std::numeric_limits<T> limits;
+    typedef boost::hash_detail::limits<T> limits;
 
     compile_time_tests((T*) 0);
 
     HASH_NAMESPACE::hash<T> x1;
     HASH_NAMESPACE::hash<T> x2;
 
-    T v1 = -5;
+    T v1 = (T) -5;
     BOOST_TEST(x1(v1) == x2(v1));
     BOOST_TEST(x1(T(-5)) == x2(T(-5)));
     BOOST_TEST(x1(T(0)) == x2(T(0)));
@@ -48,7 +55,7 @@ void numeric_test(T*)
 
     if (limits::is_integer)
     {
-        if(limits::is_signed || limits::digits <= std::numeric_limits<std::size_t>::digits)
+        if(limits::is_signed || limits::digits <= boost::hash_detail::limits<std::size_t>::digits)
             BOOST_TEST(HASH_NAMESPACE::hash_value(T(-5)) == (std::size_t)T(-5));
         BOOST_TEST(HASH_NAMESPACE::hash_value(T(0)) == (std::size_t)T(0u));
         BOOST_TEST(HASH_NAMESPACE::hash_value(T(10)) == (std::size_t)T(10u));
@@ -60,7 +67,7 @@ void numeric_test(T*)
 template <class T>
 void limits_test(T*)
 {
-    typedef std::numeric_limits<T> limits;
+    typedef boost::hash_detail::limits<T> limits;
 
     if(limits::is_specialized)
     {
@@ -91,7 +98,7 @@ void limits_test(T*)
 template <class T>
 void poor_quality_tests(T*)
 {
-    typedef std::numeric_limits<T> limits;
+    typedef boost::hash_detail::limits<T> limits;
 
     HASH_NAMESPACE::hash<T> x1;
     HASH_NAMESPACE::hash<T> x2;
@@ -106,6 +113,16 @@ void poor_quality_tests(T*)
         BOOST_TEST(x1((limits::max)()) != x2((limits::max)() - 1));
 }
 
+void bool_test()
+{
+    HASH_NAMESPACE::hash<bool> x1;
+    HASH_NAMESPACE::hash<bool> x2;
+    
+    BOOST_TEST(x1(true) == x2(true));
+    BOOST_TEST(x1(false) == x2(false));
+    BOOST_TEST(x1(true) != x2(false));
+    BOOST_TEST(x1(false) != x2(true));
+}
 
 #define NUMERIC_TEST(type, name) \
     std::cerr<<"Testing: " BOOST_STRINGIZE(name) "\n"; \
@@ -119,7 +136,6 @@ void poor_quality_tests(T*)
 
 int main()
 {
-    NUMERIC_TEST(bool, bool)
     NUMERIC_TEST(char, char)
     NUMERIC_TEST(signed char, schar)
     NUMERIC_TEST(unsigned char, uchar)
@@ -134,15 +150,18 @@ int main()
     NUMERIC_TEST(unsigned long, ulong)
 
 #if defined(BOOST_HAS_LONG_LONG)
-    NUMERIC_TEST_NO_LIMITS(long long, hash_longlong)
-    NUMERIC_TEST_NO_LIMITS(unsigned long long, ulonglong)
+    NUMERIC_TEST_NO_LIMITS(boost::long_long_type, long_long)
+    NUMERIC_TEST_NO_LIMITS(boost::ulong_long_type, ulong_long)
 #endif
 
     NUMERIC_TEST(float, float)
     NUMERIC_TEST(double, double)
-    NUMERIC_TEST(long double, ldouble)
+
+    bool_test();
 
     return boost::report_errors();
 }
 
-
+#if defined(BOOST_MSVC)
+#pragma warning(pop)
+#endif
