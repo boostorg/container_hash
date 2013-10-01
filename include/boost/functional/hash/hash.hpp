@@ -38,13 +38,6 @@
 
 #endif
 
-#if BOOST_WORKAROUND(__GNUC__, < 3) \
-    && !defined(__SGI_STL_PORT) && !defined(_STLPORT_VERSION)
-#define BOOST_HASH_CHAR_TRAITS string_char_traits
-#else
-#define BOOST_HASH_CHAR_TRAITS char_traits
-#endif
-
 namespace boost
 {
     namespace hash_detail
@@ -139,7 +132,7 @@ namespace boost
 
     template <class Ch, class A>
     std::size_t hash_value(
-        std::basic_string<Ch, std::BOOST_HASH_CHAR_TRAITS<Ch>, A> const&);
+        std::basic_string<Ch, std::char_traits<Ch>, A> const&);
 
     template <typename T>
     typename boost::hash_detail::float_numbers<T>::type hash_value(T);
@@ -323,7 +316,7 @@ namespace boost
 
     template <class Ch, class A>
     inline std::size_t hash_value(
-        std::basic_string<Ch, std::BOOST_HASH_CHAR_TRAITS<Ch>, A> const& v)
+        std::basic_string<Ch, std::char_traits<Ch>, A> const& v)
     {
         return hash_range(v.begin(), v.end());
     }
@@ -481,8 +474,6 @@ namespace boost
 
 #endif
 }
-
-#undef BOOST_HASH_CHAR_TRAITS
 
 #if defined(BOOST_MSVC)
 #pragma warning(pop)
