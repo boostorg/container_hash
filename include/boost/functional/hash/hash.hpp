@@ -192,6 +192,44 @@ namespace boost
 
              return seed;
         }
+
+        template <int Size>
+        struct hash_combine_impl
+        {
+            inline static void combine(std::size_t& seed,
+                    std::size_t value)
+            {
+                seed ^= value + 0x9e3779b9 + (seed<<6) + (seed>>2);
+            }
+        };
+
+        template <>
+        struct hash_combine_impl<4>
+        {
+            template <typename T>
+            inline static void combine(T& seed, std::size_t value)
+            {
+                const T offset = 2166136261UL;
+                const T prime = 16777619UL;
+
+                seed ^= (value + offset);
+                seed *= prime;
+            }
+        };
+
+        template <>
+        struct hash_combine_impl<8>
+        {
+            template <typename T>
+            inline static void combine(T& seed, std::size_t value)
+            {
+                const T offset = 14695981039346656037ULL;
+                const T prime = 1099511628211ULL;
+
+                seed ^= (value + offset);
+                seed *= prime;
+            }
+        };
     }
 
     template <typename T>
@@ -252,7 +290,8 @@ namespace boost
     inline void hash_combine(std::size_t& seed, T const& v)
     {
         boost::hash<T> hasher;
-        seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+        return boost::hash_detail::hash_combine_impl<
+            sizeof(std::size_t)>::combine(seed, hasher(v));
     }
 
 #if defined(BOOST_MSVC)
