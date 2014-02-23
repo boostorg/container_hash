@@ -1,11 +1,17 @@
 
-// Copyright 2005-2009 Daniel James.
+// Copyright 2005-2014 Daniel James.
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  Based on Peter Dimov's proposal
 //  http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf
 //  issue 6.18. 
+//
+//  This also contains public domain code from MurmurHash. From the
+//  MurmurHash header:
+
+// MurmurHash3 was written by Austin Appleby, and is placed in the public
+// domain. The author hereby disclaims copyright to this source code.
 
 #if !defined(BOOST_FUNCTIONAL_HASH_HASH_HPP)
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
@@ -18,6 +24,7 @@
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/utility/enable_if.hpp>
+#include <boost/cstdint.hpp>
 
 #if defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 #include <boost/type_traits/is_pointer.hpp>
@@ -43,6 +50,12 @@
 #define BOOST_HASH_CHAR_TRAITS string_char_traits
 #else
 #define BOOST_HASH_CHAR_TRAITS char_traits
+#endif
+
+#if defined(_MSC_VER)
+#   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) _rotl(x,r)
+#else
+#   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) (x << r) | (x >> (32 - r))
 #endif
 
 namespace boost
@@ -193,43 +206,50 @@ namespace boost
              return seed;
         }
 
-        template <int Size>
-        struct hash_combine_impl
+        template <typename SizeT>
+        inline void hash_combine_impl(SizeT& seed, SizeT value)
         {
-            inline static void combine(std::size_t& seed,
-                    std::size_t value)
-            {
-                seed ^= value + 0x9e3779b9 + (seed<<6) + (seed>>2);
-            }
-        };
+            seed ^= value + 0x9e3779b9 + (seed<<6) + (seed>>2);
+        }
 
-        template <>
-        struct hash_combine_impl<4>
+        template <typename SizeT>
+        inline void hash_combine_impl(boost::uint32_t& h1,
+                boost::uint32_t k1)
         {
-            template <typename T>
-            inline static void combine(T& seed, std::size_t value)
-            {
-                const T offset = 2166136261UL;
-                const T prime = 16777619UL;
+            const uint32_t c1 = 0xcc9e2d51;
+            const uint32_t c2 = 0x1b873593;
 
-                seed ^= (value + offset);
-                seed *= prime;
-            }
-        };
+            k1 *= c1;
+            k1 = BOOST_FUNCTIONAL_HASH_ROTL32(k1,15);
+            k1 *= c2;
 
-        template <>
-        struct hash_combine_impl<8>
+            h1 ^= k1;
+            h1 = BOOST_FUNCTIONAL_HASH_ROTL32(h1,13);
+            h1 = h1*5+0xe6546b64;
+        }
+
+
+// Don't define 64-bit hash combine on platforms with 64 bit integers,
+// and also not for 32-bit gcc as it warns about the 64-bit constant.
+#if !defined(BOOST_NO_INT64_T) && \
+        !(defined(__GNUC__) && ULONG_MAX == 0xffffffff)
+
+        template <typename SizeT>
+        inline void hash_combine_impl(boost::uint64_t& h,
+                boost::uint64_t k)
         {
-            template <typename T>
-            inline static void combine(T& seed, std::size_t value)
-            {
-                const T offset = 14695981039346656037ULL;
-                const T prime = 1099511628211ULL;
+            const uint64_t m = UINT64_C(0xc6a4a7935bd1e995);
+            const int r = 47;
 
-                seed ^= (value + offset);
-                seed *= prime;
-            }
-        };
+            k *= m;
+            k ^= k >> r;
+            k *= m;
+
+            h ^= k;
+            h *= m;
+        }
+
+#endif // BOOST_NO_INT64_T
     }
 
     template <typename T>
@@ -290,8 +310,7 @@ namespace boost
     inline void hash_combine(std::size_t& seed, T const& v)
     {
         boost::hash<T> hasher;
-        return boost::hash_detail::hash_combine_impl<
-            sizeof(std::size_t)>::combine(seed, hasher(v));
+        return boost::hash_detail::hash_combine_impl(seed, hasher(v));
     }
 
 #if defined(BOOST_MSVC)
@@ -522,6 +541,7 @@ namespace boost
 }
 
 #undef BOOST_HASH_CHAR_TRAITS
+#undef BOOST_FUNCTIONAL_HASH_ROTL32
 
 #if defined(BOOST_MSVC)
 #pragma warning(pop)
