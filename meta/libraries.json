@@ -16,6 +16,7 @@
         "boost-version": "1.33.0",
         "name": "Functional/Hash",
         "authors": "Daniel James",
+        "maintainers": ["Daniel James"].
         "description": "A TR1 hash function object that can be extended to hash user defined types.",
         "documentation": "hash/",
         "std-proposal": false,
