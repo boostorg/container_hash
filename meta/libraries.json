@@ -1,14 +1,1 @@
-[
-    {
-        "key": "functional/hash",
-        "boost-version": "1.33.0",
-        "name": "Functional/Hash",
-        "authors": "Daniel James",
-        "description": "A TR1 hash function object that can be extended to hash user defined types.",
-        "std-proposal": false,
-        "std-tr1": true,
-        "category": [
-            "Function-objects"
-        ]
-    }
-]
+[]
