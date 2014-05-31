@@ -7,8 +7,6 @@
             "Mark Rodgers"
         ],
         "description": "The Boost.Function library contains a family of class templates that are function object wrappers.",
-        "std-proposal": false,
-        "std-tr1": false,
         "category": [
             "Function-objects"
         ]
@@ -20,15 +18,13 @@
         "authors": [
             "Tobias Schwinger"
         ],
-        "description": "Function object templates for dynamic and static object creation",
-        "documentation": "factory/",
-        "std-proposal": false,
-        "std-tr1": false,
-        "category": [
-            "Function-objects"
-        ],
         "maintainers": [
             "Tobias Schwinger <tschwinger -at- isonews2.com>"
+        ],
+        "description": "Function object templates for dynamic and static object creation",
+        "documentation": "factory/",
+        "category": [
+            "Function-objects"
         ]
     },
     {
@@ -38,15 +34,13 @@
         "authors": [
             "Tobias Schwinger"
         ],
-        "description": "Adapters to allow generic function objects to accept arbitrary arguments",
-        "documentation": "forward/",
-        "std-proposal": false,
-        "std-tr1": false,
-        "category": [
-            "Function-objects"
-        ],
         "maintainers": [
             "Tobias Schwinger <tschwinger -at- isonews2.com>"
+        ],
+        "description": "Adapters to allow generic function objects to accept arbitrary arguments",
+        "documentation": "forward/",
+        "category": [
+            "Function-objects"
         ]
     },
     {
@@ -61,8 +55,9 @@
         ],
         "description": "A TR1 hash function object that can be extended to hash user defined types.",
         "documentation": "hash/",
-        "std-proposal": false,
-        "std-tr1": true,
+        "std": [
+            "tr1"
+        ],
         "category": [
             "Function-objects"
         ]
@@ -74,15 +69,13 @@
         "authors": [
             "Lorenzo Caminiti"
         ],
-        "description": "Overload different functions into a single function object.",
-        "documentation": "overloaded_function/",
-        "std-proposal": false,
-        "std-tr1": false,
-        "category": [
-            "Function-objects"
-        ],
         "maintainers": [
             "Lorenzo Caminiti <lorcaminiti -at- gmail.com>"
+        ],
+        "description": "Overload different functions into a single function object.",
+        "documentation": "overloaded_function/",
+        "category": [
+            "Function-objects"
         ]
     }
 ]
