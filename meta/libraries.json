@@ -10,8 +10,9 @@
             "Daniel James <dnljms -at- gmail.com>"
         ],
         "description": "A TR1 hash function object that can be extended to hash user defined types.",
-        "std-proposal": false,
-        "std-tr1": true,
+        "std": [
+            "tr1"
+        ],
         "category": [
             "Function-objects"
         ]
