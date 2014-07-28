@@ -171,6 +171,7 @@
 [h2 Boost 1.56.0]
 
 * Removed some Visual C++ 6 workarounds.
-* Ongoing work on improving `hash_combine`.
+* Ongoing work on improving `hash_combine`. This changes the combine function
+  which was previously defined in the reference documentation.
 
 [endsect]
