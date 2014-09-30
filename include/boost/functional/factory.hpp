@@ -15,7 +15,6 @@
 
 #     include <new>
 #     include <boost/pointee.hpp>
-#     include <boost/none_t.hpp>
 #     include <boost/get_pointer.hpp>
 #     include <boost/non_type.hpp>
 #     include <boost/type_traits/remove_cv.hpp>
@@ -35,14 +34,14 @@ namespace boost
         factory_passes_alloc_to_smart_pointer
     };
 
-    template< typename Pointer, class Allocator = boost::none_t,
+    template< typename Pointer, class Allocator = void,
         factory_alloc_propagation AP = factory_alloc_for_pointee_and_deleter >
     class factory;
 
     //----- ---- --- -- - -  -   -
 
     template< typename Pointer, factory_alloc_propagation AP >
-    class factory<Pointer, boost::none_t, AP> 
+    class factory<Pointer, void, AP> 
     {
       public:
         typedef typename boost::remove_cv<Pointer>::type result_type;
