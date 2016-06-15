@@ -228,7 +228,7 @@ namespace boost
         }
 
 
-// Don't define 64-bit hash combine on platforms with 64 bit integers,
+// Don't define 64-bit hash combine on platforms without 64 bit integers,
 // and also not for 32-bit gcc as it warns about the 64-bit constant.
 #if !defined(BOOST_NO_INT64_T) && \
         !(defined(__GNUC__) && ULONG_MAX == 0xffffffff)
