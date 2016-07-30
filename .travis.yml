@@ -17,19 +17,19 @@ addons:
 matrix:
     include:
       - compiler: gcc
-        env: BJAM_TOOLSET=gcc
+        env: BJAM_TOOLSET=gcc-std03
       - compiler: gcc
         env: BJAM_TOOLSET=gcc-std11
       - compiler: clang
-        env: BJAM_TOOLSET=clang
+        env: BJAM_TOOLSET=clang-std03
       - compiler: clang
         env: BJAM_TOOLSET=clang-std11
 
 before_script:
     - |
-        echo "using gcc : : g++-4.8 ;" > ~/user-config.jam
+        echo "using gcc : std03 : g++-4.8 --std=c++03 ;" > ~/user-config.jam
         echo "using gcc : std11 : g++-4.8 --std=c++11 ;" >> ~/user-config.jam
-        echo "using clang : : clang++ ;" >> ~/user-config.jam
+        echo "using clang : std03 : clang++ --std=c++03 ;" >> ~/user-config.jam
         echo "using clang : std11 : clang++ --std=c++11 ;" >> ~/user-config.jam
     - cat ~/user-config.jam
     - touch Jamroot.jam

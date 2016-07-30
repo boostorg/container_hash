@@ -19,6 +19,7 @@ project hash-tests
 
 test-suite functional/hash
     :
+        [ compile check_float_funcs.cpp ]
         [ run hash_fwd_test_1.cpp ]
         [ run hash_fwd_test_2.cpp ]
         [ run hash_number_test.cpp ]
