@@ -19,6 +19,8 @@ namespace BOOST_PP_CAT(CONTAINER_TYPE, _tests)
     template <class T>
     void integer_tests(T* = 0)
     {
+        typedef typename T::value_type value_type;
+
         const int number_of_containers = 12;
         T containers[number_of_containers];
 
@@ -27,19 +29,19 @@ namespace BOOST_PP_CAT(CONTAINER_TYPE, _tests)
                 containers[i].insert(0);
         }
 
-        containers[6].insert(1);
-        containers[7].insert(1);
-        containers[7].insert(1);
-        containers[8].insert(-1);
-        containers[9].insert(-1);
-        containers[9].insert(-1);
-        containers[10].insert(-1);
-        containers[10].insert(1);
-        containers[11].insert(1);
-        containers[11].insert(2);
-        containers[11].insert(3);
-        containers[11].insert(4);
-        containers[11].insert(5);
+        containers[6].insert(value_type(1));
+        containers[7].insert(value_type(1));
+        containers[7].insert(value_type(1));
+        containers[8].insert(value_type(-1));
+        containers[9].insert(value_type(-1));
+        containers[9].insert(value_type(-1));
+        containers[10].insert(value_type(-1));
+        containers[10].insert(value_type(1));
+        containers[11].insert(value_type(1));
+        containers[11].insert(value_type(2));
+        containers[11].insert(value_type(3));
+        containers[11].insert(value_type(4));
+        containers[11].insert(value_type(5));
 
         BOOST_HASH_TEST_NAMESPACE::hash<T> hasher;
 
