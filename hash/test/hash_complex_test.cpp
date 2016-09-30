@@ -84,8 +84,8 @@ void complex_integral_tests(Integer*)
     generic_complex_tests(complex(15342,124));
     generic_complex_tests(complex(25,54356));
     generic_complex_tests(complex(5325,2346));
-    generic_complex_tests(complex(-243897,-49923874));
-    generic_complex_tests(complex(-543,763));
+    generic_complex_tests(complex(Integer(-243897),Integer(-49923874)));
+    generic_complex_tests(complex(Integer(-543),Integer(763)));
 }
 
 int main()
