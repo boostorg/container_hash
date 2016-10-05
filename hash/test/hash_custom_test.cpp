@@ -15,7 +15,7 @@ namespace test
 
         std::size_t hash() const
         {
-            return value_ * 10;
+            return static_cast<std::size_t>(value_ * 10);
         }
 
 #if !defined(BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP)
