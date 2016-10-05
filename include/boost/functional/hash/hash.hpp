@@ -168,7 +168,7 @@ namespace boost
         template <class T>
         inline std::size_t hash_value_signed(T val)
         {
-             const int size_t_bits = std::numeric_limits<std::size_t>::digits;
+             const unsigned int size_t_bits = std::numeric_limits<std::size_t>::digits;
              // ceiling(std::numeric_limits<T>::digits / size_t_bits) - 1
              const int length = (std::numeric_limits<T>::digits - 1)
                  / size_t_bits;
@@ -189,7 +189,7 @@ namespace boost
         template <class T>
         inline std::size_t hash_value_unsigned(T val)
         {
-             const int size_t_bits = std::numeric_limits<std::size_t>::digits;
+             const unsigned int size_t_bits = std::numeric_limits<std::size_t>::digits;
              // ceiling(std::numeric_limits<T>::digits / size_t_bits) - 1
              const int length = (std::numeric_limits<T>::digits - 1)
                  / size_t_bits;
