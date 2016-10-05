@@ -10,8 +10,8 @@ project hash-tests
         <warnings>all
         <toolset>intel:<warnings>on
         #<toolset>intel:<cxxflags>-strict-ansi
-        <toolset>gcc:<cxxflags>"-pedantic -Wstrict-aliasing -fstrict-aliasing -Wextra -Wsign-promo -Wunused-parameter -Wsign-conversion -Wconversion -Wfloat-equal -Wshadow"
-        <toolset>darwin:<cxxflags>"-pedantic -Wstrict-aliasing -fstrict-aliasing -Wextra -Wsign-promo -Wunused-parameter -Wsign-conversion -Wconversion -Wfloat-equal -Wshadow"
+        <toolset>gcc:<cxxflags>"-pedantic -Wstrict-aliasing -fstrict-aliasing -Wextra -Wsign-promo -Wunused-parameter -Wconversion -Wfloat-equal -Wshadow"
+        <toolset>darwin:<cxxflags>"-pedantic -Wstrict-aliasing -fstrict-aliasing -Wextra -Wsign-promo -Wunused-parameter -Wconversion -Wfloat-equal -Wshadow"
         <toolset>clang:<cxxflags>"-pedantic -Wstrict-aliasing -fstrict-aliasing -Wextra -Wsign-promo -Wunused-parameter -Wsign-conversion -Wconversion -Wfloat-equal -Wshadow"
         #<toolset>msvc:<warnings-as-errors>on
         #<toolset>gcc:<warnings-as-errors>on
