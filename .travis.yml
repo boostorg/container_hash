@@ -27,10 +27,10 @@ matrix:
 
 before_script:
     - |
-        echo "using gcc : std03 : g++-4.8 --std=c++03 ;" > ~/user-config.jam
-        echo "using gcc : std11 : g++-4.8 --std=c++11 ;" >> ~/user-config.jam
-        echo "using clang : std03 : clang++ --std=c++03 ;" >> ~/user-config.jam
-        echo "using clang : std11 : clang++ --std=c++11 ;" >> ~/user-config.jam
+        echo "using gcc : std03 : g++-4.8 -Werror --std=c++03 ;" > ~/user-config.jam
+        echo "using gcc : std11 : g++-4.8 -Werror --std=c++11 ;" >> ~/user-config.jam
+        echo "using clang : std03 : clang++ -Werror --std=c++03 ;" >> ~/user-config.jam
+        echo "using clang : std11 : clang++ -Werror --std=c++11 ;" >> ~/user-config.jam
     - cat ~/user-config.jam
     - touch Jamroot.jam
 

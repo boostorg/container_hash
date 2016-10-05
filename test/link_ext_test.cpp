@@ -20,7 +20,7 @@ int f(std::size_t hash1, int* x1) {
 
     // Check that std::vector<std::size_t> is avaiable in this file.
     std::vector<std::size_t> x;
-    x.push_back(*x1);
+    x.push_back(static_cast<std::size_t>(*x1));
     BOOST_HASH_TEST_NAMESPACE::hash<std::vector<std::size_t> > vector_hasher;
     return vector_hasher(x) != BOOST_HASH_TEST_NAMESPACE::hash_value(x);
     
