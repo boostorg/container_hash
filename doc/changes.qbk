@@ -179,4 +179,8 @@
 * Fixed strict aliasing violation
   ([@https://github.com/boostorg/functional/pull/3 GitHub #3]).
 
+[h2 Boost 1.63.0]
+
+* Fixed some warnings.
+
 [endsect]
