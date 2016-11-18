@@ -55,7 +55,7 @@ void string0_tests()
     BOOST_TEST(hasher(x3) != hasher(x4));
 }
 
-#if !defined(BOOST_NO_STD_WSTRING)
+#if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
 void wstring_tests()
 {
     compile_time_tests((std::wstring*) 0);
@@ -84,7 +84,7 @@ int main()
 {
     string_tests();
     string0_tests();
-#if !defined(BOOST_NO_STD_WSTRING)
+#if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     wstring_tests();
 #endif
     return boost::report_errors();
