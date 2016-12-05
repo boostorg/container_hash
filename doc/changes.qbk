@@ -184,6 +184,6 @@
 * Fixed some warnings.
 * Only define hash for `std::wstring` when we know we have a `wchar_t`.
   Otherwise there's a compile error as there's no overload for hashing
-  the characters in wide strings.
+  the characters in wide strings ([ticket 8552]).
 
 [endsect]
