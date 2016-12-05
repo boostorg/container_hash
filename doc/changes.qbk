@@ -182,5 +182,8 @@
 [h2 Boost 1.63.0]
 
 * Fixed some warnings.
+* Only define hash for `std::wstring` when we know we have a `wchar_t`.
+  Otherwise there's a compile error as there's no overload for hashing
+  the characters in wide strings.
 
 [endsect]
