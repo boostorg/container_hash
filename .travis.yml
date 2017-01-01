@@ -24,6 +24,8 @@ matrix:
         env: BJAM_TOOLSET=clang-std03
       - compiler: clang
         env: BJAM_TOOLSET=clang-std11
+      - compiler: clang
+        env: BJAM_TOOLSET=clang-pretend_no_auto_ptr_etc
 
 before_script:
     - |
@@ -31,6 +33,7 @@ before_script:
         echo "using gcc : std11 : g++-4.8 -Werror --std=c++11 ;" >> ~/user-config.jam
         echo "using clang : std03 : clang++ -Werror --std=c++03 ;" >> ~/user-config.jam
         echo "using clang : std11 : clang++ -Werror --std=c++11 ;" >> ~/user-config.jam
+        echo "using clang : pretend_no_auto_ptr_etc : clang++ -Werror --std=c++11 -D_HAS_AUTO_PTR_ETC=0 ;" >> ~/user-config.jam
     - cat ~/user-config.jam
     - touch Jamroot.jam
 
