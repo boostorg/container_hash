@@ -186,4 +186,9 @@
   Otherwise there's a compile error as there's no overload for hashing
   the characters in wide strings ([ticket 8552]).
 
+[h2 Boost 1.64.0]
+
+* Fix for recent versions of Visual C++ which have removed `std::unary_function`
+  and `std::binary_function`.
+
 [endsect]
