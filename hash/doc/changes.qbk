@@ -189,6 +189,6 @@
 [h2 Boost 1.64.0]
 
 * Fix for recent versions of Visual C++ which have removed `std::unary_function`
-  and `std::binary_function`.
+  and `std::binary_function` ([ticket 12353]).
 
 [endsect]
