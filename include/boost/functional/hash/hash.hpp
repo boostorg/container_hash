@@ -107,6 +107,16 @@ namespace boost
             boost::hash_detail::enable_hash_value {};
 #endif
 
+#if !defined(BOOST_NO_CXX11_CHAR16_T)
+        template <> struct basic_numbers<char16_t> :
+            boost::hash_detail::enable_hash_value {};
+#endif
+
+#if !defined(BOOST_NO_CXX11_CHAR32_T)
+        template <> struct basic_numbers<char32_t> :
+            boost::hash_detail::enable_hash_value {};
+#endif
+
         // long_numbers is defined like this to allow for separate
         // specialization for long_long and int128_type, in case
         // they conflict.
