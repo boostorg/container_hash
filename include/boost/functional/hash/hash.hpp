@@ -466,6 +466,12 @@ namespace boost
 #if !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     BOOST_HASH_SPECIALIZE(wchar_t)
 #endif
+#if !defined(BOOST_NO_CXX11_CHAR16_T)
+    BOOST_HASH_SPECIALIZE(char16_t)
+#endif
+#if !defined(BOOST_NO_CXX11_CHAR32_T)
+    BOOST_HASH_SPECIALIZE(char32_t)
+#endif
     BOOST_HASH_SPECIALIZE(short)
     BOOST_HASH_SPECIALIZE(unsigned short)
     BOOST_HASH_SPECIALIZE(int)
@@ -480,6 +486,12 @@ namespace boost
     BOOST_HASH_SPECIALIZE_REF(std::string)
 #if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     BOOST_HASH_SPECIALIZE_REF(std::wstring)
+#endif
+#if !defined(BOOST_NO_CXX11_CHAR16_T)
+    BOOST_HASH_SPECIALIZE_REF(std::basic_string<char16_t>)
+#endif
+#if !defined(BOOST_NO_CXX11_CHAR32_T)
+    BOOST_HASH_SPECIALIZE_REF(std::basic_string<char32_t>)
 #endif
 
 #if !defined(BOOST_NO_LONG_LONG)
