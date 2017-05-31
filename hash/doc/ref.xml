@@ -165,6 +165,42 @@ file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
       <struct-specialization name="hash">
         <template></template>
         <specialization>
+          <template-arg>char16_t</template-arg>
+        </specialization>
+        <method name="operator()" cv="const">
+          <type>std::size_t</type>
+          <parameter name="val">
+            <paramtype>char16_t</paramtype>
+          </parameter>
+          <returns>
+            <para>Unspecified in TR1, except that equal arguments yield the same result.</para>
+            <para><functionname>hash_value</functionname>(val) in Boost.</para>
+          </returns>
+          <throws><para>Doesn't throw</para></throws>
+        </method>
+      </struct-specialization>
+
+      <struct-specialization name="hash">
+        <template></template>
+        <specialization>
+          <template-arg>char32_t</template-arg>
+        </specialization>
+        <method name="operator()" cv="const">
+          <type>std::size_t</type>
+          <parameter name="val">
+            <paramtype>char32_t</paramtype>
+          </parameter>
+          <returns>
+            <para>Unspecified in TR1, except that equal arguments yield the same result.</para>
+            <para><functionname>hash_value</functionname>(val) in Boost.</para>
+          </returns>
+          <throws><para>Doesn't throw</para></throws>
+        </method>
+      </struct-specialization>
+
+      <struct-specialization name="hash">
+        <template></template>
+        <specialization>
           <template-arg>short</template-arg>
         </specialization>
         <method name="operator()" cv="const">
@@ -397,6 +433,42 @@ file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
       </struct-specialization>
 
       <struct-specialization name="hash">
+        <template></template>
+        <specialization>
+          <template-arg>std::u16string</template-arg>
+        </specialization>
+        <method name="operator()" cv="const">
+          <type>std::size_t</type>
+          <parameter name="val">
+            <paramtype>std::u16string const&amp;</paramtype>
+          </parameter>
+          <returns>
+            <para>Unspecified in TR1, except that equal arguments yield the same result.</para>
+            <para><functionname>hash_value</functionname>(val) in Boost.</para>
+          </returns>
+          <throws><para>Doesn't throw</para></throws>
+        </method>
+      </struct-specialization>
+
+      <struct-specialization name="hash">
+        <template></template>
+        <specialization>
+          <template-arg>std::u32string</template-arg>
+        </specialization>
+        <method name="operator()" cv="const">
+          <type>std::size_t</type>
+          <parameter name="val">
+            <paramtype>std::u32string const&amp;</paramtype>
+          </parameter>
+          <returns>
+            <para>Unspecified in TR1, except that equal arguments yield the same result.</para>
+            <para><functionname>hash_value</functionname>(val) in Boost.</para>
+          </returns>
+          <throws><para>Doesn't throw</para></throws>
+        </method>
+      </struct-specialization>
+
+      <struct-specialization name="hash">
         <template>
           <template-type-parameter name="T"/>
         </template>
@@ -595,6 +667,16 @@ for(; first != last; ++first)
         <signature>
           <type>std::size_t</type>
           <parameter name="val"><paramtype>wchar_t</paramtype></parameter>
+        </signature>
+
+        <signature>
+          <type>std::size_t</type>
+          <parameter name="val"><paramtype>char16_t</paramtype></parameter>
+        </signature>
+
+        <signature>
+          <type>std::size_t</type>
+          <parameter name="val"><paramtype>char32_t</paramtype></parameter>
         </signature>
 
         <signature>
@@ -833,7 +915,8 @@ for(; first != last; ++first)
               <tbody>
                 <row>
                   <entry><code>bool</code>,
-                    <code>char</code>, <code>signed char</code>, <code>unsigned char</code>, <code>wchar_t</code>,
+                    <code>char</code>, <code>signed char</code>, <code>unsigned char</code>,
+                    <code>wchar_t</code>, <code>char16_t</code>, <code>char32_t</code>,
                     <code>short</code>, <code>unsigned short</code>,
                     <code>int</code>, <code>unsigned int</code>, <code>long</code>, <code>unsigned long</code>
                   </entry>

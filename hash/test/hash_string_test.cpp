@@ -80,12 +80,68 @@ void wstring_tests()
 }
 #endif
 
+#if !defined(BOOST_NO_CXX11_CHAR16_T)
+void u16string_tests()
+{
+    compile_time_tests((std::u16string*) 0);
+
+    BOOST_HASH_TEST_NAMESPACE::hash<std::u16string> x1;
+    BOOST_HASH_TEST_NAMESPACE::hash<std::u16string> x2;
+
+    BOOST_TEST(x1(u"Hello") == x2(std::u16string(u"Hel") + u"lo"));
+    BOOST_TEST(x1(u"") == x2(std::u16string()));
+
+#if defined(BOOST_HASH_TEST_EXTENSIONS)
+    std::u16string value1;
+    std::u16string value2(u"Hello");
+
+    BOOST_TEST(x1(value1) == BOOST_HASH_TEST_NAMESPACE::hash_value(value1));
+    BOOST_TEST(x1(value2) == BOOST_HASH_TEST_NAMESPACE::hash_value(value2));
+    BOOST_TEST(BOOST_HASH_TEST_NAMESPACE::hash_value(value1) ==
+            BOOST_HASH_TEST_NAMESPACE::hash_range(value1.begin(), value1.end()));
+    BOOST_TEST(BOOST_HASH_TEST_NAMESPACE::hash_value(value2) ==
+            BOOST_HASH_TEST_NAMESPACE::hash_range(value2.begin(), value2.end()));
+#endif
+}
+#endif
+
+#if !defined(BOOST_NO_CXX11_CHAR32_T)
+void u32string_tests()
+{
+    compile_time_tests((std::u32string*) 0);
+
+    BOOST_HASH_TEST_NAMESPACE::hash<std::u32string> x1;
+    BOOST_HASH_TEST_NAMESPACE::hash<std::u32string> x2;
+
+    BOOST_TEST(x1(U"Hello") == x2(std::u32string(U"Hel") + U"lo"));
+    BOOST_TEST(x1(U"") == x2(std::u32string()));
+
+#if defined(BOOST_HASH_TEST_EXTENSIONS)
+    std::u32string value1;
+    std::u32string value2(U"Hello");
+
+    BOOST_TEST(x1(value1) == BOOST_HASH_TEST_NAMESPACE::hash_value(value1));
+    BOOST_TEST(x1(value2) == BOOST_HASH_TEST_NAMESPACE::hash_value(value2));
+    BOOST_TEST(BOOST_HASH_TEST_NAMESPACE::hash_value(value1) ==
+            BOOST_HASH_TEST_NAMESPACE::hash_range(value1.begin(), value1.end()));
+    BOOST_TEST(BOOST_HASH_TEST_NAMESPACE::hash_value(value2) ==
+            BOOST_HASH_TEST_NAMESPACE::hash_range(value2.begin(), value2.end()));
+#endif
+}
+#endif
+
 int main()
 {
     string_tests();
     string0_tests();
 #if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     wstring_tests();
+#endif
+#if !defined(BOOST_NO_CXX11_CHAR16_T)
+    u16string_tests();
+#endif
+#if !defined(BOOST_NO_CXX11_CHAR32_T)
+    u32string_tests();
 #endif
     return boost::report_errors();
 }
