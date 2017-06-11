@@ -189,6 +189,10 @@
 [h2 Boost 1.64.0]
 
 * Fix for recent versions of Visual C++ which have removed `std::unary_function`
-  and `std::binary_function`.
+  and `std::binary_function` ([ticket 12353]).
+
+[h2 Boost 1.65.0]
+
+* Support for `char16_t`, `char32_t`, `u16string`, `u32string`
 
 [endsect]
