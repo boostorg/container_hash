@@ -165,6 +165,12 @@ int main()
 #ifndef BOOST_NO_INTRINSIC_WCHAR_T
     NUMERIC_TEST(wchar_t, wchar)
 #endif
+#ifndef BOOST_NO_CXX11_CHAR16_T
+    NUMERIC_TEST(char16_t, char16)
+#endif
+#ifndef BOOST_NO_CXX11_CHAR32_T
+    NUMERIC_TEST(char32_t, char32)
+#endif
     NUMERIC_TEST(short, short)
     NUMERIC_TEST(unsigned short, ushort)
     NUMERIC_TEST(int, int)
