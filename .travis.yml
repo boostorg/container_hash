@@ -11,32 +11,37 @@ language: c++
 addons:
     apt:
         packages:
-            - libboost-dev
             - libboost-tools-dev
 
 matrix:
     include:
       - compiler: gcc
-        env: BJAM_TOOLSET=gcc-std03
+        env: |
+            USER_CONFIG="using gcc : : g++-4.8 -Werror --std=c++03 ;"
       - compiler: gcc
-        env: BJAM_TOOLSET=gcc-std11
+        env: |
+            USER_CONFIG="using gcc : : g++-4.8 -Werror --std=c++11 ;"
       - compiler: clang
-        env: BJAM_TOOLSET=clang-std03
+        env: |
+            USER_CONFIG="using clang : : clang++ -Werror --std=c++03 ;"
       - compiler: clang
-        env: BJAM_TOOLSET=clang-std11
+        env: |
+            USER_CONFIG="using clang : : clang++ -Werror --std=c++11 ;"
       - compiler: clang
-        env: BJAM_TOOLSET=clang-pretend_no_auto_ptr_etc
+        env: |
+            USER_CONFIG="using clang : : clang++ -Werror --std=c++11 -D_HAS_AUTO_PTR_ETC=0 ;"
 
 before_script:
-    - |
-        echo "using gcc : std03 : g++-4.8 -Werror --std=c++03 ;" > ~/user-config.jam
-        echo "using gcc : std11 : g++-4.8 -Werror --std=c++11 ;" >> ~/user-config.jam
-        echo "using clang : std03 : clang++ -Werror --std=c++03 ;" >> ~/user-config.jam
-        echo "using clang : std11 : clang++ -Werror --std=c++11 ;" >> ~/user-config.jam
-        echo "using clang : pretend_no_auto_ptr_etc : clang++ -Werror --std=c++11 -D_HAS_AUTO_PTR_ETC=0 ;" >> ~/user-config.jam
-    - cat ~/user-config.jam
+    - cd ${TRAVIS_BUILD_DIR}
     - touch Jamroot.jam
+    - cd $HOME
+    - echo $USER_CONFIG > ~/user-config.jam
+    - cat ~/user-config.jam
+    - wget -O boost.tar.bz2 https://dl.bintray.com/boostorg/release/1.65.0/source/boost_1_65_0.tar.bz2
+    - tar -xjf boost.tar.bz2
+    - mv boost_1_* boost
+    - rm -r boost/boost/functional
 
 script:
     - cd ${TRAVIS_BUILD_DIR}/test
-    - bjam -q ${BJAM_TOOLSET} include=${TRAVIS_BUILD_DIR}/include
+    - bjam -q ${BJAM_TOOLSET} include=${HOME}/boost include=${TRAVIS_BUILD_DIR}/include
