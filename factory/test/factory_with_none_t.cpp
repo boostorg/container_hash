@@ -21,6 +21,12 @@ class sum
     operator int() const { return this->val_sum; }
 };
 
+// Suppress warnings about std::auto_ptr.
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 int main()
 {
     int one = 1, two = 2;
@@ -44,3 +50,7 @@ int main()
 #endif
     return boost::report_errors();
 }
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
