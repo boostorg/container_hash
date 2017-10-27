@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2007 Tobias Schwinger
-  
-    Use modification and distribution are subject to the Boost Software 
+
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -11,7 +11,7 @@
 
 #include <memory>
 
-class sum 
+class sum
 {
     int val_sum;
   public:
@@ -19,6 +19,12 @@ class sum
 
     operator int() const { return this->val_sum; }
 };
+
+// Suppress warnings about std::auto_ptr.
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 int main()
 {
@@ -42,3 +48,6 @@ int main()
     return boost::report_errors();
 }
 
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
