@@ -195,4 +195,10 @@
 
 * Support for `char16_t`, `char32_t`, `u16string`, `u32string`
 
+[h2 Boost 1.66.0]
+
+* Avoid float comparison warning when using Clang - this workaround was
+  already in place for GCC, and was used when Clang pretends to be GCC,
+  but the warning was appearing when running Clang in other contexts.
+
 [endsect]
