@@ -189,13 +189,10 @@ namespace boost
         try
         {
 #if defined(BOOST_NO_CXX11_ALLOCATOR)
-            return make_pointer(
-                new(memory) value_type(BOOST_PP_ENUM_PARAMS(N,a)),
-                boost::non_type<factory_alloc_propagation,AP>() );
+            new(memory) value_type(BOOST_PP_ENUM_PARAMS(N,a));
 #else
             allocator_traits::construct(this->get_allocator(), memory
                 BOOST_PP_ENUM_TRAILING_PARAMS(N,a));
-            return make_pointer(memory, boost::non_type<factory_alloc_propagation,AP>());
 #endif
         }
         catch (...) {
@@ -206,6 +203,8 @@ namespace boost
 #endif
             throw;
         }
+
+        return make_pointer(memory, boost::non_type<factory_alloc_propagation,AP>());
     }
 #     endif
 #     undef N
