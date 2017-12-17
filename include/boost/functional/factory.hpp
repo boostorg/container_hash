@@ -116,13 +116,15 @@ namespace boost
 
             void operator()(value_type* ptr) const
             {
-                if (!! ptr) ptr->~value_type();
+                if (!! ptr) {
+                    ptr->~value_type();
 #if defined(BOOST_NO_CXX11_ALLOCATOR)
-                const_cast<allocator_type*>(static_cast<allocator_type const*>(
-                    this))->deallocate(ptr,1);
+                    const_cast<allocator_type*>(static_cast<allocator_type const*>(
+                        this))->deallocate(ptr,1);
 #else
-                allocator_traits::deallocate(this->get_allocator(),ptr,1);
+                    allocator_traits::deallocate(this->get_allocator(),ptr,1);
 #endif
+                }
             }
         };
 
