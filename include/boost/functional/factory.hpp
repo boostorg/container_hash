@@ -74,14 +74,23 @@ namespace boost
 
     template< class Pointer, class Allocator, factory_alloc_propagation AP >
     class factory
+#if defined(BOOST_NO_CXX11_ALLOCATOR)
         : private Allocator::template rebind< typename boost::pointee<
             typename boost::remove_cv<Pointer>::type >::type >::other
+#else
+        : private std::allocator_traits<Allocator>::template rebind_alloc<
+            typename boost::pointee< typename boost::remove_cv<Pointer>::type >::type >
+#endif
     {
       public:
         typedef typename boost::remove_cv<Pointer>::type result_type;
         typedef typename boost::pointee<result_type>::type value_type;
 
+#if defined(BOOST_NO_CXX11_ALLOCATOR)
         typedef typename Allocator::template rebind<value_type>::other
+#else
+        typedef typename std::allocator_traits<Allocator>::template rebind_alloc<value_type>
+#endif
             allocator_type;
 
         explicit factory(allocator_type const & a = allocator_type())

@@ -13,6 +13,11 @@
 #include <memory>
 #include <boost/shared_ptr.hpp>
 
+#ifdef BOOST_MSVC
+// none of the deprecated members of std::allocate are used here
+# pragma warning(disable:4996) // Various members of std::allocator are deprecated in C++17
+#endif
+
 using std::size_t;
 
 class sum 
