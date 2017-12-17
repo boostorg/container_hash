@@ -12,6 +12,7 @@
 #     include <boost/preprocessor/iteration/iterate.hpp>
 #     include <boost/preprocessor/repetition/enum_params.hpp>
 #     include <boost/preprocessor/repetition/enum_binary_params.hpp>
+#     include <boost/preprocessor/repetition/enum_trailing_params.hpp>
 
 #     include <new>
 #     include <boost/pointee.hpp>
@@ -117,11 +118,12 @@ namespace boost
             void operator()(value_type* ptr) const
             {
                 if (!! ptr) {
-                    ptr->~value_type();
 #if defined(BOOST_NO_CXX11_ALLOCATOR)
+                    ptr->~value_type();
                     const_cast<allocator_type*>(static_cast<allocator_type const*>(
                         this))->deallocate(ptr,1);
 #else
+                    allocator_traits::destroy(this->get_allocator(), ptr);
                     allocator_traits::deallocate(this->get_allocator(),ptr,1);
 #endif
                 }
@@ -186,9 +188,15 @@ namespace boost
 #endif
         try
         {
+#if defined(BOOST_NO_CXX11_ALLOCATOR)
             return make_pointer(
                 new(memory) value_type(BOOST_PP_ENUM_PARAMS(N,a)),
                 boost::non_type<factory_alloc_propagation,AP>() );
+#else
+            allocator_traits::construct(this->get_allocator(), memory
+                BOOST_PP_ENUM_TRAILING_PARAMS(N,a));
+            return make_pointer(memory, boost::non_type<factory_alloc_propagation,AP>());
+#endif
         }
         catch (...) {
 #if defined(BOOST_NO_CXX11_ALLOCATOR)
