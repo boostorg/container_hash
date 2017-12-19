@@ -12,11 +12,11 @@
 #endif
 
 #include <iostream>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #include <boost/preprocessor/cat.hpp>
 #include <boost/functional/hash/detail/limits.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <boost/core/enable_if.hpp>
 
 #include "./compile_time.hpp"
 

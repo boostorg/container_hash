@@ -11,7 +11,7 @@
 #  include <boost/functional/hash.hpp>
 #endif
 #include <boost/config.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
 

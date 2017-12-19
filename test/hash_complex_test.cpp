@@ -17,7 +17,7 @@ int main() {}
 #  include <boost/functional/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #if defined(BOOST_MSVC)
 #pragma warning(disable:4244)   // conversion from 'unsigned long' to

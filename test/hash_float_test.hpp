@@ -11,12 +11,12 @@
 #  include <boost/functional/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #include <cmath>
 #include <boost/functional/hash/detail/limits.hpp>
 #include <boost/functional/hash/detail/float_functions.hpp>
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 
 #include <iostream>
 

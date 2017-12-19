@@ -17,7 +17,7 @@ int main() {}
 #  include <boost/functional/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/limits.hpp>
 #include <vector>
 

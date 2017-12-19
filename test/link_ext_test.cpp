@@ -7,7 +7,7 @@
 
 #define BOOST_HASH_TEST_NAMESPACE boost
 #include <boost/functional/hash.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <vector>
 
 int f(std::size_t hash1, int* x1) {

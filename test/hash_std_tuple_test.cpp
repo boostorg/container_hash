@@ -14,7 +14,7 @@
 #endif
 
 #include <boost/config.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #if defined(BOOST_HASH_TEST_EXTENSIONS) && !defined(BOOST_NO_CXX11_HDR_TUPLE)
 #define TEST_TUPLE

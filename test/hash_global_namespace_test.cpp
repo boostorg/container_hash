@@ -50,7 +50,7 @@ namespace boost
 #  endif
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #ifdef BOOST_HASH_TEST_EXTENSIONS
 
