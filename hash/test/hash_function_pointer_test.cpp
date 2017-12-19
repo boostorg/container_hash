@@ -11,7 +11,7 @@
 #  include <boost/functional/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "./compile_time.hpp"
 
 void void_func1() { static int x = 1; ++x; }

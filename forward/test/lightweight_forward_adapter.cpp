@@ -12,7 +12,7 @@
 #   pragma warning(disable: 4244) // no conversion warnings, please
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/functional/lightweight_forward_adapter.hpp>
 
 #include <boost/type_traits/is_same.hpp>

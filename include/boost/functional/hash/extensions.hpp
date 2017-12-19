@@ -20,7 +20,7 @@
 
 #include <boost/functional/hash/hash.hpp>
 #include <boost/detail/container_fwd.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <boost/core/enable_if.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>

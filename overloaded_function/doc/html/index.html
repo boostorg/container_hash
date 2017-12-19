@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Chapter&#160;1.&#160;Boost.Functional/OverloadedFunction 1.0.0</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="Chapter&#160;1.&#160;Boost.Functional/OverloadedFunction 1.0.0">
 <link rel="next" href="boost_functional_overloadedfunction/getting_started.html" title="Getting Started">
 </head>
@@ -61,7 +61,7 @@
 <p>
     This library allows to overload different functions into a single function object.
   </p>
-<div class="section boost_functional_overloadedfunction_introduction">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_functional_overloadedfunction.introduction"></a><a class="link" href="index.html#boost_functional_overloadedfunction.introduction" title="Introduction">Introduction</a>
 </h2></div></div></div>
@@ -84,7 +84,7 @@
 <p>
       Instead of calling them using their separate names (here <code class="computeroutput"><span class="identifier">BOOST_TEST</span></code>
       is equivalent to <code class="computeroutput"><span class="identifier">assert</span></code>):
-      <sup>[<a name="boost_functional_overloadedfunction.introduction.f0" href="#ftn.boost_functional_overloadedfunction.introduction.f0" class="footnote">1</a>]</sup>
+      <a href="#ftn.boost_functional_overloadedfunction.introduction.f0" class="footnote"><sup class="footnote"><a name="boost_functional_overloadedfunction.introduction.f0"></a>[1]</sup></a>
     </p>
 <p>
 </p>
@@ -124,21 +124,21 @@
     </p>
 </div>
 <div class="footnotes">
-<br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.boost_functional_overloadedfunction.introduction.f0" href="#boost_functional_overloadedfunction.introduction.f0" class="para">1</a>] </sup>
-        In most of the examples presented in this documentation, the Boost.Detail/LightweightTest
-        (<code class="literal">boost/detail/lightweight_test.hpp</code>) macro <code class="computeroutput"><span class="identifier">BOOST_TEST</span></code> is used to check correctness
+<br><hr style="width:100; align:left;">
+<div id="ftn.boost_functional_overloadedfunction.introduction.f0" class="footnote"><p><a href="#boost_functional_overloadedfunction.introduction.f0" class="para"><sup class="para">[1] </sup></a>
+        In most of the examples presented in this documentation, the Boost.Core/LightweightTest
+        (<code class="literal">boost/core/lightweight_test.hpp</code>) macro <code class="computeroutput"><span class="identifier">BOOST_TEST</span></code> is used to check correctness
         conditions (conceptually similar to <code class="computeroutput"><span class="identifier">assert</span></code>).
         A failure of the checked condition does not abort the execution of the program,
         it will instead make <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span></code>
-        return a non-zero program exit code. Using Boost.Detail/LightweightTest allows
+        return a non-zero program exit code. Using Boost.Core/LightweightTest allows
         to add the examples to the library regression tests so to make sure that
         they always compile and run correctly.
       </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: April 28, 2012 at 02:19:13 GMT</small></p></td>
+<td align="left"><p><small>Last revised: December 03, 2017 at 14:34:49 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

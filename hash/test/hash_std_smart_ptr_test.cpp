@@ -11,7 +11,7 @@
 #  include <boost/functional/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "./compile_time.hpp"
 
 #if defined(BOOST_HASH_TEST_EXTENSIONS) && !defined(BOOST_NO_CXX11_SMART_PTR)

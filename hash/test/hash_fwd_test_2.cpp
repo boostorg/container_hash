@@ -15,7 +15,7 @@ int main() {}
 #else
 
 #include "./hash_fwd_test.hpp"
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 template <class T> void unused(T const&) {}
 
