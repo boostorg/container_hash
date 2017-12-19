@@ -18,4 +18,8 @@
 // before doing anything else.
 #pragma warning(disable:4201)   // nonstandard extension used :
                                 // nameless struct/union
+
 #endif
+
+#define HASH_TEST_CAT(x, y) HASH_TEST_CAT2(x, y)
+#define HASH_TEST_CAT2(x, y) x##y
