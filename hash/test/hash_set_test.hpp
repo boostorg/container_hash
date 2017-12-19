@@ -7,14 +7,12 @@
 #error "CONTAINER_TYPE not defined"
 #else
 
-#include <boost/preprocessor/cat.hpp>
-
 #if defined(BOOST_MSVC)
 #pragma warning(push)
 #pragma warning(disable:4245) // signed/unsigned mismatch
 #endif
 
-namespace BOOST_PP_CAT(CONTAINER_TYPE, _tests)
+namespace HASH_TEST_CAT(CONTAINER_TYPE, _tests)
 {
     template <class T>
     void integer_tests(T* = 0)
@@ -64,7 +62,7 @@ namespace BOOST_PP_CAT(CONTAINER_TYPE, _tests)
         }
     }
 
-    void BOOST_PP_CAT(CONTAINER_TYPE, _hash_integer_tests())
+    void HASH_TEST_CAT(CONTAINER_TYPE, _hash_integer_tests())
     {
         integer_tests((CONTAINER_TYPE<char>*) 0);
         integer_tests((CONTAINER_TYPE<int>*) 0);
