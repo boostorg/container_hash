@@ -64,7 +64,8 @@ before_script:
         cd $HOME/extract
         tar -xjf $HOME/download/boost.tar.bz2
         mv * ${BOOST_ROOT}
-    - rm -r ${BOOST_ROOT}/boost/functional
+    - rm ${BOOST_ROOT}/boost/functional.hpp
+    - find ${BOOST_ROOT}/boost/functional -type f | grep -v hash | xargs -r rm
 
 script:
     - cd ${TRAVIS_BUILD_DIR}/test
