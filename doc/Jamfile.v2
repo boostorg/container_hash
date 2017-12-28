@@ -17,3 +17,9 @@ boostbook standalone : hash :
     <xsl:param>toc.max.depth=1
     <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/libs/functional/hash/doc/html
     ;
+
+###############################################################################
+    alias boostdoc : hash ;
+    explicit boostdoc ;
+    alias boostrelease ;
+    explicit boostrelease ;
