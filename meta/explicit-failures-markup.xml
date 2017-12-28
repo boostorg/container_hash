@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <explicit-failures-markup>
-    <!-- functional/hash -->
-    <library name="functional/hash">
+    <!-- container_hash -->
+    <library name="container_hash">
         <mark-expected-failures>
             <test name="hash_value_array_test"/>
             <toolset name="msvc-6.5*"/>
