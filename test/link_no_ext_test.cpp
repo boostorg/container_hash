@@ -7,7 +7,7 @@
 
 #define BOOST_HASH_TEST_NAMESPACE boost
 #define BOOST_HASH_NO_EXTENSIONS
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 
 extern int f(std::size_t, int*);

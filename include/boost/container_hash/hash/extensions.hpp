@@ -18,7 +18,7 @@
 #pragma once
 #endif
 
-#include <boost/functional/hash/hash.hpp>
+#include <boost/container_hash/hash/hash.hpp>
 #include <boost/detail/container_fwd.hpp>
 #include <boost/core/enable_if.hpp>
 #include <boost/static_assert.hpp>

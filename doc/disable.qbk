@@ -10,7 +10,7 @@ to turn them of in order to check that your code will work with other
 implementations of TR1. To do this define the macro `BOOST_HASH_NO_EXTENSIONS`.
 When this macro is defined, only the specialisations detailed
 in TR1 will be declared. But, if you later undefine the macro and include
-<[headerref boost/functional/hash.hpp]> then the non-specialised form will be defined
+<[headerref boost/container_hash/hash.hpp]> then the non-specialised form will be defined
 - activating the extensions.
 
 It is strongly recommended that you never undefine the macro - and only define

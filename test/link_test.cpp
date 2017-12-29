@@ -5,7 +5,7 @@
 
 #include "./config.hpp"
 
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 
 extern int f();
 int main() { return f(); }

@@ -6,7 +6,7 @@
 #include "./config.hpp"
 
 #if defined(BOOST_HASH_TEST_EXTENSIONS) && !defined(BOOST_HASH_TEST_STD_INCLUDES)
-#include <boost/functional/hash_fwd.hpp>
+#include <boost/container_hash/hash_fwd.hpp>
 
 #include <boost/config.hpp>
 #include <cstddef>

@@ -18,7 +18,7 @@ project hash-tests
         #<toolset>darwin:<warnings-as-errors>on
     ;
 
-test-suite functional/hash
+test-suite container_hash/hash
     :
         [ compile check_float_funcs.cpp ]
         [ run hash_fwd_test_1.cpp ]
@@ -56,7 +56,7 @@ test-suite functional/hash
         [ run hash_no_ext_macro_2.cpp ]
     ;
 
-test-suite functional/hash_no_ext
+test-suite container_hash/hash_no_ext
     :
         [ run hash_number_test.cpp : : : <define>BOOST_HASH_NO_EXTENSIONS : no_ext_number_test ]
         [ run hash_pointer_test.cpp : : : <define>BOOST_HASH_NO_EXTENSIONS : no_ext_pointer_test ]
@@ -69,7 +69,7 @@ test-suite functional/hash_no_ext
 
 # Tests to see if the floating point hash is using the binary hash.
 # Not run normally because on some platforms these should fail.
-test-suite functional/hash_no_generic_float
+test-suite container_hash/hash_no_generic_float
     :
         [ run hash_float_test.cpp
             : : : <define>BOOST_HASH_DETAIL_TEST_WITHOUT_GENERIC
@@ -78,6 +78,6 @@ test-suite functional/hash_no_generic_float
             : : : <define>BOOST_HASH_DETAIL_TEST_WITHOUT_GENERIC
             : hash_long_double_test_no_generic ]
     ;
-explicit functional/hash_no_generic_float ;
+explicit container_hash/hash_no_generic_float ;
 
 build-project ../examples ;

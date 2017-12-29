@@ -9,7 +9,7 @@
 #include "./config.hpp"
 
 #include <list>
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 
 typedef list<int> foo;
 

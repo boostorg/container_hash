@@ -6,7 +6,7 @@
 // This is an example of how to write a hash function for a template
 // class.
 
-#include <boost/functional/hash_fwd.hpp>
+#include <boost/container_hash/hash_fwd.hpp>
 
 template <typename A, typename B>
 class my_pair

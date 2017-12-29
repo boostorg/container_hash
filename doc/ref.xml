@@ -13,7 +13,7 @@ file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
         <ulink url="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1837.pdf">Library Extension Technical Report Issues List</ulink> (page 63).
     </para>
   </section>
-  <header name="boost/functional/hash.hpp">
+  <header name="boost/container_hash/hash.hpp">
     <para>
       Defines <code><classname>boost::hash</classname></code>,
       and helper functions.
@@ -57,7 +57,7 @@ file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
             </para>
             <para>
               Forward declared in
-              <code>&lt;boost/functional/hash_fwd.hpp&gt;</code>
+              <code>&lt;boost/container_hash/hash_fwd.hpp&gt;</code>
             </para>
             <para>
               This hash function is not intended for general use, and isn't
@@ -542,7 +542,7 @@ file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
           <para>This is an extension to TR1</para>
           <para>
             Forward declared in
-            <code>&lt;boost/functional/hash_fwd.hpp&gt;</code>
+            <code>&lt;boost/container_hash/hash_fwd.hpp&gt;</code>
           </para>
           <para>
             This hash function is not intended for general use, and isn't
@@ -615,7 +615,7 @@ for(; first != last; ++first)
           <para>This is an extension to TR1</para>
           <para>
             Forward declared in
-            <code>&lt;boost/functional/hash_fwd.hpp&gt;</code>
+            <code>&lt;boost/container_hash/hash_fwd.hpp&gt;</code>
           </para>
           <para>
             This hash function is not intended for general use, and isn't

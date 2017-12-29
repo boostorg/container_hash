@@ -5,6 +5,6 @@
 
 #include "./config.hpp"
 
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 
 int f() { return 0; }

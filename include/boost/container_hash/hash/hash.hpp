@@ -16,9 +16,9 @@
 #if !defined(BOOST_FUNCTIONAL_HASH_HASH_HPP)
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
 
-#include <boost/functional/hash/hash_fwd.hpp>
+#include <boost/container_hash/hash/hash_fwd.hpp>
 #include <functional>
-#include <boost/functional/hash/detail/hash_float.hpp>
+#include <boost/container_hash/hash/detail/hash_float.hpp>
 #include <string>
 #include <boost/limits.hpp>
 #include <boost/type_traits/is_enum.hpp>
@@ -591,5 +591,5 @@ namespace boost
 
 #if !defined(BOOST_HASH_NO_EXTENSIONS) \
     && !defined(BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP)
-#include <boost/functional/hash/extensions.hpp>
+#include <boost/container_hash/hash/extensions.hpp>
 #endif

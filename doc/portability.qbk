@@ -88,6 +88,6 @@ boost namespace:
     }
 
 Full code for this example is at
-[@boost:/libs/functional/hash/examples/portable.cpp /libs/functional/hash/examples/portable.cpp].
+[@boost:/libs/container_hash/hash/examples/portable.cpp /libs/container_hash/hash/examples/portable.cpp].
 
 [endsect]

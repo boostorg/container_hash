@@ -8,4 +8,4 @@
 #pragma once
 #endif
 
-#include <boost/functional/hash/hash_fwd.hpp>
+#include <boost/container_hash/hash/hash_fwd.hpp>

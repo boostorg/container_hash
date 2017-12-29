@@ -6,7 +6,7 @@
 #include "./config.hpp"
 
 #define BOOST_HASH_TEST_NAMESPACE boost
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <vector>
 

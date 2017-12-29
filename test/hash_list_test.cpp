@@ -9,7 +9,7 @@
 #  ifdef BOOST_HASH_TEST_STD_INCLUDES
 #    include <functional>
 #  else
-#    include <boost/functional/hash.hpp>
+#    include <boost/container_hash/hash.hpp>
 #  endif
 #endif
 
