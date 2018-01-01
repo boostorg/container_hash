@@ -14,10 +14,10 @@ int main() {}
 #ifdef BOOST_HASH_TEST_STD_INCLUDES
 #  include <functional>
 #else
-#  include <boost/functional/hash.hpp>
+#  include <boost/container_hash/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
 #if defined(BOOST_MSVC)
 #pragma warning(disable:4244)   // conversion from 'unsigned long' to

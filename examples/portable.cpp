@@ -8,7 +8,7 @@
 #undef NDEBUG
 #endif
 
-#include <boost/functional/hash.hpp>
+#include <boost/container_hash/hash.hpp>
 #include <cassert>
 
 // This example illustrates how to customise boost::hash portably, so that

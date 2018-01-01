@@ -8,10 +8,10 @@
 #ifdef BOOST_HASH_TEST_STD_INCLUDES
 #  include <functional>
 #else
-#  include <boost/functional/hash.hpp>
+#  include <boost/container_hash/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "./compile_time.hpp"
 
 #if defined(BOOST_HASH_TEST_EXTENSIONS) && !defined(BOOST_NO_CXX11_SMART_PTR)

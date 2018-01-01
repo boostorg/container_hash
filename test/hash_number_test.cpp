@@ -8,15 +8,14 @@
 #ifdef BOOST_HASH_TEST_STD_INCLUDES
 #  include <functional>
 #else
-#  include <boost/functional/hash.hpp>
+#  include <boost/container_hash/hash.hpp>
 #endif
 
 #include <iostream>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 
-#include <boost/preprocessor/cat.hpp>
-#include <boost/functional/hash/detail/limits.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <boost/container_hash/hash/detail/limits.hpp>
+#include <boost/core/enable_if.hpp>
 
 #include "./compile_time.hpp"
 
@@ -140,7 +139,7 @@ void bool_test()
 {
     BOOST_HASH_TEST_NAMESPACE::hash<bool> x1;
     BOOST_HASH_TEST_NAMESPACE::hash<bool> x2;
-    
+
     BOOST_TEST(x1(true) == x2(true));
     BOOST_TEST(x1(false) == x2(false));
     BOOST_TEST(x1(true) != x2(false));

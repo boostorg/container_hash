@@ -11,14 +11,14 @@
 #  if defined(BOOST_HASH_NO_EXTENSIONS)
 #    undef BOOST_HASH_NO_EXTENSIONS
 #  endif
-#  include <boost/functional/hash.hpp>
+#  include <boost/container_hash/hash.hpp>
 
 // Include header with BOOST_HASH_NO_EXTENSIONS defined
 #  define BOOST_HASH_NO_EXTENSIONS
-#  include <boost/functional/hash.hpp>
+#  include <boost/container_hash/hash.hpp>
 #endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <deque>
 
 int main()

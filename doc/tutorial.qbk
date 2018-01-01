@@ -27,7 +27,7 @@ associative containers and you wish to use
 
 To use [classref boost::hash] directly, create an instance and call it as a function:
 
-    #include <``[headerref boost/functional/hash.hpp]``>
+    #include <``[headerref boost/container_hash/hash.hpp]``>
 
     int main()
     {
@@ -110,9 +110,9 @@ And you can now use [classref boost::hash] with book:
     assert(books.find(dandelion) == books.end());
 
 The full example can be found in:
-[@boost:/libs/functional/hash/examples/books.hpp /libs/functional/hash/examples/books.hpp]
+[@boost:/libs/container_hash/hash/examples/books.hpp /libs/container_hash/hash/examples/books.hpp]
 and
-[@boost:/libs/functional/hash/examples/books.cpp /libs/functional/hash/examples/books.cpp].
+[@boost:/libs/container_hash/hash/examples/books.cpp /libs/container_hash/hash/examples/books.cpp].
 
 [tip
 When writing a hash function, first look at how the equality function works.
@@ -170,7 +170,7 @@ of point, it can be repeatedly called for any number of elements. It calls
 [funcref boost::hash_value hash_value] on the supplied element, and combines it with the seed.
 
 Full code for this example is at
-[@boost:/libs/functional/hash/examples/point.cpp /libs/functional/hash/examples/point.cpp].
+[@boost:/libs/container_hash/hash/examples/point.cpp /libs/container_hash/hash/examples/point.cpp].
 
 [note
 When using [funcref boost::hash_combine] the order of the
@@ -200,13 +200,13 @@ To calculate the hash of an iterator range you can use [funcref boost::hash_rang
 
 Note that when writing template classes, you might not want to include the main
 hash header as it's quite an expensive include that brings in a lot of other
-headers, so instead you can include the `<boost/functional/hash_fwd.hpp>`
+headers, so instead you can include the `<boost/container_hash/hash_fwd.hpp>`
 header which forward declares [classref boost::hash],
 [funcref boost::hash_range] and [funcref boost::hash_combine]. You'll need to
 include the main header before instantiating [classref boost::hash]. When using
 a container that uses [classref boost::hash] it should do that for you, so your
 type will work fine with the boost hash containers. There's an example of this
-in [@boost:/libs/functional/hash/examples/template.hpp template.hpp] and
-[@boost:/libs/functional/hash/examples/template.cpp template.cpp].
+in [@boost:/libs/container_hash/hash/examples/template.hpp template.hpp] and
+[@boost:/libs/container_hash/hash/examples/template.cpp template.cpp].
 
 [endsect]
