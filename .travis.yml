@@ -8,11 +8,6 @@ dist: trusty
 
 language: c++
 
-addons:
-    apt:
-        packages:
-            - libboost-tools-dev
-
 matrix:
     include:
       - compiler: gcc
@@ -65,7 +60,11 @@ before_script:
         tar -xjf $HOME/download/boost.tar.bz2
         mv * ${BOOST_ROOT}
     - rm -r ${BOOST_ROOT}/boost/functional
+    - cd ${BOOST_ROOT}/tools/build
+    - mkdir ${HOME}/opt
+    - ./bootstrap.sh
+    - ./b2 install --prefix=$HOME/opt
 
 script:
     - cd ${TRAVIS_BUILD_DIR}/test
-    - bjam -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
+    - ${HOME}/opt/bin/b2 -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
