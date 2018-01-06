@@ -12,19 +12,16 @@ matrix:
     include:
       - compiler: gcc
         env: |
-            USER_CONFIG="using gcc : : g++-4.8 -Werror --std=c++03 ;"
-      - compiler: gcc
-        env: |
-            USER_CONFIG="using gcc : : g++-4.8 -Werror --std=c++11 ;"
+            USER_CONFIG="using gcc : : g++-4.8 -Werror ;"
+            CXXSTD=03,11
       - compiler: clang
         env: |
-            USER_CONFIG="using clang : : clang++ -Werror --std=c++03 ;"
+            USER_CONFIG="using clang : : clang++ -Werror ;"
+            CXXSTD=03,11
       - compiler: clang
         env: |
-            USER_CONFIG="using clang : : clang++ -Werror --std=c++11 ;"
-      - compiler: clang
-        env: |
-            USER_CONFIG="using clang : : clang++ -Werror --std=c++11 -D_HAS_AUTO_PTR_ETC=0 ;"
+            USER_CONFIG="using clang : : clang++ -Werror -D_HAS_AUTO_PTR_ETC=0 ;"
+            CXXSTD=11
 
 before_script:
     - export BOOST_VERSION=1.66.0
@@ -67,4 +64,4 @@ before_script:
 
 script:
     - cd ${TRAVIS_BUILD_DIR}/test
-    - ${HOME}/opt/bin/b2 -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
+    - ${HOME}/opt/bin/b2 cxxstd=$CXXSTD -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
