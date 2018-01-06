@@ -64,4 +64,4 @@ before_script:
 
 script:
     - cd ${TRAVIS_BUILD_DIR}/test
-    - ${HOME}/opt/bin/b2 cxxstd=$CXXSTD -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
+    - ${HOME}/opt/bin/b2 -j 3 cxxstd=$CXXSTD -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
