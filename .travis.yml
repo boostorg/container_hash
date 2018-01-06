@@ -32,8 +32,8 @@ matrix:
             USER_CONFIG="using clang : : clang++ -Werror --std=c++11 -D_HAS_AUTO_PTR_ETC=0 ;"
 
 before_script:
-    - export BOOST_VERSION=1.65.1
-    - export BOOST_FILENAME=boost_1_65_1
+    - export BOOST_VERSION=1.66.0
+    - export BOOST_FILENAME=boost_1_66_0
     - export BOOST_ROOT=${HOME}/boost
     - cd ${TRAVIS_BUILD_DIR}
     - touch Jamroot.jam
