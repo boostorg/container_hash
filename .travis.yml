@@ -8,32 +8,24 @@ dist: trusty
 
 language: c++
 
-addons:
-    apt:
-        packages:
-            - libboost-tools-dev
-
 matrix:
     include:
       - compiler: gcc
         env: |
-            USER_CONFIG="using gcc : : g++-4.8 -Werror --std=c++03 ;"
-      - compiler: gcc
-        env: |
-            USER_CONFIG="using gcc : : g++-4.8 -Werror --std=c++11 ;"
+            USER_CONFIG="using gcc : : g++-4.8 -Werror ;"
+            CXXSTD=03,11
       - compiler: clang
         env: |
-            USER_CONFIG="using clang : : clang++ -Werror --std=c++03 ;"
+            USER_CONFIG="using clang : : clang++ -Werror ;"
+            CXXSTD=03,11
       - compiler: clang
         env: |
-            USER_CONFIG="using clang : : clang++ -Werror --std=c++11 ;"
-      - compiler: clang
-        env: |
-            USER_CONFIG="using clang : : clang++ -Werror --std=c++11 -D_HAS_AUTO_PTR_ETC=0 ;"
+            USER_CONFIG="using clang : : clang++ -Werror -D_HAS_AUTO_PTR_ETC=0 ;"
+            CXXSTD=11
 
 before_script:
-    - export BOOST_VERSION=1.65.1
-    - export BOOST_FILENAME=boost_1_65_1
+    - export BOOST_VERSION=1.66.0
+    - export BOOST_FILENAME=boost_1_66_0
     - export BOOST_ROOT=${HOME}/boost
     - cd ${TRAVIS_BUILD_DIR}
     - touch Jamroot.jam
@@ -65,7 +57,11 @@ before_script:
         tar -xjf $HOME/download/boost.tar.bz2
         mv * ${BOOST_ROOT}
     - rm -r ${BOOST_ROOT}/boost/functional
+    - cd ${BOOST_ROOT}/tools/build
+    - mkdir ${HOME}/opt
+    - ./bootstrap.sh
+    - ./b2 install --prefix=$HOME/opt
 
 script:
     - cd ${TRAVIS_BUILD_DIR}/test
-    - bjam -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
+    - ${HOME}/opt/bin/b2 -j 3 cxxstd=$CXXSTD -q ${BJAM_TOOLSET} include=${BOOST_ROOT} include=${TRAVIS_BUILD_DIR}/include
