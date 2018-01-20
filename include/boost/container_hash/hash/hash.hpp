@@ -58,6 +58,33 @@
 #   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) (x << r) | (x >> (32 - r))
 #endif
 
+// Detect whether standard library has <string_view>.
+
+#if !defined(BOOST_HASH_HAS_STRING_VIEW) && defined(__has_include)
+#   if __has_include(<string_view>)
+#       if defined(BOOST_MSVC)
+            // On Visual C++ the header exists, but causes an
+            // error if it isn't in C++17 mode.
+#           if defined(_HAS_CXX17) && _HAS_CXX17
+#               define BOOST_HASH_HAS_STRING_VIEW 1
+#               include <string_view>
+#           endif
+#       else
+#           include <string_view>
+#           if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603
+#               define BOOST_HASH_HAS_STRING_VIEW 1
+#           endif
+#       endif
+#   endif
+#endif
+
+#if !defined(BOOST_HASH_HAS_STRING_VIEW)
+#   define BOOST_HASH_HAS_STRING_VIEW 0
+#endif
+
+#if BOOST_HASH_HAS_STRING_VIEW
+#endif
+
 namespace boost
 {
     namespace hash_detail
@@ -175,6 +202,12 @@ namespace boost
     template <class Ch, class A>
     std::size_t hash_value(
         std::basic_string<Ch, std::BOOST_HASH_CHAR_TRAITS<Ch>, A> const&);
+
+#if BOOST_HASH_HAS_STRING_VIEW
+    template <class Ch>
+    std::size_t hash_value(
+        std::basic_string_view<Ch, std::BOOST_HASH_CHAR_TRAITS<Ch> > const&);
+#endif
 
     template <typename T>
     typename boost::hash_detail::float_numbers<T>::type hash_value(T);
@@ -410,6 +443,15 @@ namespace boost
         return hash_range(v.begin(), v.end());
     }
 
+#if BOOST_HASH_HAS_STRING_VIEW
+    template <class Ch>
+    inline std::size_t hash_value(
+        std::basic_string_view<Ch, std::BOOST_HASH_CHAR_TRAITS<Ch> > const& v)
+    {
+        return hash_range(v.begin(), v.end());
+    }
+#endif
+
     template <typename T>
     typename boost::hash_detail::float_numbers<T>::type hash_value(T v)
     {
@@ -492,6 +534,19 @@ namespace boost
 #endif
 #if !defined(BOOST_NO_CXX11_CHAR32_T)
     BOOST_HASH_SPECIALIZE_REF(std::basic_string<char32_t>)
+#endif
+
+#if BOOST_HASH_HAS_STRING_VIEW
+    BOOST_HASH_SPECIALIZE_REF(std::string_view)
+#   if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
+    BOOST_HASH_SPECIALIZE_REF(std::wstring_view)
+#   endif
+#   if !defined(BOOST_NO_CXX11_CHAR16_T)
+    BOOST_HASH_SPECIALIZE_REF(std::basic_string_view<char16_t>)
+#   endif
+#   if !defined(BOOST_NO_CXX11_CHAR32_T)
+    BOOST_HASH_SPECIALIZE_REF(std::basic_string_view<char32_t>)
+#   endif
 #endif
 
 #if !defined(BOOST_NO_LONG_LONG)
