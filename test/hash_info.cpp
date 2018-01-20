@@ -9,6 +9,11 @@
 #include <iostream>
 
 int main() {
+#if defined(__cplusplus)
+    std::cout << "__cplusplus: "
+        << __cplusplus
+        << std::endl;
+#endif
     std::cout << "BOOST_HASH_HAS_STRING_VIEW: "
         << BOOST_HASH_HAS_STRING_VIEW
         << std::endl;
