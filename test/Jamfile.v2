@@ -20,6 +20,7 @@ project hash-tests
 
 test-suite container_hash/hash
     :
+        [ run hash_info.cpp : : : <test-info>always_show_run_output ]
         [ compile check_float_funcs.cpp ]
         [ run hash_fwd_test_1.cpp ]
         [ run hash_fwd_test_2.cpp ]
