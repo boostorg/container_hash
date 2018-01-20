@@ -69,11 +69,9 @@
 #               define BOOST_HASH_HAS_STRING_VIEW 1
 #               include <string_view>
 #           endif
-#       else
+#       elif defined(__cplusplus) && __cplusplus >= 201703
 #           include <string_view>
-#           if defined(__cpp_lib_string_view) && __cpp_lib_string_view >= 201603
-#               define BOOST_HASH_HAS_STRING_VIEW 1
-#           endif
+#           define BOOST_HASH_HAS_STRING_VIEW 1
 #       endif
 #   endif
 #endif
