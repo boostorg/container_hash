@@ -82,9 +82,6 @@
 #   define BOOST_HASH_HAS_STRING_VIEW 0
 #endif
 
-#if BOOST_HASH_HAS_STRING_VIEW
-#endif
-
 namespace boost
 {
     namespace hash_detail
