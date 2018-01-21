@@ -78,4 +78,17 @@ int main() {
     std::cout << "BOOST_HASH_HAS_STRING_VIEW: "
         << BOOST_HASH_HAS_STRING_VIEW
         << std::endl;
+
+#if defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
+    std::cout << "No <typeindex>" << std::endl;
+#else
+    std::cout << "<typeindex>" << std::endl;
+#endif
+
+#if defined(BOOST_NO_CXX11_HDR_SYSTEM_ERROR)
+    std::cout << "No <system_error>" << std::endl;
+#else
+    std::cout << "<system_error>" << std::endl;
+#endif
+
 }

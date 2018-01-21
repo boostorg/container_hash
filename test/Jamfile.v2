@@ -44,6 +44,7 @@ test-suite container_hash/hash
         [ run hash_map_test.cpp ]
         [ run hash_complex_test.cpp ]
         [ run hash_type_index_test.cpp ]
+        [ run hash_system_error_test.cpp ]
         [ run hash_std_array_test.cpp ]
         [ run hash_std_tuple_test.cpp ]
         [ run hash_std_smart_ptr_test.cpp ]
