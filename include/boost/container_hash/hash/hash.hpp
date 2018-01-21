@@ -517,7 +517,7 @@ namespace boost
 #endif
 
 #if BOOST_HASH_HAS_VARIANT
-    std::size_t hash_value(std::monostate) {
+    inline std::size_t hash_value(std::monostate) {
         return 0x87654321;
     }
 
