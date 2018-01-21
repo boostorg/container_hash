@@ -5,14 +5,16 @@
 
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/type_traits/is_base_and_derived.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 template <class T>
 void compile_time_tests(T*)
 {
-#if !defined(_HAS_AUTO_PTR_ETC) || _HAS_AUTO_PTR_ETC
-    BOOST_STATIC_ASSERT((boost::is_base_and_derived<
-        std::unary_function<T, std::size_t>, BOOST_HASH_TEST_NAMESPACE::hash<T> >::value));
-#endif
+    BOOST_STATIC_ASSERT((boost::is_same<T,
+        typename BOOST_HASH_TEST_NAMESPACE::hash<T>::argument_type
+    >::value));
+    BOOST_STATIC_ASSERT((boost::is_same<std::size_t,
+        typename BOOST_HASH_TEST_NAMESPACE::hash<T>::result_type
+    >::value));
 }
 
