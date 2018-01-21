@@ -230,6 +230,11 @@ namespace boost
     template <typename T>
     typename boost::hash_detail::float_numbers<T>::type hash_value(T);
 
+#if BOOST_HASH_HAS_OPTIONAL
+    template <typename T>
+    std::size_t hash_value(std::optional<T> const&);
+#endif
+
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
     std::size_t hash_value(std::type_index);
 #endif
@@ -481,6 +486,19 @@ namespace boost
         return boost::hash_detail::float_hash_value(v);
     }
 
+#if BOOST_HASH_HAS_OPTIONAL
+    template <typename T>
+    inline std::size_t hash_value(std::optional<T> const& v) {
+        if (!v) {
+            // Arbitray value for empty optional.
+            return 0x12345678;
+        } else {
+            boost::hash<T> hf;
+            return hf(*v);
+        }
+    }
+#endif
+
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
     inline std::size_t hash_value(std::type_index v)
     {
@@ -532,6 +550,16 @@ namespace boost
 
 #define BOOST_HASH_SPECIALIZE_REF(type) \
     template <> struct hash<type> \
+         : public boost::hash_detail::hash_base<type> \
+    { \
+        std::size_t operator()(type const& v) const \
+        { \
+            return boost::hash_value(v); \
+        } \
+    };
+
+#define BOOST_HASH_SPECIALIZE_TEMPLATE_REF(type) \
+    struct hash<type> \
          : public boost::hash_detail::hash_base<type> \
     { \
         std::size_t operator()(type const& v) const \
@@ -598,12 +626,18 @@ namespace boost
     BOOST_HASH_SPECIALIZE(boost::uint128_type)
 #endif
 
+#if BOOST_HASH_HAS_OPTIONAL
+    template <typename T>
+    BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::optional<T>)
+#endif
+
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
     BOOST_HASH_SPECIALIZE(std::type_index)
 #endif
 
 #undef BOOST_HASH_SPECIALIZE
 #undef BOOST_HASH_SPECIALIZE_REF
+#undef BOOST_HASH_SPECIALIZE_TEMPLATE_REF
 
 // Specializing boost::hash for pointers.
 
