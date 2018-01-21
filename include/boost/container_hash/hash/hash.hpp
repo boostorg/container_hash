@@ -85,6 +85,9 @@
 #   if !defined(BOOST_HASH_HAS_OPTIONAL) && __has_include(<optional>)
 #       define BOOST_HASH_HAS_OPTIONAL 1
 #   endif
+#   if !defined(BOOST_HASH_HAS_VARIANT) && __has_include(<variant>)
+#       define BOOST_HASH_HAS_VARIANT 1
+#   endif
 #endif
 
 #if !defined(BOOST_HASH_HAS_STRING_VIEW)
@@ -95,12 +98,20 @@
 #   define BOOST_HASH_HAS_OPTIONAL 0
 #endif
 
+#if !defined(BOOST_HASH_HAS_VARIANT)
+#   define BOOST_HASH_HAS_VARIANT 0
+#endif
+
 #if BOOST_HASH_HAS_STRING_VIEW
 #   include <string_view>
 #endif
 
 #if BOOST_HASH_HAS_OPTIONAL
 #   include <optional>
+#endif
+
+#if BOOST_HASH_HAS_VARIANT
+#   include <variant>
 #endif
 
 namespace boost
@@ -233,6 +244,12 @@ namespace boost
 #if BOOST_HASH_HAS_OPTIONAL
     template <typename T>
     std::size_t hash_value(std::optional<T> const&);
+#endif
+
+#if BOOST_HASH_HAS_VARIANT
+    std::size_t hash_value(std::monostate);
+    template <typename... Types>
+    std::size_t hash_value(std::variant<Types...> const&);
 #endif
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
@@ -499,6 +516,21 @@ namespace boost
     }
 #endif
 
+#if BOOST_HASH_HAS_VARIANT
+    std::size_t hash_value(std::monostate) {
+        return 0x87654321;
+    }
+
+    template <typename... Types>
+    inline std::size_t hash_value(std::variant<Types...> const& v) {
+        std::size_t seed = 0;
+        hash_combine(seed, v.index());
+        std::visit([&seed](auto&& x) { hash_combine(seed, x); }, v);
+        return seed;
+    }
+#endif
+
+
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
     inline std::size_t hash_value(std::type_index v)
     {
@@ -629,6 +661,12 @@ namespace boost
 #if BOOST_HASH_HAS_OPTIONAL
     template <typename T>
     BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::optional<T>)
+#endif
+
+#if !defined(BOOST_HASH_HAS_VARIANT)
+    template <typename... T>
+    BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::variant<T...>)
+    BOOST_HASH_SPECIALIZE(std::monostate)
 #endif
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)

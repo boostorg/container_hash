@@ -85,6 +85,10 @@ int main() {
         << BOOST_HASH_HAS_OPTIONAL
         << std::endl;
 
+    std::cout << "BOOST_HASH_HAS_VARIANT: "
+        << BOOST_HASH_HAS_VARIANT
+        << std::endl;
+
 #if defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
     std::cout << "No <typeindex>" << std::endl;
 #else
