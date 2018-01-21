@@ -62,26 +62,45 @@
 #   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) (x << r) | (x >> (32 - r))
 #endif
 
-// Detect whether standard library has <string_view>.
+// Detect whether standard library has C++17 headers
 
-#if !defined(BOOST_HASH_HAS_STRING_VIEW) && defined(__has_include)
-#   if __has_include(<string_view>)
-#       if defined(BOOST_MSVC)
-            // On Visual C++ the header exists, but causes an
-            // error if it isn't in C++17 mode.
-#           if defined(_HAS_CXX17) && _HAS_CXX17
-#               define BOOST_HASH_HAS_STRING_VIEW 1
-#               include <string_view>
-#           endif
-#       elif defined(__cplusplus) && __cplusplus >= 201703
-#           include <string_view>
-#           define BOOST_HASH_HAS_STRING_VIEW 1
+#if !defined(BOOST_HASH_CXX17)
+#   if defined(BOOST_MSVC)
+#       if defined(_HAS_CXX17) && _HAS_CXX17
+#           define BOOST_HASH_CXX17 1
 #       endif
+#   elif defined(__cplusplus) && __cplusplus >= 201703
+#       define BOOST_HASH_CXX17 1
+#   endif
+#endif
+
+#if !defined(BOOST_HASH_CXX17)
+#   define BOOST_HASH_CXX17 0
+#endif
+
+#if BOOST_HASH_CXX17 && defined(__has_include)
+#   if !defined(BOOST_HASH_HAS_STRING_VIEW) && __has_include(<string_view>)
+#       define BOOST_HASH_HAS_STRING_VIEW 1
+#   endif
+#   if !defined(BOOST_HASH_HAS_OPTIONAL) && __has_include(<optional>)
+#       define BOOST_HASH_HAS_OPTIONAL 1
 #   endif
 #endif
 
 #if !defined(BOOST_HASH_HAS_STRING_VIEW)
 #   define BOOST_HASH_HAS_STRING_VIEW 0
+#endif
+
+#if !defined(BOOST_HASH_HAS_OPTIONAL)
+#   define BOOST_HASH_HAS_OPTIONAL 0
+#endif
+
+#if BOOST_HASH_HAS_STRING_VIEW
+#   include <string_view>
+#endif
+
+#if BOOST_HASH_HAS_OPTIONAL
+#   include <optional>
 #endif
 
 namespace boost

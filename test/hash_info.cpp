@@ -55,9 +55,6 @@ void write_compiler_info() {
     if (difference) {
         std::cout << "+" << difference << std::endl;
     }
-#if defined(_HAS_CXX17) && _HAS_CXX17
-    std::cout << "C++17 mode" << std::endl;
-#endif
 }
 
 #else
@@ -75,8 +72,17 @@ int main() {
         << __cplusplus
         << std::endl;
 #endif
+
+    std::cout << "BOOST_HASH_CXX17: "
+        << BOOST_HASH_CXX17
+        << std::endl;
+
     std::cout << "BOOST_HASH_HAS_STRING_VIEW: "
         << BOOST_HASH_HAS_STRING_VIEW
+        << std::endl;
+
+    std::cout << "BOOST_HASH_HAS_OPTIONAL: "
+        << BOOST_HASH_HAS_OPTIONAL
         << std::endl;
 
 #if defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
