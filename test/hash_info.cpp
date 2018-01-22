@@ -15,11 +15,8 @@ struct msvc_version {
     std::size_t version;
     char const* description;
 
-    bool operator<(std::size_t v) const {
-        return version < v;
-    }
-    friend bool operator<(std::size_t v1, msvc_version const& v2) {
-        return v1 < v2.version;
+    friend bool operator<(msvc_version const& v1, msvc_version const& v2) {
+        return v1.version < v2.version;
     }
 };
 
@@ -45,11 +42,11 @@ void write_compiler_info() {
         {1912, "Visual C++ 14.12, VS2017 15.5"}
     };
 
-    std::size_t msvc = BOOST_MSVC;
+    msvc_version msvc = { BOOST_MSVC, "" };
     msvc_version* v = std::upper_bound(versions,
         versions + sizeof(versions) / sizeof(*versions),
         msvc) - 1;
-    std::size_t difference = BOOST_MSVC - v->version;
+    std::size_t difference = msvc.version - v->version;
 
     std::cout << v->description << std::endl;
     if (difference) {
