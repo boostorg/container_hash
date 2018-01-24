@@ -17,9 +17,9 @@
 
 void test_error_code()
 {
-    std::error_code err1a = std::make_error_code(std::errc::address_family_not_supported);
-    std::error_code err1b = std::make_error_code(std::errc::address_family_not_supported);
-    std::error_code err2 = std::make_error_code(std::errc::address_in_use);
+    std::error_code err1a = std::make_error_code(std::errc::argument_list_too_long);
+    std::error_code err1b = std::make_error_code(std::errc::argument_list_too_long);
+    std::error_code err2 = std::make_error_code(std::errc::bad_file_descriptor);
 
     boost::hash<std::error_code> hasher;
 
@@ -30,9 +30,9 @@ void test_error_code()
 
 void test_error_condition()
 {
-    std::error_condition err1a = std::make_error_condition(std::errc::address_family_not_supported);
-    std::error_condition err1b = std::make_error_condition(std::errc::address_family_not_supported);
-    std::error_condition err2 = std::make_error_condition(std::errc::address_in_use);
+    std::error_condition err1a = std::make_error_condition(std::errc::directory_not_empty);
+    std::error_condition err1b = std::make_error_condition(std::errc::directory_not_empty);
+    std::error_condition err2 = std::make_error_condition(std::errc::filename_too_long);
 
     boost::hash<std::error_condition> hasher;
 
