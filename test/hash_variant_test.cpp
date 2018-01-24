@@ -48,12 +48,12 @@ void test_variant_int()
 
 struct custom1 {
     int value;
-    friend std::size_t hash_value(custom1 v) { return v.value; }
+    friend std::size_t hash_value(custom1 v) { return boost::hash_value(v.value); }
 };
 
 struct custom2 {
     int value;
-    friend std::size_t hash_value(custom2 v) { return v.value; }
+    friend std::size_t hash_value(custom2 v) { return boost::hash_value(v.value); }
 };
 
 void test_variant_unique_types()
