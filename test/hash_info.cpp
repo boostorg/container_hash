@@ -12,7 +12,7 @@
 #if defined(BOOST_MSVC)
 
 struct msvc_version {
-    std::size_t version;
+    unsigned version;
     char const* description;
 
     friend bool operator<(msvc_version const& v1, msvc_version const& v2) {
@@ -46,7 +46,7 @@ void write_compiler_info() {
     msvc_version* v = std::upper_bound(versions,
         versions + sizeof(versions) / sizeof(*versions),
         msvc) - 1;
-    std::size_t difference = msvc.version - v->version;
+    unsigned difference = msvc.version - v->version;
 
     std::cout << v->description << std::endl;
     if (difference) {
