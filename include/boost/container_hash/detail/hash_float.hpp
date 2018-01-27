@@ -11,8 +11,8 @@
 #pragma once
 #endif
 
-#include <boost/container_hash/hash/detail/float_functions.hpp>
-#include <boost/container_hash/hash/detail/limits.hpp>
+#include <boost/container_hash/detail/float_functions.hpp>
+#include <boost/container_hash/detail/limits.hpp>
 #include <boost/core/enable_if.hpp>
 #include <boost/integer/static_log2.hpp>
 #include <boost/cstdint.hpp>
