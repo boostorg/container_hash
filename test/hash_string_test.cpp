@@ -130,6 +130,37 @@ void u32string_tests()
 }
 #endif
 
+template <typename StringType>
+void generic_string_tests(StringType*)
+{
+    std::string x1(1, '\0');
+    std::string x2(2, '\0');
+    std::string x3(3, '\0');
+    std::string x4(10, '\0');
+    std::string x5 = x2 + "hello" + x2;
+
+    StringType strings[] = {
+        "",
+        "hello",
+        x1,
+        x2,
+        x3,
+        x4,
+        x5
+    };
+
+    std::size_t const strings_length = sizeof(strings) / sizeof(StringType);
+    boost::hash<StringType> hash;
+
+    for (std::size_t i = 0; i < strings_length; ++i) {
+        std::size_t hash_i = hash(strings[i]);
+        for (std::size_t j = 0; j < strings_length; ++j) {
+            std::size_t hash_j = hash(strings[j]);
+            BOOST_TEST((hash_i == hash_j) == (i == j));
+        }
+    }
+}
+
 int main()
 {
     string_tests();
@@ -143,5 +174,11 @@ int main()
 #if !defined(BOOST_NO_CXX11_CHAR32_T)
     u32string_tests();
 #endif
+
+    generic_string_tests((std::string*) 0);
+#if BOOST_HASH_HAS_STRING_VIEW
+    generic_string_tests((std::string_view*) 0);
+#endif
+
     return boost::report_errors();
 }

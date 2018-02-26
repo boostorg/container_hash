@@ -14,7 +14,7 @@
 #include <iostream>
 #include <boost/core/lightweight_test.hpp>
 
-#include <boost/container_hash/hash/detail/limits.hpp>
+#include <boost/container_hash/detail/limits.hpp>
 #include <boost/core/enable_if.hpp>
 
 #include "./compile_time.hpp"

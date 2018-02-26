@@ -14,8 +14,8 @@
 #include <boost/core/lightweight_test.hpp>
 
 #include <cmath>
-#include <boost/container_hash/hash/detail/limits.hpp>
-#include <boost/container_hash/hash/detail/float_functions.hpp>
+#include <boost/container_hash/detail/limits.hpp>
+#include <boost/container_hash/detail/float_functions.hpp>
 #include <boost/config/workaround.hpp>
 
 #include <iostream>
