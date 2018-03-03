@@ -3,6 +3,9 @@
  / Distributed under the Boost Software License, Version 1.0. (See accompanying
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt) ]
 
+[quickbook 1.7]
+[import samples/tutorial.cpp]
+
 [def __multi-index-short__ [@boost:/libs/multi_index/doc/index.html
     Boost.MultiIndex]]
 
@@ -39,15 +42,7 @@ To use [classref boost::hash] directly, create an instance and call it as a func
 For an example of generic use, here is a function to generate a vector
 containing the hashes of the elements of a container:
 
-    template <class Container>
-    std::vector<std::size_t> get_hashes(Container const& x)
-    {
-        std::vector<std::size_t> hashes;
-        std::transform(x.begin(), x.end(), std::insert_iterator(hashes),
-            ``[classref boost::hash]``<typename Container::value_type>());
-
-        return hashes;
-    }
+[get_hashes]
 
 [endsect]
 
