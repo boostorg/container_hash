@@ -43,7 +43,7 @@
     the number of times combine is called and hopefully give a better
     quality hash function.
   * Improved the algorithm for hashing floating point numbers.
-  * On Cygwin use a binary hash function for floating point numbers, as 
+  * On Cygwin use a binary hash function for floating point numbers, as
     Cygwin doesn't have decent floating point functions for `long double`.
   * Never uses `fpclass` which doesn't support `long double`.
   * [@http://svn.boost.org/trac/boost/ticket/1064 Ticket 1064]:
@@ -75,7 +75,7 @@
   functional/hash, not container_hash. `boost/container_hash/detail/container_fwd.hpp`
   has been moved to `boost/detail/container_fwd.hpp` as it's used outside of
   this library, the others have been moved to `boost/functional/hash/detail`.
-  
+
 [h2 Boost 1.39.0]
 
 * Move the hash_fwd.hpp implementation into the hash subdirectory, leaving a
@@ -200,5 +200,21 @@
 * Avoid float comparison warning when using Clang - this workaround was
   already in place for GCC, and was used when Clang pretends to be GCC,
   but the warning was appearing when running Clang in other contexts.
+
+[h2 Boost 1.67.0]
+
+* Moved library into its own module, `container_hash`.
+* Moved headers for new module name, now at:
+  `<boost/container_hash/hash.hpp>`,
+  `<boost/container_hash/hash_fwd.hpp>`,
+  `<boost/container_hash/extensions.hpp>`.
+* Added forwarding headers to support the old headers locations.
+* Support `std::string_view`, `std::error_code`, `std::error_condition`
+  `std::optional`, `std::variant`, `std::monostate` where available.
+* Update include paths from other Boost libraries.
+* Manually write out tuple overloads, rather than using the
+  preprocessor to generate them. Should improve usability, due
+  to better error messages, and easier debugging.
+* Fix tutorial example ([ticket 11017]).
 
 [endsect]
