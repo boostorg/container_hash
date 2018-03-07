@@ -39,7 +39,8 @@ void write_compiler_info() {
         {1900, "Visual C++ 14.00, VS2015"},
         {1910, "Visual C++ 14.10, VS2017 15.1/2"},
         {1911, "Visual C++ 14.11, VS2017 15.3/4"},
-        {1912, "Visual C++ 14.12, VS2017 15.5"}
+        {1912, "Visual C++ 14.12, VS2017 15.5"},
+        {1913, "Visual C++ 14.13, VS2017 15.6"}
     };
 
     msvc_version msvc = { BOOST_MSVC, "" };
