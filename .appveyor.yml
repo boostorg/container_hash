@@ -14,6 +14,7 @@ environment:
       TOOLSET: msvc-14.0
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       TOOLSET: msvc-14.1
+      CXXSTD: 14,17
 
 install:
   - cd c:\projects
@@ -29,5 +30,7 @@ install:
 build: off
 
 test_script:
+  - if not "%CXXSTD%" == "" set CXXSTD=cxxstd=%CXXSTD%
   - cd %APPVEYOR_BUILD_FOLDER%\test
-  - cmd /c %BOOST_ROOT%\tools\build\b2 -j 3 toolset=%TOOLSET% include=%APPVEYOR_BUILD_FOLDER%\include include=%BOOST_ROOT%
+  - cmd /c %BOOST_ROOT%\tools\build\b2 -j 3 toolset=%TOOLSET% %CXXSTD% include=%APPVEYOR_BUILD_FOLDER%\include include=%BOOST_ROOT% --verbose-test hash_info
+  - cmd /c %BOOST_ROOT%\tools\build\b2 -j 3 toolset=%TOOLSET% %CXXSTD% include=%APPVEYOR_BUILD_FOLDER%\include include=%BOOST_ROOT%
