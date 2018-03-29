@@ -70,6 +70,56 @@ namespace boost
         return seed;
     }
 
+    inline std::size_t hash_range(
+        std::vector<bool>::iterator first,
+        std::vector<bool>::iterator last)
+    {
+        std::size_t seed = 0;
+
+        for(; first != last; ++first)
+        {
+            hash_combine<bool>(seed, *first);
+        }
+
+        return seed;
+    }
+
+    inline std::size_t hash_range(
+        std::vector<bool>::const_iterator first,
+        std::vector<bool>::const_iterator last)
+    {
+        std::size_t seed = 0;
+
+        for(; first != last; ++first)
+        {
+            hash_combine<bool>(seed, *first);
+        }
+
+        return seed;
+    }
+
+    inline void hash_range(
+        std::size_t& seed,
+        std::vector<bool>::iterator first,
+        std::vector<bool>::iterator last)
+    {
+        for(; first != last; ++first)
+        {
+            hash_combine<bool>(seed, *first);
+        }
+    }
+
+    inline void hash_range(
+        std::size_t& seed,
+        std::vector<bool>::const_iterator first,
+        std::vector<bool>::const_iterator last)
+    {
+        for(; first != last; ++first)
+        {
+            hash_combine<bool>(seed, *first);
+        }
+    }
+
     template <class T, class A>
     std::size_t hash_value(std::vector<T, A> const& v)
     {
