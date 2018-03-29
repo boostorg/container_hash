@@ -22,6 +22,7 @@
 #include <boost/detail/container_fwd.hpp>
 #include <boost/core/enable_if.hpp>
 #include <boost/static_assert.hpp>
+#include <vector>
 
 #if !defined(BOOST_NO_CXX11_HDR_ARRAY)
 #   include <array>
@@ -71,8 +72,8 @@ namespace boost
     }
 
     inline std::size_t hash_range(
-        std::vector<bool, std::allocator<bool> >::iterator first,
-        std::vector<bool, std::allocator<bool> >::iterator last)
+        std::vector<bool>::iterator first,
+        std::vector<bool>::iterator last)
     {
         std::size_t seed = 0;
 
@@ -85,8 +86,8 @@ namespace boost
     }
 
     inline std::size_t hash_range(
-        std::vector<bool, std::allocator<bool> >::const_iterator first,
-        std::vector<bool, std::allocator<bool> >::const_iterator last)
+        std::vector<bool>::const_iterator first,
+        std::vector<bool>::const_iterator last)
     {
         std::size_t seed = 0;
 
@@ -100,8 +101,8 @@ namespace boost
 
     inline void hash_range(
         std::size_t& seed,
-        std::vector<bool, std::allocator<bool> >::iterator first,
-        std::vector<bool, std::allocator<bool> >::iterator last)
+        std::vector<bool>::iterator first,
+        std::vector<bool>::iterator last)
     {
         for(; first != last; ++first)
         {
@@ -111,8 +112,8 @@ namespace boost
 
     inline void hash_range(
         std::size_t& seed,
-        std::vector<bool, std::allocator<bool> >::const_iterator first,
-        std::vector<bool, std::allocator<bool> >::const_iterator last)
+        std::vector<bool>::const_iterator first,
+        std::vector<bool>::const_iterator last)
     {
         for(; first != last; ++first)
         {
