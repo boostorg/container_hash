@@ -216,5 +216,7 @@
   preprocessor to generate them. Should improve usability, due
   to better error messages, and easier debugging.
 * Fix tutorial example ([ticket 11017]).
+* Quick fix for hashing `vector<bool>` when using libc++. Will try to introduce
+  a more general fix in the next release.
 
 [endsect]
