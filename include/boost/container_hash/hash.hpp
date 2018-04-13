@@ -18,6 +18,7 @@
 
 #include <boost/container_hash/hash_fwd.hpp>
 #include <functional>
+#include <iterator>
 #include <boost/container_hash/detail/hash_float.hpp>
 #include <string>
 #include <boost/limits.hpp>
@@ -426,7 +427,7 @@ namespace boost
 
         for(; first != last; ++first)
         {
-            hash_combine(seed, *first);
+            hash_combine<typename std::iterator_traits<It>::value_type>(seed, *first);
         }
 
         return seed;
@@ -437,7 +438,7 @@ namespace boost
     {
         for(; first != last; ++first)
         {
-            hash_combine(seed, *first);
+            hash_combine<typename std::iterator_traits<It>::value_type>(seed, *first);
         }
     }
 
