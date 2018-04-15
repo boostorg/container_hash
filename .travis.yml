@@ -12,11 +12,11 @@ matrix:
     include:
       - compiler: gcc
         env: |
-            USER_CONFIG="using gcc : : g++-4.8 -Werror ;"
+            USER_CONFIG="using gcc : : g++-4.8 ;"
             CXXSTD=03,11
       - compiler: g++-7
         env: |
-            USER_CONFIG="using gcc : : g++-7 -Werror ;"
+            USER_CONFIG="using gcc : : g++-7 ;"
             CXXSTD=11,14,17
         addons:
           apt:
@@ -26,11 +26,11 @@ matrix:
               - ubuntu-toolchain-r-test
       - compiler: clang
         env: |
-            USER_CONFIG="using clang : : clang++ -Werror ;"
+            USER_CONFIG="using clang : : clang++ ;"
             CXXSTD=03,11
       - compiler: clang
         env: |
-            USER_CONFIG="using clang : : clang++ -Werror -D_HAS_AUTO_PTR_ETC=0 ;"
+            USER_CONFIG="using clang : : clang++ -D_HAS_AUTO_PTR_ETC=0 ;"
             CXXSTD=11
 
 before_script:
