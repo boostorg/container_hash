@@ -18,7 +18,7 @@ environment:
 
 install:
   - cd c:\projects
-  - curl -sSL -o boost.7z https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.7z
+  - curl -sSL -o boost.7z https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_67_0.7z
   - 7z x boost.7z
   - set BOOST_ROOT=c:\projects\boost_1_66_0
   - rd /s /q %BOOST_ROOT%\boost\functional\hash
