@@ -27,6 +27,10 @@
 #   include <array>
 #endif
 
+#if !defined(BOOST_NO_CXX11_HDR_FORWARD_LIST)
+#   include <forward_list>
+#endif
+
 #if !defined(BOOST_NO_CXX11_HDR_TUPLE)
 #   include <tuple>
 #endif
@@ -121,6 +125,14 @@ namespace boost
         return seed;
     }
 
+#if !defined(BOOST_NO_CXX11_HDR_FORWARD_LIST)
+    template <class T, class A>
+    std::size_t hash_value(std::forward_list<T, A> const& v)
+    {
+        return boost::hash_range(v.begin(), v.end());
+    }
+#endif
+    
 #if !defined(BOOST_NO_CXX11_HDR_ARRAY)
     template <class T, std::size_t N>
     std::size_t hash_value(std::array<T, N> const& v)
