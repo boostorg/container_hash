@@ -119,7 +119,11 @@ namespace boost
 {
     namespace hash_detail
     {
+<<<<<<< HEAD
 #if defined(_HAS_AUTO_PTR_ETC) && !_HAS_AUTO_PTR_ETC || defined(BOOST_NO_CXX98_FUNCTION_BASE)
+=======
+#if defined(BOOST_NO_CXX98_FUNCTION_BASE)
+>>>>>>> Removed usage of std::unary_function for C++17 compliance
         template <typename T>
         struct hash_base
         {
