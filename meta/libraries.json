@@ -15,6 +15,7 @@
         ],
         "category": [
             "Function-objects"
-        ]
+        ],
+        "cxxstd": "03"
     }
 ]
