@@ -2,8 +2,8 @@
 # Distributed under the Boost Software License, Version 1.0.
 # See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-cmake_minimum_required(VERSION 3.5)
-project(BoostContainerHash LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.5...3.20)
+project(boost_container_hash VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
 add_library(boost_container_hash INTERFACE)
 add_library(Boost::container_hash ALIAS boost_container_hash)
@@ -20,4 +20,3 @@ target_link_libraries(boost_container_hash
         Boost::static_assert
         Boost::type_traits
 )
-
