@@ -38,6 +38,7 @@ test-suite container_hash/hash
         [ run hash_built_in_array_test.cpp ]
         [ run hash_value_array_test.cpp ]
         [ run hash_vector_test.cpp ]
+        [ run hash_forward_list_test.cpp ]
         [ run hash_list_test.cpp ]
         [ run hash_deque_test.cpp ]
         [ run hash_set_test.cpp ]
