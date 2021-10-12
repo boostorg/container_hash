@@ -1,4 +1,5 @@
 # Copyright 2017 Daniel James
+# Copyright 2016-2021 Peter Dimov
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
 
@@ -6,31 +7,66 @@ version: 1.0.{build}-{branch}
 
 shallow_clone: true
 
+branches:
+  only:
+    - master
+    - develop
+    - /feature\/.*/
+
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      TOOLSET: msvc-10.0,msvc-11.0,msvc-12.0
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      TOOLSET: msvc-14.0
+      TOOLSET: msvc-9.0,msvc-10.0,msvc-11.0
+      ADDRMD: 32
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      TOOLSET: msvc-12.0,msvc-14.0
+      ADDRMD: 32,64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       TOOLSET: msvc-14.1
       CXXSTD: 14,17
+      ADDRMD: 32,64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      TOOLSET: msvc-14.2
+      CXXSTD: 14,17,latest
+      ADDRMD: 32,64
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      TOOLSET: clang-win
+#      CXXSTD: 14,17,latest
+#      ADDRMD: 64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ADDPATH: C:\cygwin\bin;
+      TOOLSET: gcc
+      CXXSTD: 03,11,14,1z
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ADDPATH: C:\cygwin64\bin;
+      TOOLSET: gcc
+      CXXSTD: 03,11,14,1z
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ADDPATH: C:\mingw\bin;
+      TOOLSET: gcc
+      CXXSTD: 03,11,14,1z
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ADDPATH: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin;
+      TOOLSET: gcc
+      CXXSTD: 03,11,14,1z
 
 install:
-  - cd c:\projects
-  - curl -sSL -o boost.7z https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.7z
-  - 7z x boost.7z
-  - set BOOST_ROOT=c:\projects\boost_1_67_0
-  - rd /s /q %BOOST_ROOT%\boost\functional\hash
-  - cd %BOOST_ROOT%\tools\build
+  - set BOOST_BRANCH=develop
+  - if "%APPVEYOR_REPO_BRANCH%" == "master" set BOOST_BRANCH=master
+  - cd ..
+  - git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git boost-root
+  - cd boost-root
+  - git submodule update --init tools/boostdep
+  - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% libs\container_hash\
+  - python tools/boostdep/depinst/depinst.py container_hash
   - cmd /c bootstrap
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - echo. 2>Jamroot.jam
+  - b2 -d0 headers
 
 build: off
 
 test_script:
+  - PATH=%ADDPATH%%PATH%
   - if not "%CXXSTD%" == "" set CXXSTD=cxxstd=%CXXSTD%
-  - cd %APPVEYOR_BUILD_FOLDER%\test
-  - cmd /c %BOOST_ROOT%\tools\build\b2 -j 3 toolset=%TOOLSET% %CXXSTD% include=%APPVEYOR_BUILD_FOLDER%\include include=%BOOST_ROOT% --verbose-test hash_info
-  - cmd /c %BOOST_ROOT%\tools\build\b2 -j 3 toolset=%TOOLSET% %CXXSTD% include=%APPVEYOR_BUILD_FOLDER%\include include=%BOOST_ROOT%
+  - if not "%ADDRMD%" == "" set ADDRMD=address-model=%ADDRMD%
+  - b2 -j3 --verbose-test libs/container_hash/test//hash_info toolset=%TOOLSET% %CXXSTD% %ADDRMD% variant=debug,release embed-manifest-via=linker
+  - b2 -j3 libs/container_hash/test toolset=%TOOLSET% %CXXSTD% %ADDRMD% variant=debug,release embed-manifest-via=linker
