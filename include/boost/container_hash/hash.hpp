@@ -207,13 +207,11 @@ namespace boost
 
     template <class T> std::size_t hash_value(T* const&);
 
-#if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
     template< class T, unsigned N >
     std::size_t hash_value(const T (&x)[N]);
 
     template< class T, unsigned N >
     std::size_t hash_value(T (&x)[N]);
-#endif
 
     template <class Ch, class A>
     std::size_t hash_value(
@@ -454,7 +452,6 @@ namespace boost
     }
 #endif
 
-#if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
     template< class T, unsigned N >
     inline std::size_t hash_value(const T (&x)[N])
     {
@@ -466,7 +463,6 @@ namespace boost
     {
         return hash_range(x, x + N);
     }
-#endif
 
     template <class Ch, class A>
     inline std::size_t hash_value(
