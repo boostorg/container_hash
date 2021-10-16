@@ -20,6 +20,8 @@
 #include <boost/container_hash/detail/hash_float.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
+#include <boost/type_traits/is_floating_point.hpp>
+#include <boost/type_traits/make_unsigned.hpp>
 #include <boost/core/enable_if.hpp>
 #include <boost/limits.hpp>
 #include <boost/cstdint.hpp>
@@ -74,89 +76,18 @@ namespace boost
             typedef T argument_type;
             typedef std::size_t result_type;
         };
-
-        struct enable_hash_value { typedef std::size_t type; };
-
-        template <typename T> struct basic_numbers {};
-        template <typename T> struct long_numbers;
-        template <typename T> struct ulong_numbers;
-        template <typename T> struct float_numbers {};
-
-        template <> struct basic_numbers<bool> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<char> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<unsigned char> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<signed char> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<short> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<unsigned short> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<int> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<unsigned int> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<long> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct basic_numbers<unsigned long> :
-            boost::hash_detail::enable_hash_value {};
-
-#if !defined(BOOST_NO_INTRINSIC_WCHAR_T)
-        template <> struct basic_numbers<wchar_t> :
-            boost::hash_detail::enable_hash_value {};
-#endif
-
-#if !defined(BOOST_NO_CXX11_CHAR16_T)
-        template <> struct basic_numbers<char16_t> :
-            boost::hash_detail::enable_hash_value {};
-#endif
-
-#if !defined(BOOST_NO_CXX11_CHAR32_T)
-        template <> struct basic_numbers<char32_t> :
-            boost::hash_detail::enable_hash_value {};
-#endif
-
-        // long_numbers is defined like this to allow for separate
-        // specialization for long_long and int128_type, in case
-        // they conflict.
-        template <typename T> struct long_numbers2 {};
-        template <typename T> struct ulong_numbers2 {};
-        template <typename T> struct long_numbers : long_numbers2<T> {};
-        template <typename T> struct ulong_numbers : ulong_numbers2<T> {};
-
-#if !defined(BOOST_NO_LONG_LONG)
-        template <> struct long_numbers<boost::long_long_type> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct ulong_numbers<boost::ulong_long_type> :
-            boost::hash_detail::enable_hash_value {};
-#endif
-
-#if defined(BOOST_HAS_INT128)
-        template <> struct long_numbers2<boost::int128_type> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct ulong_numbers2<boost::uint128_type> :
-            boost::hash_detail::enable_hash_value {};
-#endif
-
-        template <> struct float_numbers<float> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct float_numbers<double> :
-            boost::hash_detail::enable_hash_value {};
-        template <> struct float_numbers<long double> :
-            boost::hash_detail::enable_hash_value {};
     }
 
     template <typename T>
-    typename boost::hash_detail::basic_numbers<T>::type hash_value(T);
-    template <typename T>
-    typename boost::hash_detail::long_numbers<T>::type hash_value(T);
-    template <typename T>
-    typename boost::hash_detail::ulong_numbers<T>::type hash_value(T);
+    typename boost::enable_if<boost::is_integral<T>, std::size_t>::type
+        hash_value(T);
 
     template <typename T>
     typename boost::enable_if<boost::is_enum<T>, std::size_t>::type
+        hash_value(T);
+
+    template <typename T>
+    typename boost::enable_if<boost::is_floating_point<T>, std::size_t>::type
         hash_value(T);
 
     template <class T> std::size_t hash_value(T* const&);
@@ -176,9 +107,6 @@ namespace boost
     std::size_t hash_value(
         std::basic_string_view<Ch, std::char_traits<Ch> > const&);
 #endif
-
-    template <typename T>
-    typename boost::hash_detail::float_numbers<T>::type hash_value(T);
 
 #if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
     template <typename T>
@@ -204,46 +132,33 @@ namespace boost
 
     namespace hash_detail
     {
-        template <class T>
-        inline std::size_t hash_value_signed(T val)
+        template<class T, bool bigger_than_size_t, bool size_t_64> struct hash_integral_impl;
+
+        template<class T, bool size_t_64> struct hash_integral_impl<T, false, size_t_64>
         {
-             const unsigned int size_t_bits = std::numeric_limits<std::size_t>::digits;
-             // ceiling(std::numeric_limits<T>::digits / size_t_bits) - 1
-             const int length = (std::numeric_limits<T>::digits - 1)
-                 / static_cast<int>(size_t_bits);
+            static std::size_t fn( T v )
+            {
+                return static_cast<std::size_t>( v );
+            }
+        };
 
-             std::size_t seed = 0;
-             T positive = val < 0 ? -1 - val : val;
-
-             // Hopefully, this loop can be unrolled.
-             for(unsigned int i = length * size_t_bits; i > 0; i -= size_t_bits)
-             {
-                 seed ^= (std::size_t) (positive >> i) + (seed<<6) + (seed>>2);
-             }
-             seed ^= (std::size_t) val + (seed<<6) + (seed>>2);
-
-             return seed;
-        }
-
-        template <class T>
-        inline std::size_t hash_value_unsigned(T val)
+        template<class T> struct hash_integral_impl<T, true, false>
         {
-             const unsigned int size_t_bits = std::numeric_limits<std::size_t>::digits;
-             // ceiling(std::numeric_limits<T>::digits / size_t_bits) - 1
-             const int length = (std::numeric_limits<T>::digits - 1)
-                 / static_cast<int>(size_t_bits);
+            static std::size_t fn( T v )
+            {
+                // 4294967291 = 2^32-5, biggest prime under 2^32
+                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % 4294967291 );
+            }
+        };
 
-             std::size_t seed = 0;
-
-             // Hopefully, this loop can be unrolled.
-             for(unsigned int i = length * size_t_bits; i > 0; i -= size_t_bits)
-             {
-                 seed ^= (std::size_t) (val >> i) + (seed<<6) + (seed>>2);
-             }
-             seed ^= (std::size_t) val + (seed<<6) + (seed>>2);
-
-             return seed;
-        }
+        template<class T> struct hash_integral_impl<T, true, true>
+        {
+            static std::size_t fn( T v )
+            {
+                // 18446744073709551557ULL = 2^64-59, biggest prime under 2^64
+                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % 18446744073709551557ULL );
+            }
+        };
 
         template<int Bits> struct hash_combine_impl
         {
@@ -298,21 +213,10 @@ namespace boost
     }
 
     template <typename T>
-    typename boost::hash_detail::basic_numbers<T>::type hash_value(T v)
+    typename boost::enable_if<boost::is_integral<T>, std::size_t>::type
+        hash_value(T v)
     {
-        return static_cast<std::size_t>(v);
-    }
-
-    template <typename T>
-    typename boost::hash_detail::long_numbers<T>::type hash_value(T v)
-    {
-        return hash_detail::hash_value_signed(v);
-    }
-
-    template <typename T>
-    typename boost::hash_detail::ulong_numbers<T>::type hash_value(T v)
-    {
-        return hash_detail::hash_value_unsigned(v);
+        return hash_detail::hash_integral_impl<T, (sizeof(T) > sizeof(std::size_t)), (sizeof(std::size_t) * CHAR_BIT >= 64)>::fn( v );
     }
 
     template <typename T>
@@ -320,6 +224,13 @@ namespace boost
         hash_value(T v)
     {
         return static_cast<std::size_t>(v);
+    }
+
+    template <typename T>
+    typename boost::enable_if<boost::is_floating_point<T>, std::size_t>::type
+        hash_value(T v)
+    {
+        return boost::hash_detail::float_hash_value(v);
     }
 
     // Implementation by Alberto Barbati and Dave Harris.
@@ -426,12 +337,6 @@ namespace boost
         return hash_range(v.begin(), v.end());
     }
 #endif
-
-    template <typename T>
-    typename boost::hash_detail::float_numbers<T>::type hash_value(T v)
-    {
-        return boost::hash_detail::float_hash_value(v);
-    }
 
 #if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
     template <typename T>

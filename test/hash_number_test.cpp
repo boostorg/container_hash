@@ -26,7 +26,7 @@
 #pragma warning(disable:4310) // cast truncates constant value
 #endif
 
-#if defined(__GNUC__) && !defined(BOOST_INTEL_CXX_VERSION)
+#if ( defined(__GNUC__) || defined(__clang__) ) && !defined(BOOST_INTEL_CXX_VERSION)
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
 
@@ -37,8 +37,7 @@ void numeric_extra_tests(typename
 {
     typedef boost::hash_detail::limits<T> limits;
 
-    if(limits::is_signed ||
-        limits::digits <= boost::hash_detail::limits<std::size_t>::digits)
+    if(limits::digits <= boost::hash_detail::limits<std::size_t>::digits)
     {
         BOOST_TEST(BOOST_HASH_TEST_NAMESPACE::hash_value(T(-5)) == (std::size_t)T(-5));
     }
