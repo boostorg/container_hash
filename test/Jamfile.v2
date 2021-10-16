@@ -88,3 +88,4 @@ build-project ../examples ;
 
 run detail_is_range_test.cpp ;
 run detail_is_contiguous_range_test.cpp ;
+run detail_is_unordered_range_test.cpp ;
