@@ -53,14 +53,6 @@ template<class T> struct is_contiguous_range: false_type
 {
 };
 
-template<class T, class A> struct is_contiguous_range< std::vector<T, A> >: true_type
-{
-};
-
-template<class T, class A> struct is_contiguous_range< std::vector<T, A> const >: true_type
-{
-};
-
 template<class E, class T, class A> struct is_contiguous_range< std::basic_string<E, T, A> >: true_type
 {
 };

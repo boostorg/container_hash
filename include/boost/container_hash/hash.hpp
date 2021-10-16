@@ -1,7 +1,7 @@
-
 // Copyright 2005-2014 Daniel James.
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+// Copyright 2021 Peter Dimov.
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 
 //  Based on Peter Dimov's proposal
 //  http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf
@@ -18,6 +18,9 @@
 
 #include <boost/container_hash/hash_fwd.hpp>
 #include <boost/container_hash/detail/hash_float.hpp>
+#include <boost/container_hash/detail/is_range.hpp>
+#include <boost/container_hash/detail/is_contiguous_range.hpp>
+#include <boost/container_hash/detail/is_unordered_range.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
@@ -61,70 +64,14 @@
 
 namespace boost
 {
-    namespace hash_detail
-    {
-        template <typename T>
-        struct hash_base
-        {
-            typedef T argument_type;
-            typedef std::size_t result_type;
-        };
-    }
 
-    template <typename T>
-    typename boost::enable_if<boost::is_integral<T>, std::size_t>::type
-        hash_value(T);
+    // hash_value
 
-    template <typename T>
-    typename boost::enable_if<boost::is_enum<T>, std::size_t>::type
-        hash_value(T);
-
-    template <typename T>
-    typename boost::enable_if<boost::is_floating_point<T>, std::size_t>::type
-        hash_value(T);
-
-    template <class T> std::size_t hash_value(T* const&);
-
-    template< class T, unsigned N >
-    std::size_t hash_value(const T (&x)[N]);
-
-    template< class T, unsigned N >
-    std::size_t hash_value(T (&x)[N]);
-
-    template <class Ch, class A>
-    std::size_t hash_value(
-        std::basic_string<Ch, std::char_traits<Ch>, A> const&);
-
-#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
-    template <class Ch>
-    std::size_t hash_value(
-        std::basic_string_view<Ch, std::char_traits<Ch> > const&);
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
-    template <typename T>
-    std::size_t hash_value(std::optional<T> const&);
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
-    std::size_t hash_value(std::monostate);
-    template <typename... Types>
-    std::size_t hash_value(std::variant<Types...> const&);
-#endif
-
-#if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
-    std::size_t hash_value(std::type_index);
-#endif
-
-#if !defined(BOOST_NO_CXX11_HDR_SYSTEM_ERROR)
-    std::size_t hash_value(std::error_code const&);
-    std::size_t hash_value(std::error_condition const&);
-#endif
-
-    // Implementation
+    // integral types
 
     namespace hash_detail
     {
+
         template<class T, bool bigger_than_size_t, bool size_t_64> struct hash_integral_impl;
 
         template<class T, bool size_t_64> struct hash_integral_impl<T, false, size_t_64>
@@ -152,6 +99,168 @@ namespace boost
                 return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % 18446744073709551557ULL );
             }
         };
+
+    } // namespace hash_detail
+
+    template <typename T>
+    typename boost::enable_if<boost::is_integral<T>, std::size_t>::type
+        hash_value( T v )
+    {
+        return hash_detail::hash_integral_impl<T, (sizeof(T) > sizeof(std::size_t)), (sizeof(std::size_t) * CHAR_BIT >= 64)>::fn( v );
+    }
+
+    // enumeration types
+
+    template <typename T>
+    typename boost::enable_if<boost::is_enum<T>, std::size_t>::type
+        hash_value( T v )
+    {
+        return static_cast<std::size_t>( v );
+    }
+
+    // floating point types
+
+    template <typename T>
+    typename boost::enable_if<boost::is_floating_point<T>, std::size_t>::type
+        hash_value( T v )
+    {
+        return boost::hash_detail::float_hash_value( v );
+    }
+
+    // pointer types
+
+    // Implementation by Alberto Barbati and Dave Harris.
+    template <class T> std::size_t hash_value( T* const& v )
+    {
+        std::size_t x = static_cast<std::size_t>(
+           reinterpret_cast<boost::uintptr_t>(v));
+        return x + (x >> 3);
+    }
+
+    // array types
+
+    template<class T, std::size_t N>
+    inline std::size_t hash_value( T const (&x)[ N ] )
+    {
+        return boost::hash_range( x, x + N );
+    }
+
+    template<class T, std::size_t N>
+    inline std::size_t hash_value( T (&x)[ N ] )
+    {
+        return boost::hash_range( x, x + N );
+    }
+
+    // ranges (list, set, deque...)
+
+    template <typename T>
+    typename boost::enable_if_c<hash_detail::is_range<T>::value && !hash_detail::is_contiguous_range<T>::value && !hash_detail::is_unordered_range<T>::value, std::size_t>::type
+        hash_value( T const& v )
+    {
+        return boost::hash_range( v.begin(), v.end() );
+    }
+
+    // contiguous ranges (string, vector, array)
+
+    template <typename T>
+    typename boost::enable_if<hash_detail::is_contiguous_range<T>, std::size_t>::type
+        hash_value( T const& v )
+    {
+        return boost::hash_range( v.data(), v.data() + v.size() );
+    }
+
+    // unordered ranges (unordered_set, unordered_map)
+
+    template <typename T>
+    typename boost::enable_if<hash_detail::is_unordered_range<T>, std::size_t>::type
+        hash_value( T const& v )
+    {
+        return boost::hash_unordered_range( v.begin(), v.end() );
+    }
+
+    // std::type_index
+
+#if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
+
+    inline std::size_t hash_value( std::type_index const& v )
+    {
+        return v.hash_code();
+    }
+
+#endif
+
+    // std::error_code, std::error_condition
+
+#if !defined(BOOST_NO_CXX11_HDR_SYSTEM_ERROR)
+
+    inline std::size_t hash_value( std::error_code const& v )
+    {
+        std::size_t seed = 0;
+
+        boost::hash_combine( seed, v.value() );
+        boost::hash_combine( seed, &v.category() );
+
+        return seed;
+    }
+
+    inline std::size_t hash_value( std::error_condition const& v )
+    {
+        std::size_t seed = 0;
+
+        boost::hash_combine( seed, v.value() );
+        boost::hash_combine( seed, &v.category() );
+
+        return seed;
+    }
+
+#endif
+
+    // std::optional
+
+#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
+
+    template <typename T>
+    std::size_t hash_value( std::optional<T> const& v )
+    {
+        if( !v )
+        {
+            // Arbitray value for empty optional.
+            return 0x12345678;
+        }
+        else
+        {
+            return boost::hash<T>()(*v);
+        }
+    }
+
+#endif
+
+    // std::variant
+
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
+
+    inline std::size_t hash_value( std::monostate )
+    {
+        return 0x87654321;
+    }
+
+    template <typename... Types>
+    std::size_t hash_value( std::variant<Types...> const& v )
+    {
+        std::size_t seed = 0;
+
+        hash_combine( seed, v.index() );
+        std::visit( [&seed](auto&& x) { hash_combine(seed, x); }, v );
+
+        return seed;
+    }
+
+#endif
+
+    // hash_combine
+
+    namespace hash_detail
+    {
 
         template<int Bits> struct hash_combine_impl
         {
@@ -203,35 +312,6 @@ namespace boost
                 return h;
             }
         };
-    }
-
-    template <typename T>
-    typename boost::enable_if<boost::is_integral<T>, std::size_t>::type
-        hash_value(T v)
-    {
-        return hash_detail::hash_integral_impl<T, (sizeof(T) > sizeof(std::size_t)), (sizeof(std::size_t) * CHAR_BIT >= 64)>::fn( v );
-    }
-
-    template <typename T>
-    typename boost::enable_if<boost::is_enum<T>, std::size_t>::type
-        hash_value(T v)
-    {
-        return static_cast<std::size_t>(v);
-    }
-
-    template <typename T>
-    typename boost::enable_if<boost::is_floating_point<T>, std::size_t>::type
-        hash_value(T v)
-    {
-        return boost::hash_detail::float_hash_value(v);
-    }
-
-    // Implementation by Alberto Barbati and Dave Harris.
-    template <class T> std::size_t hash_value(T* const& v)
-    {
-        std::size_t x = static_cast<std::size_t>(
-           reinterpret_cast<boost::uintptr_t>(v));
-        return x + (x >> 3);
     }
 
 #if defined(BOOST_MSVC)
@@ -303,88 +383,19 @@ namespace boost
     }
 #endif
 
-    template< class T, unsigned N >
-    inline std::size_t hash_value(const T (&x)[N])
-    {
-        return hash_range(x, x + N);
-    }
-
-    template< class T, unsigned N >
-    inline std::size_t hash_value(T (&x)[N])
-    {
-        return hash_range(x, x + N);
-    }
-
-    template <class Ch, class A>
-    inline std::size_t hash_value(
-        std::basic_string<Ch, std::char_traits<Ch>, A> const& v)
-    {
-        return hash_range(v.begin(), v.end());
-    }
-
-#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
-    template <class Ch>
-    inline std::size_t hash_value(
-        std::basic_string_view<Ch, std::char_traits<Ch> > const& v)
-    {
-        return hash_range(v.begin(), v.end());
-    }
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
-    template <typename T>
-    inline std::size_t hash_value(std::optional<T> const& v) {
-        if (!v) {
-            // Arbitray value for empty optional.
-            return 0x12345678;
-        } else {
-            boost::hash<T> hf;
-            return hf(*v);
-        }
-    }
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
-    inline std::size_t hash_value(std::monostate) {
-        return 0x87654321;
-    }
-
-    template <typename... Types>
-    inline std::size_t hash_value(std::variant<Types...> const& v) {
-        std::size_t seed = 0;
-        hash_combine(seed, v.index());
-        std::visit([&seed](auto&& x) { hash_combine(seed, x); }, v);
-        return seed;
-    }
-#endif
-
-
-#if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
-    inline std::size_t hash_value(std::type_index v)
-    {
-        return v.hash_code();
-    }
-#endif
-
-#if !defined(BOOST_NO_CXX11_HDR_SYSTEM_ERROR)
-    inline std::size_t hash_value(std::error_code const& v) {
-        std::size_t seed = 0;
-        hash_combine(seed, v.value());
-        hash_combine(seed, &v.category());
-        return seed;
-    }
-
-    inline std::size_t hash_value(std::error_condition const& v) {
-        std::size_t seed = 0;
-        hash_combine(seed, v.value());
-        hash_combine(seed, &v.category());
-        return seed;
-    }
-#endif
-
     //
     // boost::hash
     //
+
+    namespace hash_detail
+    {
+        template <typename T>
+        struct hash_base
+        {
+            typedef T argument_type;
+            typedef std::size_t result_type;
+        };
+    }
 
     // Define the specializations required by the standard. The general purpose
     // boost::hash is defined later in extensions.hpp if
@@ -513,14 +524,7 @@ namespace boost
     {
         std::size_t operator()(T* v) const
         {
-#if !BOOST_WORKAROUND(__SUNPRO_CC, <= 0x590)
             return boost::hash_value(v);
-#else
-            std::size_t x = static_cast<std::size_t>(
-                reinterpret_cast<std::ptrdiff_t>(v));
-
-            return x + (x >> 3);
-#endif
         }
     };
 }
