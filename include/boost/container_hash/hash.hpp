@@ -301,7 +301,7 @@ namespace boost
     namespace hash_detail
     {
 
-        template<int Bits> struct hash_combine_impl
+        template<std::size_t Bits> struct hash_combine_impl
         {
             template <typename SizeT>
             inline static SizeT fn(SizeT seed, SizeT value)
