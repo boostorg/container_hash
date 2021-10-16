@@ -96,7 +96,8 @@ namespace boost
             static std::size_t fn( T v )
             {
                 // 18446744073709551557ULL = 2^64-59, biggest prime under 2^64
-                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % 18446744073709551557ULL );
+                // we have to use boost::uint64_t( -59 ), because g++ warns in C++03 mode
+                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % static_cast<boost::uint64_t>( -59 ) );
             }
         };
 
