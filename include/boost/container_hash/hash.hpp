@@ -34,6 +34,10 @@
 #include <utility>
 #include <climits>
 
+#if !defined(BOOST_NO_CXX11_SMART_PTR)
+# include <memory>
+#endif
+
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
 #include <typeindex>
 #endif
@@ -242,6 +246,24 @@ namespace boost
         hash_value( L<T...> const& v )
     {
         return boost::hash_unordered_range( v.begin(), v.end() );
+    }
+
+#endif
+
+    // std::unique_ptr, std::shared_ptr
+
+#if !defined(BOOST_NO_CXX11_SMART_PTR)
+
+    template <typename T>
+    std::size_t hash_value( std::shared_ptr<T> const& x )
+    {
+        return boost::hash_value( x.get() );
+    }
+
+    template <typename T, typename Deleter>
+    std::size_t hash_value( std::unique_ptr<T, Deleter> const& x )
+    {
+        return boost::hash_value( x.get() );
     }
 
 #endif
