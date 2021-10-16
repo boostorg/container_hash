@@ -179,6 +179,44 @@ namespace boost
         return boost::hash_unordered_range( v.begin(), v.end() );
     }
 
+#if defined(BOOST_MSVC) && BOOST_MSVC >= 1910 && BOOST_MSVC < 1920 && BOOST_CXX_VERSION >= 201700L
+
+    // resolve ambiguity with unconstrained stdext::hash_value in <xhash> :-/
+
+    template<template<class...> class L, class... T>
+    typename boost::enable_if_c<hash_detail::is_range<L<T...>>::value && !hash_detail::is_contiguous_range<L<T...>>::value && !hash_detail::is_unordered_range<L<T...>>::value, std::size_t>::type
+        hash_value( L<T...> const& v )
+    {
+        return boost::hash_range( v.begin(), v.end() );
+    }
+
+    // contiguous ranges (string, vector, array)
+
+    template<template<class...> class L, class... T>
+    typename boost::enable_if<hash_detail::is_contiguous_range<L<T...>>, std::size_t>::type
+        hash_value( L<T...> const& v )
+    {
+        return boost::hash_range( v.data(), v.data() + v.size() );
+    }
+
+    template<template<class, std::size_t> class L, class T, std::size_t N>
+    typename boost::enable_if<hash_detail::is_contiguous_range<L<T, N>>, std::size_t>::type
+        hash_value( L<T, N> const& v )
+    {
+        return boost::hash_range( v.data(), v.data() + v.size() );
+    }
+
+    // unordered ranges (unordered_set, unordered_map)
+
+    template<template<class...> class L, class... T>
+    typename boost::enable_if<hash_detail::is_unordered_range<L<T...>>, std::size_t>::type
+        hash_value( L<T...> const& v )
+    {
+        return boost::hash_unordered_range( v.begin(), v.end() );
+    }
+
+#endif
+
     // std::type_index
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
