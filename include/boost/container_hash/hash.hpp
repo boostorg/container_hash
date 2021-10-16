@@ -17,20 +17,16 @@
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
 
 #include <boost/container_hash/hash_fwd.hpp>
-#include <functional>
-#include <iterator>
 #include <boost/container_hash/detail/hash_float.hpp>
-#include <string>
-#include <boost/limits.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/core/enable_if.hpp>
+#include <boost/limits.hpp>
 #include <boost/cstdint.hpp>
+#include <functional>
+#include <iterator>
+#include <string>
 #include <climits>
-
-#if defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-#include <boost/type_traits/is_pointer.hpp>
-#endif
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
 #include <typeindex>
@@ -685,8 +681,6 @@ namespace boost
 
 // Specializing boost::hash for pointers.
 
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-
     template <class T>
     struct hash<T*>
         : public boost::hash_detail::hash_base<T*>
@@ -703,49 +697,6 @@ namespace boost
 #endif
         }
     };
-
-#else
-
-    // For compilers without partial specialization, we define a
-    // boost::hash for all remaining types. But hash_impl is only defined
-    // for pointers in 'extensions.hpp' - so when BOOST_HASH_NO_EXTENSIONS
-    // is defined there will still be a compile error for types not supported
-    // in the standard.
-
-    namespace hash_detail
-    {
-        template <bool IsPointer>
-        struct hash_impl;
-
-        template <>
-        struct hash_impl<true>
-        {
-            template <class T>
-            struct inner
-                : public boost::hash_detail::hash_base<T>
-            {
-                std::size_t operator()(T val) const
-                {
-#if !BOOST_WORKAROUND(__SUNPRO_CC, <= 590)
-                    return boost::hash_value(val);
-#else
-                    std::size_t x = static_cast<std::size_t>(
-                        reinterpret_cast<std::ptrdiff_t>(val));
-
-                    return x + (x >> 3);
-#endif
-                }
-            };
-        };
-    }
-
-    template <class T> struct hash
-        : public boost::hash_detail::hash_impl<boost::is_pointer<T>::value>
-            ::BOOST_NESTED_TEMPLATE inner<T>
-    {
-    };
-
-#endif
 }
 
 #undef BOOST_HASH_CHAR_TRAITS
