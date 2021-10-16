@@ -23,7 +23,6 @@
 #include <boost/core/enable_if.hpp>
 #include <boost/limits.hpp>
 #include <boost/cstdint.hpp>
-#include <functional>
 #include <iterator>
 #include <string>
 #include <climits>
@@ -69,17 +68,12 @@ namespace boost
 {
     namespace hash_detail
     {
-#if defined(BOOST_NO_CXX98_FUNCTION_BASE)
         template <typename T>
         struct hash_base
         {
             typedef T argument_type;
             typedef std::size_t result_type;
         };
-#else
-        template <typename T>
-        struct hash_base : std::unary_function<T, std::size_t> {};
-#endif
 
         struct enable_hash_value { typedef std::size_t type; };
 
