@@ -10,128 +10,14 @@
 // This implements the extensions to the standard.
 // It's undocumented, so you shouldn't use it....
 
-#if !defined(BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP)
+#ifndef BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP
 #define BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP
 
-#include <boost/config.hpp>
-#if defined(BOOST_HAS_PRAGMA_ONCE)
-#pragma once
-#endif
-
 #include <boost/container_hash/hash.hpp>
-#include <boost/core/enable_if.hpp>
-#include <boost/static_assert.hpp>
-
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE)
-# include <tuple>
-#endif
+#include <boost/config.hpp>
 
 namespace boost
 {
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE)
-    namespace hash_detail {
-        template <std::size_t I, typename T>
-        inline typename boost::enable_if_c<(I == std::tuple_size<T>::value),
-                void>::type
-            hash_combine_tuple(std::size_t&, T const&)
-        {
-        }
-
-        template <std::size_t I, typename T>
-        inline typename boost::enable_if_c<(I < std::tuple_size<T>::value),
-                void>::type
-            hash_combine_tuple(std::size_t& seed, T const& v)
-        {
-            boost::hash_combine(seed, std::get<I>(v));
-            boost::hash_detail::hash_combine_tuple<I + 1>(seed, v);
-        }
-
-        template <typename T>
-        inline std::size_t hash_tuple(T const& v)
-        {
-            std::size_t seed = 0;
-            boost::hash_detail::hash_combine_tuple<0>(seed, v);
-            return seed;
-        }
-    }
-
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
-    template <typename... T>
-    inline std::size_t hash_value(std::tuple<T...> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-#else
-
-    inline std::size_t hash_value(std::tuple<> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0>
-    inline std::size_t hash_value(std::tuple<A0> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1>
-    inline std::size_t hash_value(std::tuple<A0, A1> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3, typename A4>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3, A4> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3, A4, A5> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3, A4, A5, A6> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3, A4, A5, A6, A7> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-    template<typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9>
-    inline std::size_t hash_value(std::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9> const& v)
-    {
-        return boost::hash_detail::hash_tuple(v);
-    }
-
-#endif
-
-#endif
-
     //
     // boost::hash
     //
@@ -146,4 +32,4 @@ namespace boost
     };
 }
 
-#endif
+#endif // #ifndef BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP
