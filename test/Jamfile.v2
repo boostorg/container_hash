@@ -87,3 +87,4 @@ explicit container_hash/hash_no_generic_float ;
 build-project ../examples ;
 
 run detail_is_range_test.cpp ;
+run detail_is_contiguous_range_test.cpp ;
