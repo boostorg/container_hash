@@ -33,10 +33,6 @@
 
 #include <memory>
 
-#if defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
-#include <boost/type_traits/is_array.hpp>
-#endif
-
 namespace boost
 {
     template <class A, class B>
@@ -244,70 +240,16 @@ namespace boost
 #endif
 
     //
-    // call_hash_impl
-    //
-
-    // On compilers without function template ordering, this deals with arrays.
-
-#if defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
-    namespace hash_detail
-    {
-        template <bool IsArray>
-        struct call_hash_impl
-        {
-            template <class T>
-            struct inner
-            {
-                static std::size_t call(T const& v)
-                {
-                    using namespace boost;
-                    return hash_value(v);
-                }
-            };
-        };
-
-        template <>
-        struct call_hash_impl<true>
-        {
-            template <class Array>
-            struct inner
-            {
-                static std::size_t call(Array const& v)
-                {
-                    const int size = sizeof(v) / sizeof(*v);
-                    return boost::hash_range(v, v + size);
-                }
-            };
-        };
-
-        template <class T>
-        struct call_hash
-            : public call_hash_impl<boost::is_array<T>::value>
-                ::BOOST_NESTED_TEMPLATE inner<T>
-        {
-        };
-    }
-#endif // BOOST_NO_FUNCTION_TEMPLATE_ORDERING
-
-    //
     // boost::hash
     //
-
 
     template <class T> struct hash
         : boost::hash_detail::hash_base<T>
     {
-#if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
         std::size_t operator()(T const& val) const
         {
             return hash_value(val);
         }
-#else
-        std::size_t operator()(T const& val) const
-        {
-            return hash_detail::call_hash<T>::call(val);
-        }
-#endif
     };
 
 #if BOOST_WORKAROUND(__DMC__, <= 0x848)
