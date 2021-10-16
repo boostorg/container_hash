@@ -37,10 +37,9 @@ void write_compiler_info() {
         {1700, "Visual C++ 11.0, VS2012"},
         {1800, "Visual C++ 12.0, VS2013"},
         {1900, "Visual C++ 14.00, VS2015"},
-        {1910, "Visual C++ 14.10, VS2017 15.1/2"},
-        {1911, "Visual C++ 14.11, VS2017 15.3/4"},
-        {1912, "Visual C++ 14.12, VS2017 15.5"},
-        {1913, "Visual C++ 14.13, VS2017 15.6"}
+        {1910, "Visual C++ 14.1x, VS2017"},
+        {1920, "Visual C++ 14.2x, VS2019"},
+        {1930, "Visual C++ 14.3x, VS2022"},
     };
 
     msvc_version msvc = { BOOST_MSVC, "" };
@@ -65,38 +64,42 @@ void write_compiler_info() {
 int main() {
     write_compiler_info();
 
-#if defined(__cplusplus)
     std::cout << "__cplusplus: "
         << __cplusplus
         << std::endl;
+
+    std::cout << "BOOST_CXX_VERSION: "
+        << BOOST_CXX_VERSION
+        << std::endl;
+
+#if defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+    std::cout << "No <string_view>" << std::endl;
+#else
+    std::cout << "Has <string_view>" << std::endl;
 #endif
 
-    std::cout << "BOOST_HASH_CXX17: "
-        << BOOST_HASH_CXX17
-        << std::endl;
+#if defined(BOOST_NO_CXX17_HDR_OPTIONAL)
+    std::cout << "No <optional>" << std::endl;
+#else
+    std::cout << "Has <optional>" << std::endl;
+#endif
 
-    std::cout << "BOOST_HASH_HAS_STRING_VIEW: "
-        << BOOST_HASH_HAS_STRING_VIEW
-        << std::endl;
-
-    std::cout << "BOOST_HASH_HAS_OPTIONAL: "
-        << BOOST_HASH_HAS_OPTIONAL
-        << std::endl;
-
-    std::cout << "BOOST_HASH_HAS_VARIANT: "
-        << BOOST_HASH_HAS_VARIANT
-        << std::endl;
+#if defined(BOOST_NO_CXX17_HDR_VARIANT)
+    std::cout << "No <variant>" << std::endl;
+#else
+    std::cout << "Has <variant>" << std::endl;
+#endif
 
 #if defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
     std::cout << "No <typeindex>" << std::endl;
 #else
-    std::cout << "<typeindex>" << std::endl;
+    std::cout << "Has <typeindex>" << std::endl;
 #endif
 
 #if defined(BOOST_NO_CXX11_HDR_SYSTEM_ERROR)
     std::cout << "No <system_error>" << std::endl;
 #else
-    std::cout << "<system_error>" << std::endl;
+    std::cout << "Has <system_error>" << std::endl;
 #endif
 
 }

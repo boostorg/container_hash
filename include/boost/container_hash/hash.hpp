@@ -36,6 +36,18 @@
 #include <system_error>
 #endif
 
+#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+#include <string_view>
+#endif
+
+#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
+#include <optional>
+#endif
+
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
+#include <variant>
+#endif
+
 #if defined(BOOST_MSVC)
 #pragma warning(push)
 
@@ -51,58 +63,6 @@
 #   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) _rotl(x,r)
 #else
 #   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) (x << r) | (x >> (32 - r))
-#endif
-
-// Detect whether standard library has C++17 headers
-
-#if !defined(BOOST_HASH_CXX17)
-#   if defined(BOOST_MSVC)
-#       if defined(_HAS_CXX17) && _HAS_CXX17
-#           define BOOST_HASH_CXX17 1
-#       endif
-#   elif defined(__cplusplus) && __cplusplus >= 201703
-#       define BOOST_HASH_CXX17 1
-#   endif
-#endif
-
-#if !defined(BOOST_HASH_CXX17)
-#   define BOOST_HASH_CXX17 0
-#endif
-
-#if BOOST_HASH_CXX17 && defined(__has_include)
-#   if !defined(BOOST_HASH_HAS_STRING_VIEW) && __has_include(<string_view>)
-#       define BOOST_HASH_HAS_STRING_VIEW 1
-#   endif
-#   if !defined(BOOST_HASH_HAS_OPTIONAL) && __has_include(<optional>)
-#       define BOOST_HASH_HAS_OPTIONAL 1
-#   endif
-#   if !defined(BOOST_HASH_HAS_VARIANT) && __has_include(<variant>)
-#       define BOOST_HASH_HAS_VARIANT 1
-#   endif
-#endif
-
-#if !defined(BOOST_HASH_HAS_STRING_VIEW)
-#   define BOOST_HASH_HAS_STRING_VIEW 0
-#endif
-
-#if !defined(BOOST_HASH_HAS_OPTIONAL)
-#   define BOOST_HASH_HAS_OPTIONAL 0
-#endif
-
-#if !defined(BOOST_HASH_HAS_VARIANT)
-#   define BOOST_HASH_HAS_VARIANT 0
-#endif
-
-#if BOOST_HASH_HAS_STRING_VIEW
-#   include <string_view>
-#endif
-
-#if BOOST_HASH_HAS_OPTIONAL
-#   include <optional>
-#endif
-
-#if BOOST_HASH_HAS_VARIANT
-#   include <variant>
 #endif
 
 namespace boost
@@ -217,7 +177,7 @@ namespace boost
     std::size_t hash_value(
         std::basic_string<Ch, std::char_traits<Ch>, A> const&);
 
-#if BOOST_HASH_HAS_STRING_VIEW
+#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
     template <class Ch>
     std::size_t hash_value(
         std::basic_string_view<Ch, std::char_traits<Ch> > const&);
@@ -226,12 +186,12 @@ namespace boost
     template <typename T>
     typename boost::hash_detail::float_numbers<T>::type hash_value(T);
 
-#if BOOST_HASH_HAS_OPTIONAL
+#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
     template <typename T>
     std::size_t hash_value(std::optional<T> const&);
 #endif
 
-#if BOOST_HASH_HAS_VARIANT
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
     std::size_t hash_value(std::monostate);
     template <typename... Types>
     std::size_t hash_value(std::variant<Types...> const&);
@@ -471,7 +431,7 @@ namespace boost
         return hash_range(v.begin(), v.end());
     }
 
-#if BOOST_HASH_HAS_STRING_VIEW
+#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
     template <class Ch>
     inline std::size_t hash_value(
         std::basic_string_view<Ch, std::char_traits<Ch> > const& v)
@@ -486,7 +446,7 @@ namespace boost
         return boost::hash_detail::float_hash_value(v);
     }
 
-#if BOOST_HASH_HAS_OPTIONAL
+#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
     template <typename T>
     inline std::size_t hash_value(std::optional<T> const& v) {
         if (!v) {
@@ -499,7 +459,7 @@ namespace boost
     }
 #endif
 
-#if BOOST_HASH_HAS_VARIANT
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
     inline std::size_t hash_value(std::monostate) {
         return 0x87654321;
     }
@@ -618,7 +578,7 @@ namespace boost
     BOOST_HASH_SPECIALIZE_REF(std::basic_string<char32_t>)
 #endif
 
-#if BOOST_HASH_HAS_STRING_VIEW
+#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
     BOOST_HASH_SPECIALIZE_REF(std::string_view)
 #   if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     BOOST_HASH_SPECIALIZE_REF(std::wstring_view)
@@ -641,12 +601,12 @@ namespace boost
     BOOST_HASH_SPECIALIZE(boost::uint128_type)
 #endif
 
-#if BOOST_HASH_HAS_OPTIONAL
+#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
     template <typename T>
     BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::optional<T>)
 #endif
 
-#if !defined(BOOST_HASH_HAS_VARIANT)
+#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
     template <typename... T>
     BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::variant<T...>)
     BOOST_HASH_SPECIALIZE(std::monostate)
