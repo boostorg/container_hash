@@ -51,13 +51,6 @@
 
 #if defined(BOOST_MSVC)
 #pragma warning(push)
-
-#if BOOST_MSVC >= 1400
-#pragma warning(disable:6295) // Ill-defined for-loop : 'unsigned int' values
-                              // are always of range '0' to '4294967295'.
-                              // Loop executes infinitely.
-#endif
-
 #endif
 
 #if defined(_MSC_VER)
