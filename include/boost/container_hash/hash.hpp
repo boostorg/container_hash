@@ -31,6 +31,7 @@
 #include <iterator>
 #include <string>
 #include <complex>
+#include <utility>
 #include <climits>
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
@@ -163,6 +164,19 @@ namespace boost
 
         boost::hash_combine( seed, v.real() );
         boost::hash_combine( seed, v.imag() );
+
+        return seed;
+    }
+
+    // pair
+
+    template <class A, class B>
+    std::size_t hash_value( std::pair<A, B> const& v )
+    {
+        std::size_t seed = 0;
+
+        boost::hash_combine( seed, v.first );
+        boost::hash_combine( seed, v.second );
 
         return seed;
     }

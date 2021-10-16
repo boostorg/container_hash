@@ -32,18 +32,6 @@
 
 namespace boost
 {
-    template <class A, class B>
-    std::size_t hash_value(std::pair<A, B> const&);
-
-    template <class A, class B>
-    std::size_t hash_value(std::pair<A, B> const& v)
-    {
-        std::size_t seed = 0;
-        boost::hash_combine(seed, v.first);
-        boost::hash_combine(seed, v.second);
-        return seed;
-    }
-
 #if !defined(BOOST_NO_CXX11_HDR_TUPLE)
     namespace hash_detail {
         template <std::size_t I, typename T>
