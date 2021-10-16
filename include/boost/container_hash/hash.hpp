@@ -205,11 +205,7 @@ namespace boost
     typename boost::enable_if<boost::is_enum<T>, std::size_t>::type
         hash_value(T);
 
-#if !BOOST_WORKAROUND(__DMC__, <= 0x848)
     template <class T> std::size_t hash_value(T* const&);
-#else
-    template <class T> std::size_t hash_value(T*);
-#endif
 
 #if !defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
     template< class T, unsigned N >
@@ -375,11 +371,7 @@ namespace boost
     }
 
     // Implementation by Alberto Barbati and Dave Harris.
-#if !BOOST_WORKAROUND(__DMC__, <= 0x848)
     template <class T> std::size_t hash_value(T* const& v)
-#else
-    template <class T> std::size_t hash_value(T* v)
-#endif
     {
 #if defined(__VMS) && __INITIAL_POINTER_SIZE == 64
     // for some reason ptrdiff_t on OpenVMS compiler with

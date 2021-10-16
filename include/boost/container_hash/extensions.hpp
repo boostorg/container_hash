@@ -251,17 +251,6 @@ namespace boost
             return hash_value(val);
         }
     };
-
-#if BOOST_WORKAROUND(__DMC__, <= 0x848)
-    template <class T, unsigned int n> struct hash<T[n]>
-        : boost::hash_detail::hash_base<T[n]>
-    {
-        std::size_t operator()(const T* val) const
-        {
-            return boost::hash_range(val, val+n);
-        }
-    };
-#endif
 }
 
 #endif
