@@ -18,6 +18,7 @@
 #include <boost/cstdint.hpp>
 #include <boost/assert.hpp>
 #include <boost/limits.hpp>
+#include <functional> // std::equal_to
 #include <cstring>
 
 #if defined(BOOST_MSVC)
