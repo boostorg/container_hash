@@ -39,9 +39,10 @@ int main() {}
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
 
+#include <boost/limits.hpp>
 #include <complex>
 #include <sstream>
-#include <boost/limits.hpp>
+#include <set>
 
 template <class T>
 void generic_complex_tests(std::complex<T> v)
@@ -52,11 +53,11 @@ void generic_complex_tests(std::complex<T> v)
 
     BOOST_HASH_TEST_NAMESPACE::hash<T> real_hasher;
     T real = v.real();
-    T imag = v.imag();
+    // T imag = v.imag();
 
-    BOOST_TEST(real_hasher(real) == complex_hasher(std::complex<T>(real)));
+    // BOOST_TEST(real_hasher(real) == complex_hasher(std::complex<T>(real)));
 
-    if(imag != 0 && real_hasher(real) == complex_hasher(v)) {
+    if(real_hasher(real) == complex_hasher(v)) {
         std::ostringstream os;
         os<<"real_hasher("<<real<<") == complex_hasher("
             <<v.real()<<" + "<<v.imag()<<"i) == "
@@ -88,6 +89,23 @@ void complex_integral_tests(Integer*)
     generic_complex_tests(complex(Integer(-543),Integer(763)));
 }
 
+template<class T> void complex_grid_test()
+{
+    short const N = 16;
+
+    std::set<std::size_t> hashes;
+
+    for( short i = 0; i < N; ++i )
+    {
+        for( short j = 0; j < N; ++j )
+        {
+            hashes.insert( boost::hash< std::complex<T> >()( std::complex<T>( i, j ) ) );
+        }
+    }
+
+    BOOST_TEST_EQ( hashes.size(), N * N );
+}
+
 int main()
 {
     // I've comments out the short and unsigned short tests
@@ -103,6 +121,11 @@ int main()
     //complex_integral_tests((unsigned short*) 0);
     complex_integral_tests((unsigned int*) 0);
     complex_integral_tests((unsigned long*) 0);
+
+    complex_grid_test<int>();
+    complex_grid_test<float>();
+    complex_grid_test<double>();
+    complex_grid_test<long double>();
 
     return boost::report_errors();
 }

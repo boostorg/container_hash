@@ -21,7 +21,6 @@
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/enable_if.hpp>
 #include <boost/static_assert.hpp>
-#include <complex>
 
 #if !defined(BOOST_NO_CXX11_HDR_TUPLE)
 # include <tuple>
@@ -36,24 +35,12 @@ namespace boost
     template <class A, class B>
     std::size_t hash_value(std::pair<A, B> const&);
 
-    template <class T>
-    std::size_t hash_value(std::complex<T> const&);
-
     template <class A, class B>
     std::size_t hash_value(std::pair<A, B> const& v)
     {
         std::size_t seed = 0;
         boost::hash_combine(seed, v.first);
         boost::hash_combine(seed, v.second);
-        return seed;
-    }
-
-    template <class T>
-    std::size_t hash_value(std::complex<T> const& v)
-    {
-        boost::hash<T> hasher;
-        std::size_t seed = hasher(v.imag());
-        seed ^= hasher(v.real()) + (seed<<6) + (seed>>2);
         return seed;
     }
 

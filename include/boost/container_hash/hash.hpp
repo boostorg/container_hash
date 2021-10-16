@@ -30,6 +30,7 @@
 #include <boost/cstdint.hpp>
 #include <iterator>
 #include <string>
+#include <complex>
 #include <climits>
 
 #if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
@@ -151,6 +152,19 @@ namespace boost
     inline std::size_t hash_value( T (&x)[ N ] )
     {
         return boost::hash_range( x, x + N );
+    }
+
+    // complex
+
+    template <class T>
+    std::size_t hash_value( std::complex<T> const& v )
+    {
+        std::size_t seed = 0;
+
+        boost::hash_combine( seed, v.real() );
+        boost::hash_combine( seed, v.imag() );
+
+        return seed;
     }
 
     // ranges (list, set, deque...)
