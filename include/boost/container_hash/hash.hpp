@@ -87,7 +87,8 @@ namespace boost
             static std::size_t fn( T v )
             {
                 // 4294967291 = 2^32-5, biggest prime under 2^32
-                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % 4294967291 );
+                // we use boost::uint32_t( -5 ), because g++ warns on 4294967291
+                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % static_cast<boost::uint32_t>( -5 ) );
             }
         };
 
