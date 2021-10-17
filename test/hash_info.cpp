@@ -8,6 +8,8 @@
 #include <boost/container_hash/hash.hpp>
 #include <iostream>
 #include <algorithm>
+#include <limits>
+#include <climits>
 
 #if defined(BOOST_MSVC)
 
@@ -61,16 +63,15 @@ void write_compiler_info() {
 
 #endif
 
+#define PRINT(x) std::cout << #x ": " << x << std::endl
+
 int main() {
     write_compiler_info();
+    std::cout << std::endl;
 
-    std::cout << "__cplusplus: "
-        << __cplusplus
-        << std::endl;
-
-    std::cout << "BOOST_CXX_VERSION: "
-        << BOOST_CXX_VERSION
-        << std::endl;
+    PRINT(__cplusplus);
+    PRINT(BOOST_CXX_VERSION);
+    std::cout << std::endl;
 
 #if defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
     std::cout << "No <string_view>" << std::endl;
@@ -102,4 +103,22 @@ int main() {
     std::cout << "Has <system_error>" << std::endl;
 #endif
 
+    std::cout << std::endl;
+
+    PRINT(CHAR_BIT);
+    std::cout << std::endl;
+
+    PRINT(sizeof(std::size_t)*CHAR_BIT);
+    std::cout << std::endl;
+
+    PRINT(sizeof(float)*CHAR_BIT);
+    PRINT(std::numeric_limits<float>::digits);
+    std::cout << std::endl;
+
+    PRINT(sizeof(double)*CHAR_BIT);
+    PRINT(std::numeric_limits<double>::digits);
+    std::cout << std::endl;
+
+    PRINT(sizeof(long double)*CHAR_BIT);
+    PRINT(std::numeric_limits<long double>::digits);
 }
