@@ -17,7 +17,6 @@
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
 
 #include <boost/container_hash/hash_fwd.hpp>
-#include <boost/container_hash/detail/hash_float.hpp>
 #include <boost/container_hash/detail/is_range.hpp>
 #include <boost/container_hash/detail/is_contiguous_range.hpp>
 #include <boost/container_hash/detail/is_unordered_range.hpp>
@@ -32,7 +31,9 @@
 #include <iterator>
 #include <complex>
 #include <utility>
+#include <limits>
 #include <climits>
+#include <cstring>
 
 #if !defined(BOOST_NO_CXX11_SMART_PTR)
 # include <memory>
@@ -75,8 +76,7 @@ namespace boost
 
     namespace hash_detail
     {
-
-        template<class T, bool bigger_than_size_t, bool size_t_64> struct hash_integral_impl;
+        template<class T, bool bigger_than_size_t = (sizeof(T) > sizeof(std::size_t)), bool size_t_64 = (sizeof(std::size_t) * CHAR_BIT >= 64)> struct hash_integral_impl;
 
         template<class T, bool size_t_64> struct hash_integral_impl<T, false, size_t_64>
         {
@@ -112,7 +112,7 @@ namespace boost
     typename boost::enable_if_<boost::is_integral<T>::value, std::size_t>::type
         hash_value( T v )
     {
-        return hash_detail::hash_integral_impl<T, (sizeof(T) > sizeof(std::size_t)), (sizeof(std::size_t) * CHAR_BIT >= 64)>::fn( v );
+        return hash_detail::hash_integral_impl<T>::fn( v );
     }
 
     // enumeration types
@@ -126,11 +126,75 @@ namespace boost
 
     // floating point types
 
+    namespace hash_detail
+    {
+        template<class T, std::size_t Bits = sizeof(T) * CHAR_BIT, int Digits = std::numeric_limits<T>::digits> struct hash_float_impl;
+
+        // float
+        template<class T, int Digits> struct hash_float_impl<T, 32, Digits>
+        {
+            static std::size_t fn( T v )
+            {
+                boost::uint32_t w;
+                std::memcpy( &w, &v, sizeof( v ) );
+
+                return boost::hash_value( w );
+            }
+        };
+
+        // double
+        template<class T, int Digits> struct hash_float_impl<T, 64, Digits>
+        {
+            static std::size_t fn( T v )
+            {
+                boost::uint64_t w;
+                std::memcpy( &w, &v, sizeof( v ) );
+
+                return boost::hash_value( w );
+            }
+        };
+
+        // 80 bit long double
+        template<class T> struct hash_float_impl<T, 128, 64>
+        {
+            static std::size_t fn( T v )
+            {
+                boost::uint64_t w[ 2 ] = {};
+                std::memcpy( &w, &v, 80 / CHAR_BIT );
+
+                std::size_t seed = 0;
+
+                boost::hash_combine( seed, w[ 0 ] );
+                boost::hash_combine( seed, w[ 1 ] );
+
+                return seed;
+            }
+        };
+
+        // 128 bit long double
+        template<class T, int Digits> struct hash_float_impl<T, 128, Digits>
+        {
+            static std::size_t fn( T v )
+            {
+                boost::uint64_t w[ 2 ];
+                std::memcpy( &w, &v, sizeof( v ) );
+
+                std::size_t seed = 0;
+
+                boost::hash_combine( seed, w[ 0 ] );
+                boost::hash_combine( seed, w[ 1 ] );
+
+                return seed;
+            }
+        };
+
+    } // namespace hash_detail
+
     template <typename T>
     typename boost::enable_if_<boost::is_floating_point<T>::value, std::size_t>::type
         hash_value( T v )
     {
-        return boost::hash_detail::float_hash_value( v );
+        return boost::hash_detail::hash_float_impl<T>::fn( v + 0 );
     }
 
     // pointer types
