@@ -13,7 +13,7 @@
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. The author hereby disclaims copyright to this source code.
 
-#if !defined(BOOST_FUNCTIONAL_HASH_HASH_HPP)
+#ifndef BOOST_FUNCTIONAL_HASH_HASH_HPP
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
 
 #include <boost/container_hash/hash_fwd.hpp>
@@ -27,10 +27,9 @@
 #include <boost/type_traits/is_floating_point.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
 #include <boost/core/enable_if.hpp>
-#include <boost/limits.hpp>
 #include <boost/cstdint.hpp>
-#include <iterator>
 #include <string>
+#include <iterator>
 #include <complex>
 #include <utility>
 #include <climits>
@@ -59,10 +58,6 @@
 #include <variant>
 #endif
 
-#if defined(BOOST_MSVC)
-#pragma warning(push)
-#endif
-
 #if defined(_MSC_VER)
 #   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) _rotl(x,r)
 #else
@@ -72,7 +67,9 @@
 namespace boost
 {
 
-    // hash_value
+    //
+    // boost::hash_value
+    //
 
     // integral types
 
@@ -348,7 +345,9 @@ namespace boost
 
 #endif
 
-    // hash_combine
+    //
+    // boost::hash_combine
+    //
 
     namespace hash_detail
     {
@@ -426,15 +425,16 @@ namespace boost
 #pragma warning(pop)
 #endif
 
+    //
+    // boost::hash_range
+    //
+
     template <class It>
     inline std::size_t hash_range(It first, It last)
     {
         std::size_t seed = 0;
 
-        for(; first != last; ++first)
-        {
-            hash_combine<typename std::iterator_traits<It>::value_type>(seed, *first);
-        }
+        hash_range(seed, first, last);
 
         return seed;
     }
@@ -478,161 +478,35 @@ namespace boost
     // boost::hash
     //
 
-    namespace hash_detail
+    template <class T> struct hash
     {
-        template <typename T>
-        struct hash_base
+        typedef T argument_type;
+        typedef std::size_t result_type;
+
+        std::size_t operator()( T const& val ) const
         {
-            typedef T argument_type;
-            typedef std::size_t result_type;
-        };
-    }
-
-    // Define the specializations required by the standard. The general purpose
-    // boost::hash is defined later in extensions.hpp if
-    // BOOST_HASH_NO_EXTENSIONS is not defined.
-
-    // BOOST_HASH_SPECIALIZE - define a specialization for a type which is
-    // passed by copy.
-    //
-    // BOOST_HASH_SPECIALIZE_REF - define a specialization for a type which is
-    // passed by const reference.
-    //
-    // These are undefined later.
-
-#define BOOST_HASH_SPECIALIZE(type) \
-    template <> struct hash<type> \
-         : public boost::hash_detail::hash_base<type> \
-    { \
-        std::size_t operator()(type v) const \
-        { \
-            return boost::hash_value(v); \
-        } \
-    };
-
-#define BOOST_HASH_SPECIALIZE_REF(type) \
-    template <> struct hash<type> \
-         : public boost::hash_detail::hash_base<type> \
-    { \
-        std::size_t operator()(type const& v) const \
-        { \
-            return boost::hash_value(v); \
-        } \
-    };
-
-#define BOOST_HASH_SPECIALIZE_TEMPLATE_REF(type) \
-    struct hash<type> \
-         : public boost::hash_detail::hash_base<type> \
-    { \
-        std::size_t operator()(type const& v) const \
-        { \
-            return boost::hash_value(v); \
-        } \
-    };
-
-    BOOST_HASH_SPECIALIZE(bool)
-    BOOST_HASH_SPECIALIZE(char)
-    BOOST_HASH_SPECIALIZE(signed char)
-    BOOST_HASH_SPECIALIZE(unsigned char)
-#if !defined(BOOST_NO_INTRINSIC_WCHAR_T)
-    BOOST_HASH_SPECIALIZE(wchar_t)
-#endif
-#if !defined(BOOST_NO_CXX11_CHAR16_T)
-    BOOST_HASH_SPECIALIZE(char16_t)
-#endif
-#if !defined(BOOST_NO_CXX11_CHAR32_T)
-    BOOST_HASH_SPECIALIZE(char32_t)
-#endif
-    BOOST_HASH_SPECIALIZE(short)
-    BOOST_HASH_SPECIALIZE(unsigned short)
-    BOOST_HASH_SPECIALIZE(int)
-    BOOST_HASH_SPECIALIZE(unsigned int)
-    BOOST_HASH_SPECIALIZE(long)
-    BOOST_HASH_SPECIALIZE(unsigned long)
-
-    BOOST_HASH_SPECIALIZE(float)
-    BOOST_HASH_SPECIALIZE(double)
-    BOOST_HASH_SPECIALIZE(long double)
-
-    BOOST_HASH_SPECIALIZE_REF(std::string)
-#if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
-    BOOST_HASH_SPECIALIZE_REF(std::wstring)
-#endif
-#if !defined(BOOST_NO_CXX11_CHAR16_T)
-    BOOST_HASH_SPECIALIZE_REF(std::basic_string<char16_t>)
-#endif
-#if !defined(BOOST_NO_CXX11_CHAR32_T)
-    BOOST_HASH_SPECIALIZE_REF(std::basic_string<char32_t>)
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
-    BOOST_HASH_SPECIALIZE_REF(std::string_view)
-#   if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
-    BOOST_HASH_SPECIALIZE_REF(std::wstring_view)
-#   endif
-#   if !defined(BOOST_NO_CXX11_CHAR16_T)
-    BOOST_HASH_SPECIALIZE_REF(std::basic_string_view<char16_t>)
-#   endif
-#   if !defined(BOOST_NO_CXX11_CHAR32_T)
-    BOOST_HASH_SPECIALIZE_REF(std::basic_string_view<char32_t>)
-#   endif
-#endif
-
-#if !defined(BOOST_NO_LONG_LONG)
-    BOOST_HASH_SPECIALIZE(boost::long_long_type)
-    BOOST_HASH_SPECIALIZE(boost::ulong_long_type)
-#endif
-
-#if defined(BOOST_HAS_INT128)
-    BOOST_HASH_SPECIALIZE(boost::int128_type)
-    BOOST_HASH_SPECIALIZE(boost::uint128_type)
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
-    template <typename T>
-    BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::optional<T>)
-#endif
-
-#if !defined(BOOST_NO_CXX17_HDR_VARIANT)
-    template <typename... T>
-    BOOST_HASH_SPECIALIZE_TEMPLATE_REF(std::variant<T...>)
-    BOOST_HASH_SPECIALIZE(std::monostate)
-#endif
-
-#if !defined(BOOST_NO_CXX11_HDR_TYPEINDEX)
-    BOOST_HASH_SPECIALIZE(std::type_index)
-#endif
-
-#undef BOOST_HASH_SPECIALIZE
-#undef BOOST_HASH_SPECIALIZE_REF
-#undef BOOST_HASH_SPECIALIZE_TEMPLATE_REF
-
-// Specializing boost::hash for pointers.
-
-    template <class T>
-    struct hash<T*>
-        : public boost::hash_detail::hash_base<T*>
-    {
-        std::size_t operator()(T* v) const
-        {
-            return boost::hash_value(v);
+            return hash_value( val );
         }
     };
+
+#if defined(BOOST_MSVC) && BOOST_MSVC >= 1910 && BOOST_MSVC < 1920 && BOOST_CXX_VERSION >= 201700L
+
+    // msvc-14.1 has stdext::hash_value for basic_string in <xhash> :-/
+
+    template<class E, class T, class A> struct hash< std::basic_string<E, T, A> >
+    {
+        typedef std::basic_string<E, T, A> argument_type;
+        typedef std::size_t result_type;
+
+        std::size_t operator()( std::basic_string<E, T, A> const& val ) const
+        {
+            return boost::hash_value( val );
+        }
+    };
+
+#endif
 }
 
 #undef BOOST_FUNCTIONAL_HASH_ROTL32
 
-#if defined(BOOST_MSVC)
-#pragma warning(pop)
-#endif
-
-#endif // BOOST_FUNCTIONAL_HASH_HASH_HPP
-
-// Include this outside of the include guards in case the file is included
-// twice - once with BOOST_HASH_NO_EXTENSIONS defined, and then with it
-// undefined.
-
-#if !defined(BOOST_HASH_NO_EXTENSIONS) \
-    && !defined(BOOST_FUNCTIONAL_HASH_EXTENSIONS_HPP)
-#include <boost/container_hash/extensions.hpp>
-#endif
+#endif // #ifndef BOOST_FUNCTIONAL_HASH_HASH_HPP

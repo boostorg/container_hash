@@ -52,7 +52,6 @@ test-suite container_hash/hash
         [ run link_test.cpp link_test_2.cpp ]
         [ run link_ext_test.cpp link_no_ext_test.cpp ]
         [ run extensions_hpp_test.cpp ]
-        [ compile-fail hash_no_ext_fail_test.cpp ]
         [ compile-fail namespace_fail_test.cpp ]
         [ run implicit_test.cpp ]
         [ run hash_no_ext_macro_1.cpp ]
