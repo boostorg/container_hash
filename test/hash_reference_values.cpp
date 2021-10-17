@@ -163,6 +163,8 @@ int main()
     BOOST_TEST_EQ( hv(0.0L), 0 );
     BOOST_TEST_EQ( hv(-0.0L), 0 );
 
+#if defined(_WIN32) && !defined(__GNUC__) // Under MS ABI, long double == double
+
 #if SIZE_MAX == 4294967295U
 
     BOOST_TEST_EQ( hv(1.0L), 1072693248U );
@@ -180,6 +182,30 @@ int main()
     BOOST_TEST_EQ( hv(-3.14L), 13837625107069764895ULL );
     BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 9218868437227405312ULL );
     BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18442240474082181120ULL );
+
+#endif
+
+#else
+
+#if SIZE_MAX == 4294967295U
+
+    BOOST_TEST_EQ( hv(1.0L), 1072693248U );
+    BOOST_TEST_EQ( hv(-1.0L), 3220176896U );
+    BOOST_TEST_EQ( hv(3.14L), 2660156064U );
+    BOOST_TEST_EQ( hv(-3.14L), 512672416U );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 2146435072U );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4293918720U );
+
+#else
+
+    BOOST_TEST_EQ( hv(1.0L), 11529215046068486143ULL );
+    BOOST_TEST_EQ( hv(-1.0L), 11529215046068518911ULL );
+    BOOST_TEST_EQ( hv(3.14L), 12059468778148142067ULL );
+    BOOST_TEST_EQ( hv(-3.14L), 12059468778147191795ULL );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 18446744073709551615ULL );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18446744073709551614ULL );
+
+#endif
 
 #endif
 
