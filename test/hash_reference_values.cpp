@@ -4,15 +4,16 @@
 
 #include <boost/config/pragma_message.hpp>
 
-#if defined(__clang__)
-# pragma clang diagnostic ignored "-Wlong-long"
-
-#elif defined(__GNUC__) && __cplusplus < 201100L
+#if defined(__GNUC__) && !defined(__clang__) && __cplusplus < 201100L
 
 BOOST_PRAGMA_MESSAGE("Skipping test under GCC in C++98 mode")
 int main() {}
 
 #else
+
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wlong-long"
+#endif
 
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
