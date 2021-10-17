@@ -63,3 +63,5 @@ run detail_is_unordered_range_test.cpp ;
 run hash_forward_list_test.cpp ;
 
 run quick.cpp ;
+
+run hash_number_test2.cpp ;
