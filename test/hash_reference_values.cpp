@@ -241,10 +241,10 @@ int main()
 
 #if SIZE_MAX == 4294967295U
 
-    BOOST_TEST_EQ( hv(1.0L), 1072693248U );
-    BOOST_TEST_EQ( hv(-1.0L), 3220176896U );
-    BOOST_TEST_EQ( hv(3.14L), 2660156064U );
-    BOOST_TEST_EQ( hv(-3.14L), 512672416U );
+    BOOST_TEST_EQ( hv(1.0L), 2684370943U );
+    BOOST_TEST_EQ( hv(-1.0L), 2684403711U );
+    BOOST_TEST_EQ( hv(3.14L), 83002659U );
+    BOOST_TEST_EQ( hv(-3.14L), 82969891U );
 
 #if !defined(__GLIBCXX__)
 
@@ -253,8 +253,8 @@ int main()
 
 #else
 
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 2146435072U );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4293918720U );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 4294967295U );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4294967294U );
 
 #endif
 
