@@ -86,9 +86,17 @@ namespace boost
         {
             static std::size_t fn( T v )
             {
+				// The bias makes negative numbers that fit into a ssize_t hash to themselves
+				// E.g. hash_value( -4LL ) == (size_t)-4
+
+                std::size_t const bias = (std::numeric_limits<std::size_t>::max)() / 4;
+
                 // 4294967291 = 2^32-5, biggest prime under 2^32
                 // we use boost::uint32_t( -5 ), because g++ warns on 4294967291
-                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % static_cast<boost::uint32_t>( -5 ) );
+
+                return static_cast<std::size_t>(
+                    ( static_cast<typename boost::make_unsigned<T>::type>( v ) + bias )
+                    % static_cast<boost::uint32_t>( -5 ) ) - bias;
             }
         };
 
@@ -96,9 +104,14 @@ namespace boost
         {
             static std::size_t fn( T v )
             {
+                std::size_t const bias = (std::numeric_limits<std::size_t>::max)() / 4;
+
                 // 18446744073709551557ULL = 2^64-59, biggest prime under 2^64
                 // we have to use boost::uint64_t( -59 ), because g++ warns in C++03 mode
-                return static_cast<std::size_t>( static_cast<typename boost::make_unsigned<T>::type>( v ) % static_cast<boost::uint64_t>( -59 ) );
+
+                return static_cast<std::size_t>(
+                    ( static_cast<typename boost::make_unsigned<T>::type>( v ) + bias )
+                    % static_cast<boost::uint64_t>( -59 ) ) - bias;
             }
         };
 
