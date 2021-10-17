@@ -272,13 +272,13 @@ int main()
 
 #if !defined(__GLIBCXX__)
 
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 18446744073709551615ULL );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18446744073709551614ULL );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 11529215046068502527ULL );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 11529215046068535295ULL );
 
 #else
 
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 11529215046068502527ULL );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 11529215046068535295ULL );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 18446744073709551615ULL );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18446744073709551614ULL );
 
 #endif
 
