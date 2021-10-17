@@ -21,6 +21,7 @@ int main() {}
 #include <vector>
 #include <list>
 #include <utility>
+#include <complex>
 #include <limits>
 #include <climits>
 #include <cfloat>
@@ -329,6 +330,59 @@ int main()
     // pointer
     BOOST_TEST_EQ( hv((void*)0), 0 );
     BOOST_TEST_EQ( hv((void*)0x200014A0), 603985716U );
+
+    // complex<int>
+    BOOST_TEST_EQ( hv(std::complex<int>(0, 0)), 0U );
+    BOOST_TEST_EQ( hv(std::complex<int>(+1, 0)), 1U );
+    BOOST_TEST_EQ( hv(std::complex<int>(0, +1)), 65U );
+
+#if SIZE_MAX == 4294967295U
+
+    BOOST_TEST_EQ( hv(std::complex<int>(-1, 0)), 4294967295U );
+    BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 3221225536U );
+
+#else
+
+    BOOST_TEST_EQ( hv(std::complex<int>(-1, 0)), 18446744073709551615ULL );
+    BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 13835058055282163776ULL );
+
+#endif
+
+    // complex<float>
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, 0.0f)), 0U );
+    BOOST_TEST_EQ( hv(std::complex<float>(+1.0f, 0.0f)), 1065353216U );
+    BOOST_TEST_EQ( hv(std::complex<float>(-1.0f, 0.0f)), 3212836864U );
+
+#if SIZE_MAX == 4294967295U
+
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, +1.0f)), 3495952384U );
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, -1.0f)), 2959081472U );
+
+#else
+
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, +1.0f)), 67920461824ULL );
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, -1.0f)), 209117511680ULL );
+
+#endif
+
+    // complex<double>
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, 0.0)), 0U );
+
+#if SIZE_MAX == 4294967295U
+
+    BOOST_TEST_EQ( hv(std::complex<double>(+1.0, 0.0)), 1072693248U );
+    BOOST_TEST_EQ( hv(std::complex<double>(-1.0, 0.0)), 3220176896U );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, +1.0)), 873201664U );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, -1.0)), 2483814400U );
+
+#else
+
+    BOOST_TEST_EQ( hv(std::complex<double>(+1.0, 0.0)), 4607182418800017408ULL );
+    BOOST_TEST_EQ( hv(std::complex<double>(-1.0, 0.0)), 13830554455654793216ULL );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, +1.0)), 3750372589692780544ULL );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, -1.0)), 10667901617333862400ULL );
+
+#endif
 
     // pair
 #if SIZE_MAX == 4294967295U
