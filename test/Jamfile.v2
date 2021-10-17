@@ -65,3 +65,4 @@ run hash_forward_list_test.cpp ;
 run quick.cpp ;
 
 run hash_number_test2.cpp ;
+run hash_integral_test.cpp ;
