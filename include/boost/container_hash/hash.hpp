@@ -3,12 +3,12 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
-//  Based on Peter Dimov's proposal
-//  http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf
-//  issue 6.18.
+// Based on Peter Dimov's proposal
+// http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf
+// issue 6.18.
 //
-//  This also contains public domain code from MurmurHash. From the
-//  MurmurHash header:
+// This also contains public domain code from MurmurHash. From the
+// MurmurHash header:
 
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. The author hereby disclaims copyright to this source code.
@@ -447,32 +447,6 @@ namespace boost
             hash_combine<typename std::iterator_traits<It>::value_type>(seed, *first);
         }
     }
-
-#if BOOST_WORKAROUND(BOOST_BORLANDC, BOOST_TESTED_AT(0x551))
-    template <class T>
-    inline std::size_t hash_range(T* first, T* last)
-    {
-        std::size_t seed = 0;
-
-        for(; first != last; ++first)
-        {
-            boost::hash<T> hasher;
-            seed ^= hasher(*first) + 0x9e3779b9 + (seed<<6) + (seed>>2);
-        }
-
-        return seed;
-    }
-
-    template <class T>
-    inline void hash_range(std::size_t& seed, T* first, T* last)
-    {
-        for(; first != last; ++first)
-        {
-            boost::hash<T> hasher;
-            seed ^= hasher(*first) + 0x9e3779b9 + (seed<<6) + (seed>>2);
-        }
-    }
-#endif
 
     //
     // boost::hash
