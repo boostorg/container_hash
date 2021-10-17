@@ -248,8 +248,8 @@ int main()
 
 #if !defined(__GLIBCXX__)
 
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 2146435072U );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4293918720U );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 0xA0007FFFu );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 0xA000FFFFu );
 
 #else
 
