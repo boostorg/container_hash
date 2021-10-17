@@ -150,7 +150,24 @@ namespace boost
             }
         };
 
-        // 80 bit long double
+        // 80 bit long double in 12 bytes
+        template<class T> struct hash_float_impl<T, 96, 64>
+        {
+            static std::size_t fn( T v )
+            {
+                boost::uint64_t w[ 2 ] = {};
+                std::memcpy( &w, &v, 80 / CHAR_BIT );
+
+                std::size_t seed = 0;
+
+                boost::hash_combine( seed, w[ 0 ] );
+                boost::hash_combine( seed, w[ 1 ] );
+
+                return seed;
+            }
+        };
+
+        // 80 bit long double in 16 bytes
         template<class T> struct hash_float_impl<T, 128, 64>
         {
             static std::size_t fn( T v )
