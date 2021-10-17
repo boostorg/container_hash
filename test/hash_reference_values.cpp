@@ -2,6 +2,18 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
+#include <boost/config/pragma_message.hpp>
+
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wlong-long"
+
+#elif defined(__GNUC__) && __cplusplus < 201100L
+
+BOOST_PRAGMA_MESSAGE("Skipping test under GCC in C++98 mode")
+int main() {}
+
+#else
+
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <string>
@@ -124,8 +136,23 @@ int main()
     BOOST_TEST_EQ( hv(-1e-38f), 2154619886U );
     BOOST_TEST_EQ( hv(1e+38f), 2123789977U );
     BOOST_TEST_EQ( hv(-1e+38f), 4271273625U );
+
+#if !defined(__GLIBCXX__)
+
     BOOST_TEST_EQ( hv(std::numeric_limits<float>::infinity()), 2139095040U );
     BOOST_TEST_EQ( hv(-std::numeric_limits<float>::infinity()), 4286578688U );
+
+#elif SIZE_MAX == 4294967295U
+
+    BOOST_TEST_EQ( hv(std::numeric_limits<float>::infinity()), 4294967295U );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<float>::infinity()), 4294967294U );
+
+#else
+
+    BOOST_TEST_EQ( hv(std::numeric_limits<float>::infinity()), 18446744073709551615ULL );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<float>::infinity()), 18446744073709551614ULL );
+
+#endif
 
     // double
     BOOST_TEST_EQ( hv(0.0), 0 );
@@ -141,8 +168,18 @@ int main()
     BOOST_TEST_EQ( hv(-1e-308), 3701356376U );
     BOOST_TEST_EQ( hv(1e+308), 2577739707U );
     BOOST_TEST_EQ( hv(-1e+308), 430256059U );
+
+#if !defined(__GLIBCXX__)
+
     BOOST_TEST_EQ( hv(std::numeric_limits<double>::infinity()), 2146435072U );
     BOOST_TEST_EQ( hv(-std::numeric_limits<double>::infinity()), 4293918720U );
+
+#else
+
+    BOOST_TEST_EQ( hv(std::numeric_limits<double>::infinity()), 4294967295U );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<double>::infinity()), 4294967294U );
+
+#endif
 
 #else
 
@@ -154,8 +191,18 @@ int main()
     BOOST_TEST_EQ( hv(-1e-308), 9225396059387848914ULL );
     BOOST_TEST_EQ( hv(1e+308), 9214871658872686752ULL );
     BOOST_TEST_EQ( hv(-1e+308), 18438243695727462560ULL );
+
+#if !defined(__GLIBCXX__)
+
     BOOST_TEST_EQ( hv(std::numeric_limits<double>::infinity()), 9218868437227405312ULL );
     BOOST_TEST_EQ( hv(-std::numeric_limits<double>::infinity()), 18442240474082181120ULL );
+
+#else
+
+    BOOST_TEST_EQ( hv(std::numeric_limits<double>::infinity()), 18446744073709551615ULL );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<double>::infinity()), 18446744073709551614ULL );
+
+#endif
 
 #endif
 
@@ -355,3 +402,5 @@ int main()
 
     return boost::report_errors();
 }
+
+#endif
