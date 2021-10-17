@@ -124,15 +124,9 @@ int main()
     BOOST_TEST_EQ( hv((uint128)1), 1 );
     BOOST_TEST_EQ( hv((uint128)65535), 65535 );
 
-#if defined(BOOST_GCC) && BOOST_GCC < 100000
-
-    BOOST_TEST_EQ( hv((uint128)-1), 18446744073709551615ULL );
-
-#else
-
-    BOOST_TEST_EQ( hv((uint128)-1), 13835058055282163777ULL );
-
-#endif
+    // (uint128)-1 does the former under gcc 9 and below, the latter under gcc 10+
+    BOOST_TEST_EQ( hv((uint128)(unsigned long long)-1), 18446744073709551615ULL );
+    BOOST_TEST_EQ( hv(~(uint128)0), 13835058055282163777ULL );
 
 #endif
 
