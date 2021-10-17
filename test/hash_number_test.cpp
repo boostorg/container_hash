@@ -37,7 +37,8 @@ void numeric_extra_tests(typename
 {
     typedef boost::hash_detail::limits<T> limits;
 
-    if(limits::digits <= boost::hash_detail::limits<std::size_t>::digits)
+    if(limits::is_signed ||
+        limits::digits <= boost::hash_detail::limits<std::size_t>::digits)
     {
         BOOST_TEST(BOOST_HASH_TEST_NAMESPACE::hash_value(T(-5)) == (std::size_t)T(-5));
     }
