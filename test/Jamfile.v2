@@ -61,3 +61,5 @@ run detail_is_contiguous_range_test.cpp ;
 run detail_is_unordered_range_test.cpp ;
 
 run hash_forward_list_test.cpp ;
+
+run quick.cpp ;
