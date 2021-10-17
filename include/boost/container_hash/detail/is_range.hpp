@@ -9,7 +9,6 @@
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/declval.hpp>
 #include <boost/type_traits/is_same.hpp>
-#include <boost/core/enable_if.hpp>
 #include <boost/config.hpp>
 #include <boost/config/workaround.hpp>
 #include <iterator>

@@ -7,6 +7,7 @@
 #define BOOST_HASH_DETAIL_HASH_TUPLE_LIKE_HPP
 
 #include <boost/container_hash/hash_fwd.hpp>
+#include <boost/type_traits/enable_if.hpp>
 #include <boost/config.hpp>
 
 #if defined(BOOST_NO_CXX11_HDR_TUPLE)
@@ -23,14 +24,14 @@ namespace hash_detail
 {
 
 template <std::size_t I, typename T>
-inline typename boost::enable_if_c<(I == std::tuple_size<T>::value),
+inline typename boost::enable_if_<(I == std::tuple_size<T>::value),
         void>::type
     hash_combine_tuple(std::size_t&, T const&)
 {
 }
 
 template <std::size_t I, typename T>
-inline typename boost::enable_if_c<(I < std::tuple_size<T>::value),
+inline typename boost::enable_if_<(I < std::tuple_size<T>::value),
         void>::type
     hash_combine_tuple(std::size_t& seed, T const& v)
 {

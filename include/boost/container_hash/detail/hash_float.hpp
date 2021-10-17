@@ -13,7 +13,7 @@
 
 #include <boost/container_hash/detail/float_functions.hpp>
 #include <boost/container_hash/detail/limits.hpp>
-#include <boost/core/enable_if.hpp>
+#include <boost/type_traits/enable_if.hpp>
 #include <boost/integer/static_log2.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/assert.hpp>
@@ -103,7 +103,7 @@ namespace boost
 
         template <typename Float>
         inline std::size_t float_hash_impl(Float v,
-            BOOST_DEDUCED_TYPENAME boost::enable_if_c<
+            BOOST_DEDUCED_TYPENAME boost::enable_if_<
                 enable_binary_hash<Float, 24, 128>::value,
                 std::size_t>::type)
         {
@@ -113,7 +113,7 @@ namespace boost
 
         template <typename Float>
         inline std::size_t float_hash_impl(Float v,
-            BOOST_DEDUCED_TYPENAME boost::enable_if_c<
+            BOOST_DEDUCED_TYPENAME boost::enable_if_<
                 enable_binary_hash<Float, 53, 1024>::value,
                 std::size_t>::type)
         {
@@ -122,7 +122,7 @@ namespace boost
 
         template <typename Float>
         inline std::size_t float_hash_impl(Float v,
-            BOOST_DEDUCED_TYPENAME boost::enable_if_c<
+            BOOST_DEDUCED_TYPENAME boost::enable_if_<
                 enable_binary_hash<Float, 64, 16384>::value,
                 std::size_t>::type)
         {
@@ -131,7 +131,7 @@ namespace boost
 
         template <typename Float>
         inline std::size_t float_hash_impl(Float v,
-            BOOST_DEDUCED_TYPENAME boost::enable_if_c<
+            BOOST_DEDUCED_TYPENAME boost::enable_if_<
                 enable_binary_hash<Float, 113, 16384>::value,
                 std::size_t>::type)
         {
