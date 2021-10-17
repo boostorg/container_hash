@@ -47,10 +47,6 @@
 #include <system_error>
 #endif
 
-#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
-#include <string_view>
-#endif
-
 #if !defined(BOOST_NO_CXX17_HDR_OPTIONAL)
 #include <optional>
 #endif
