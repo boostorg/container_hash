@@ -84,3 +84,5 @@ test-suite container_hash/hash_no_generic_float
 explicit container_hash/hash_no_generic_float ;
 
 build-project ../examples ;
+
+run hash_reference_values.cpp ;
