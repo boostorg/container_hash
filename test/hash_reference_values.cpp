@@ -126,8 +126,12 @@ int main()
 
 #if defined(BOOST_GCC) && BOOST_GCC < 100000
 
-    // This looks like some sort of miscompilation
-    BOOST_TEST_EQ( hv((uint128)-1), 18446744073709551615ULL );
+    // This looks like some sort of miscompilation.
+    // Under CI, both GHA and Appveyor GCCs produce this value.
+    // But the exact same test on godbolt.org produces the correct
+    // value, below.
+
+    // BOOST_TEST_EQ( hv((uint128)-1), 18446744073709551615ULL );
 
 #else
 
