@@ -126,6 +126,7 @@ int main()
 
 #if defined(BOOST_GCC) && BOOST_GCC < 100000
 
+    // This looks like some sort of miscompilation
     BOOST_TEST_EQ( hv((uint128)-1), 18446744073709551615ULL );
 
 #else
