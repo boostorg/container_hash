@@ -20,33 +20,43 @@ jobs:
           - toolset: gcc-4.8
             cxxstd: "03,11"
             os: ubuntu-18.04
-            install: g++-4.8
+            install: g++-4.8-multilib
+            address-model: 32,64
           - toolset: gcc-5
             cxxstd: "03,11,14,1z"
             os: ubuntu-18.04
-            install: g++-5
+            install: g++-5-multilib
+            address-model: 32,64
           - toolset: gcc-6
             cxxstd: "03,11,14,1z"
             os: ubuntu-18.04
-            install: g++-6
+            install: g++-6-multilib
+            address-model: 32,64
           - toolset: gcc-7
             cxxstd: "03,11,14,17"
             os: ubuntu-18.04
+            install: g++-7-multilib
+            address-model: 32,64
           - toolset: gcc-8
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-18.04
-            install: g++-8
+            install: g++-8-multilib
+            address-model: 32,64
           - toolset: gcc-9
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-20.04
+            install: g++-9-multilib
+            address-model: 32,64
           - toolset: gcc-10
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-20.04
-            install: g++-10
+            install: g++-10-multilib
+            address-model: 32,64
           - toolset: gcc-11
             cxxstd: "03,11,14,17,20"
             os: ubuntu-20.04
-            install: g++-11
+            install: g++-11-multilib
+            address-model: 32,64
           - toolset: clang
             compiler: clang++-3.9
             cxxstd: "03,11,14"
@@ -137,8 +147,9 @@ jobs:
       - name: Run tests
         run: |
           cd ../boost-root
-          ./b2 -j3 --verbose-test libs/$LIBRARY/test//hash_info toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} variant=debug,release
-          ./b2 -j3 libs/$LIBRARY/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} variant=debug,release
+          export ADDRMD=${{matrix.address-model}}
+          ./b2 -j3 --verbose-test libs/$LIBRARY/test//hash_info toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} ${ADDRMD:+address-model=$ADDRMD} variant=debug,release
+          ./b2 -j3 libs/$LIBRARY/test toolset=${{matrix.toolset}} cxxstd=${{matrix.cxxstd}} ${ADDRMD:+address-model=$ADDRMD} variant=debug,release
 
   windows:
     strategy:
