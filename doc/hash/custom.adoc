@@ -1,0 +1,4 @@
+[#custom]
+= Extending boost::hash for a custom data type
+
+:idprefix: custom_

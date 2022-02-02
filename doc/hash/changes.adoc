@@ -1,0 +1,4 @@
+[#changes]
+= Change Log
+
+:idprefix: changes_

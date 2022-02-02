@@ -1,0 +1,4 @@
+[#rationale]
+= Rationale
+
+:idprefix: rationale_

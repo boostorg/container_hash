@@ -1,0 +1,4 @@
+[#thanks]
+= Acknowledgements
+
+:idprefix: thanks_

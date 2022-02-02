@@ -1,0 +1,4 @@
+[#combine]
+= Combining hash values
+
+:idprefix: combine_
