@@ -45,7 +45,7 @@ class point
 
 Calls to `hash_combine` incrementally build the hash from the different members of `point`, it can be repeatedly called for any number of elements. It calls `hash_value` on the supplied element, and combines it with the seed.
 
-Full code for this example is at link:../../examples/point.cpp[/libs/container_hash/examples/point.cpp^].
+Full code for this example is at link:../../examples/point.cpp[/libs/container_hash/examples/point.cpp].
 
 [NOTE] 
 ====
@@ -77,4 +77,4 @@ std::vector<std::string> some_strings;
 std::size_t hash = boost::hash_range(some_strings.begin(), some_strings.end());
 ----
 
-Note that when writing template classes, you might not want to include the main hash header as it's quite an expensive include that brings in a lot of other headers, so instead you can include the `<boost/container_hash/hash_fwd.hpp>` header which forward declares `boost::hash`, `boost::hash_range` and `boost::hash_combine`. You'll need to include the main header before instantiating `boost::hash`. When using a container that uses `boost::hash` it should do that for you, so your type will work fine with the boost hash containers. There's an example of this in link:../../examples/template.hpp[template.hpp^] and link:../../examples/template.cpp[template.cpp^].
+Note that when writing template classes, you might not want to include the main hash header as it's quite an expensive include that brings in a lot of other headers, so instead you can include the `<boost/container_hash/hash_fwd.hpp>` header which forward declares `boost::hash`, `boost::hash_range` and `boost::hash_combine`. You'll need to include the main header before instantiating `boost::hash`. When using a container that uses `boost::hash` it should do that for you, so your type will work fine with the boost hash containers. There's an example of this in link:../../examples/template.hpp[template.hpp] and link:../../examples/template.cpp[template.cpp].

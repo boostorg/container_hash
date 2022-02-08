@@ -3,7 +3,7 @@
 
 :idprefix: ref_
 
-For the full specification, see section 6.3 of the http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf[C++ Standard Library Technical Report^] and issue 6.18 of the http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1837.pdf[Library Extension Technical Report Issues List^] (page 63).
+For the full specification, see section 6.3 of the http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf[C++ Standard Library Technical Report] and issue 6.18 of the http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1837.pdf[Library Extension Technical Report Issues List] (page 63).
 
 == Header <boost/container_hash/hash.hpp>
 
@@ -121,7 +121,7 @@ namespace boost {
 
 === hash
 
-`boost::hash` — A http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf[TR1^] compliant hash function object.
+`boost::hash` — A http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf[TR1] compliant hash function object.
 
 ==== Synopsis
 

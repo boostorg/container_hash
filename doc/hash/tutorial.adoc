@@ -3,7 +3,7 @@
 
 :idprefix: tutorial_
 
-When using a hash index with link:../../../multi_index/index.html[Boost.MultiIndex^], you don't need to do anything to use `boost::hash` as it uses it by default. To find out how to use a user-defined type, read the <<custom,section on extending boost::hash for a custom data type>>.
+When using a hash index with link:../../../multi_index/index.html[Boost.MultiIndex], you don't need to do anything to use `boost::hash` as it uses it by default. To find out how to use a user-defined type, read the <<custom,section on extending boost::hash for a custom data type>>.
 
 If your standard library supplies its own implementation of the unordered associative containers and you wish to use `boost::hash`, just use an extra template parameter:
 

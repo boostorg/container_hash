@@ -79,4 +79,4 @@ namespace foo
 }
 ----
 
-Full code for this example is at link:../../examples/portable.cpp[/libs/container_hash/examples/portable.cpp^].
+Full code for this example is at link:../../examples/portable.cpp[/libs/container_hash/examples/portable.cpp].
