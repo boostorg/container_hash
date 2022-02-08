@@ -3,7 +3,7 @@
 
 :idprefix: custom_
 
-xref:#ref_hash[boost::hash] is implemented by calling the function xref:#ref_hash_value[hash_value]. The namespace isn't specified so that it can detect overloads via argument dependant lookup. So if there is a free function `hash_value` in the same namespace as a custom type, it will get called.
+`boost::hash` is implemented by calling the function `hash_value`. The namespace isn't specified so that it can detect overloads via argument dependant lookup. So if there is a free function `hash_value` in the same namespace as a custom type, it will get called.
 
 If you have a structure `library::book`, where each book is uniquely defined by its member `id`:
 
@@ -35,13 +35,13 @@ namespace library
 {
     std::size_t hash_value(book const& b)
     {
-        xref:#ref_hash[boost::hash]<int> hasher;
+        boost::hash<int> hasher;
         return hasher(b.id);
     }
 }
 ----
 
-And you can now use xref:#ref_hash[boost::hash] with book:
+And you can now use `boost::hash` with book:
 
 [listing,subs="+quotes,+macros"]
 ----
@@ -49,7 +49,7 @@ library::book knife(3458, "Zane Grey", "The Hash Knife Outfit");
 library::book dandelion(1354, "Paul J. Shanley",
     "Hash & Dandelion Greens");
 
-xref:#ref_hash[boost::hash]<library::book> book_hasher;
+boost::hash<library::book> book_hasher;
 std::size_t knife_hash_value = book_hasher(knife);
 
 // If std::unordered_set is available:
