@@ -9,7 +9,7 @@ For the full specification, see section 6.3 of the http://www.open-std.org/jtc1/
 
 Defines `boost::hash`, and helper functions.
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 namespace boost {
   template<typename T> struct hash;
@@ -125,7 +125,7 @@ namespace boost {
 
 ==== Synopsis
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 // #include <boost/container_hash/hash.hpp>
 
@@ -137,7 +137,7 @@ struct hash : public std::unary_function<T, std::size_t> {
 
 ==== Description
 
-[listing]
+[source]
 ----
 std::size_t operator()(T const& val) const;
 ----
@@ -161,7 +161,7 @@ Throws:: Only throws if `hash_value(T)` throws.
 
 === Synopsis
 
-[listing]
+[source]
 ----
 // #include <boost/container_hash/hash.hpp>
 
@@ -172,7 +172,7 @@ struct hash<T> {
 
 === Description
 
-[listing]
+[source]
 ----
 std::size_t operator()(T const val) const;
 ----
@@ -189,7 +189,7 @@ Throws:: Doesn't throw
 
 === hash_combine
 
-[listing]
+[source]
 ----
 template<typename T>
 void hash_combine(size_t &, T const&);
@@ -214,7 +214,7 @@ Throws:: Only throws if `hash_value(T)` throws. Strong exception safety, as long
 
 === hash_range
 
-[listing]
+[source]
 ----
 template<typename It>
 std::size_t hash_range(It, It);
@@ -228,7 +228,7 @@ Calculate the combined hash value of the elements of an iterator range.
 [horizontal]
 Effects:: For the two argument overload:
 +
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 size_t seed = 0;
 
@@ -241,7 +241,7 @@ return seed;
 +
 For the three arguments overload:
 +
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 for(; first != last; ++first)
 {
@@ -265,7 +265,7 @@ Throws:: Only throws if `hash_value(std::iterator_traits<It>::value_type)` throw
 
 === hash_value
 
-[listing]
+[source]
 ----
 std::size_t hash_value(bool val);
 std::size_t hash_value(char val);
@@ -357,7 +357,7 @@ Returns::
 |`std::pair<A, B>`
 a|
 
-[listing]
+[source]
 ----
 size_t seed = 0; 
 hash_combine(seed, val.first);
@@ -368,7 +368,7 @@ return seed;
 |`std::tuple<T...>`
 a|
 
-[listing]
+[source]
 ----
 size_t seed = 0;
 hash_combine(seed, get<0>(val));

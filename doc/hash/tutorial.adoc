@@ -7,7 +7,7 @@ When using a hash index with link:../../../multi_index/index.html[Boost.MultiInd
 
 If your standard library supplies its own implementation of the unordered associative containers and you wish to use `boost::hash`, just use an extra template parameter:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 std::unordered_multiset<int, boost::hash<int> >
         set_of_ints;
@@ -20,7 +20,7 @@ std::unordered_map<int, std::string, boost::hash<int> > map_int_to_string;
 
 To use `boost::hash` directly, create an instance and call it as a function:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 #include <boost/container_hash/hash.hpp>
 
@@ -34,7 +34,7 @@ int main()
 
 For an example of generic use, here is a function to generate a vector containing the hashes of the elements of a container:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 template <class Container>
 std::vector<std::size_t> get_hashes(Container const& x)

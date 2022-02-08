@@ -7,7 +7,7 @@
 
 If you have a structure `library::book`, where each book is uniquely defined by its member `id`:
 
-[listing]
+[source]
 ----
 namespace library
 {
@@ -29,7 +29,7 @@ namespace library
 
 Then all you would need to do is write the function `library::hash_value`:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 namespace library
 {
@@ -43,7 +43,7 @@ namespace library
 
 And you can now use `boost::hash` with book:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 library::book knife(3458, "Zane Grey", "The Hash Knife Outfit");
 library::book dandelion(1354, "Paul J. Shanley",

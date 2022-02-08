@@ -6,6 +6,7 @@
 :source-highlighter: rouge
 :nofooter:
 :sectlinks:
+:source-language: c++
 
 :leveloffset: +1
 

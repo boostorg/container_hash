@@ -5,7 +5,7 @@
 
 Say you have a point class, representing a two dimensional location:
 
-[listing]
+[source]
 ----
 class point
 {
@@ -24,7 +24,7 @@ public:
 
 and you wish to use it as the key for an unordered_map. You need to customise the hash for this structure. To do this we need to combine the hash values for x and y. The function `boost::hash_combine` is supplied for this purpose:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 class point
 {
@@ -50,7 +50,7 @@ Full code for this example is at link:../../examples/point.cpp[/libs/container_h
 [NOTE] 
 ====
 When using `boost::hash_combine` the order of the calls matters.
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 std::size_t seed = 0;
 boost::hash_combine(seed, 1);
@@ -58,7 +58,7 @@ boost::hash_combine(seed, 2);
 ----
 results in a different seed to:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 std::size_t seed = 0;
 boost::hash_combine(seed, 2);
@@ -71,7 +71,7 @@ If you are calculating a hash value for data where the order of the data doesn't
 
 To calculate the hash of an iterator range you can use `boost::hash_range`:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 std::vector<std::string> some_strings;
 std::size_t hash = boost::hash_range(some_strings.begin(), some_strings.end());

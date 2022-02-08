@@ -9,7 +9,7 @@ On a strictly standards compliant compiler, an overload defined in the `boost` n
 
 Let's say we have a simple custom type:
 
-[list,subs="+quotes,+macros"]
+[source]
 ----
 namespace foo
 {
@@ -33,7 +33,7 @@ On a compliant compiler, when `hash_value` is called for this type, it will look
 
 So first move the member function out of the class:
 
-[listing,subs="+quotes,+macros"]
+[source]
 ----
 namespace foo
 {
@@ -63,7 +63,7 @@ Unfortunately, I couldn't declare `hash_value` as a friend, as some compilers do
 
 For compilers which don't support ADL, `hash_value` needs to be defined in the `boost` namespace:
 
-[listing]
+[source]
 ----
 #ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
 namespace boost
