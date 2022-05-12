@@ -3,23 +3,20 @@
 # Distributed under the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-using boostbook ;
-using quickbook ;
+import asciidoctor ;
 
-xml hash : hash.qbk ;
-boostbook standalone : hash :
-    <xsl:param>boost.root=../../../..
+html hash.html : hash.adoc ;
 
-    <xsl:param>chunk.first.sections=1
-    <xsl:param>chunk.section.depth=2
-    <xsl:param>generate.section.toc.level=2
-    <xsl:param>toc.section.depth=1
-    <xsl:param>toc.max.depth=1
-    <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/libs/container_hash/doc/html
-    ;
+install html_ : hash.html : <location>html ;
+
+pdf hash.pdf : hash.adoc ;
+explicit hash.pdf ;
+
+install pdf_ : hash.pdf : <location>pdf ;
+explicit pdf_ ;
 
 ###############################################################################
-    alias boostdoc : hash ;
-    explicit boostdoc ;
-    alias boostrelease ;
-    explicit boostrelease ;
+alias boostdoc ;
+explicit boostdoc ;
+alias boostrelease : html_ ;
+explicit boostrelease ;

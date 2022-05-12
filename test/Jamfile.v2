@@ -68,3 +68,4 @@ run quick.cpp ;
 
 run hash_number_test2.cpp ;
 run hash_integral_test.cpp ;
+run hash_string_test2.cpp ;
