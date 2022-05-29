@@ -25,8 +25,10 @@
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
 #include <boost/type_traits/is_signed.hpp>
+#include <boost/type_traits/is_unsigned.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
 #include <boost/type_traits/enable_if.hpp>
+#include <boost/type_traits/conjunction.hpp>
 #include <boost/cstdint.hpp>
 #include <string>
 #include <iterator>
@@ -131,14 +133,14 @@ namespace boost
     } // namespace hash_detail
 
     template <typename T>
-    typename boost::enable_if_<boost::is_integral<T>::value && !boost::is_signed<T>::value, std::size_t>::type
+    typename boost::enable_if_<boost::conjunction<boost::is_integral<T>, boost::is_unsigned<T> >::value, std::size_t>::type
         hash_value( T v )
     {
         return hash_detail::hash_integral_impl<T>::fn( v );
     }
 
     template <typename T>
-    typename boost::enable_if_<boost::is_integral<T>::value && boost::is_signed<T>::value, std::size_t>::type
+    typename boost::enable_if_<boost::conjunction<boost::is_integral<T>, boost::is_signed<T> >::value, std::size_t>::type
         hash_value( T v )
     {
         typedef typename boost::make_unsigned<T>::type U;
