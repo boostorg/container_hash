@@ -123,7 +123,7 @@ int main()
     complex_grid_test<int>( 16 );
     complex_grid_test<float>( 7 );
     complex_grid_test<double>( 16 );
-    complex_grid_test<long double>( 16 );
+    complex_grid_test<long double>( 15 );
 
     return boost::report_errors();
 }

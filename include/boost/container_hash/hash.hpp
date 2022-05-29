@@ -204,8 +204,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                boost::hash_combine( seed, w[ 0 ] );
-                boost::hash_combine( seed, w[ 1 ] );
+                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
 
                 return seed;
             }
@@ -221,8 +221,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                boost::hash_combine( seed, w[ 0 ] );
-                boost::hash_combine( seed, w[ 1 ] );
+                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
 
                 return seed;
             }
@@ -238,8 +238,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                boost::hash_combine( seed, w[ 0 ] );
-                boost::hash_combine( seed, w[ 1 ] );
+                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
 
                 return seed;
             }
