@@ -86,8 +86,8 @@ namespace boost
         {
             static std::size_t fn( T v )
             {
-				// The bias makes negative numbers that fit into a ssize_t hash to themselves
-				// E.g. hash_value( -4LL ) == (size_t)-4
+                // The bias makes negative numbers that fit into a ssize_t hash to themselves
+                // E.g. hash_value( -4LL ) == (size_t)-4
 
                 std::size_t const bias = (std::numeric_limits<std::size_t>::max)() / 4;
 
@@ -252,12 +252,11 @@ namespace boost
     template <class T>
     std::size_t hash_value( std::complex<T> const& v )
     {
-        std::size_t seed = 0;
+        std::size_t re = boost::hash<T>()( v.real() );
+        std::size_t im = boost::hash<T>()( v.imag() );
 
-        boost::hash_combine( seed, v.real() );
-        boost::hash_combine( seed, v.imag() );
-
-        return seed;
+        im ^= re + ( im << 6 ) + ( im >> 2 );
+        return im;
     }
 
     // pair
