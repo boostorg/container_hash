@@ -24,6 +24,7 @@
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
+#include <boost/type_traits/is_signed.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/cstdint.hpp>
@@ -72,9 +73,13 @@ namespace boost
 
     namespace hash_detail
     {
-        template<class T, bool bigger_than_size_t = (sizeof(T) > sizeof(std::size_t)), bool size_t_64 = (sizeof(std::size_t) * CHAR_BIT >= 64)> struct hash_integral_impl;
+        template<class T,
+            bool bigger_than_size_t = (sizeof(T) > sizeof(std::size_t)),
+            std::size_t size_t_bits = sizeof(std::size_t) * CHAR_BIT,
+            std::size_t type_bits = sizeof(T) * CHAR_BIT>
+        struct hash_integral_impl;
 
-        template<class T, bool size_t_64> struct hash_integral_impl<T, false, size_t_64>
+        template<class T, std::size_t size_t_bits, std::size_t type_bits> struct hash_integral_impl<T, false, size_t_bits, type_bits>
         {
             static std::size_t fn( T v )
             {
@@ -82,46 +87,70 @@ namespace boost
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, false>
+        template<class T> struct hash_integral_impl<T, true, 32, 64>
         {
             static std::size_t fn( T v )
             {
-                // The bias makes negative numbers that fit into a ssize_t hash to themselves
-                // E.g. hash_value( -4LL ) == (size_t)-4
+                std::size_t seed = 0;
 
-                std::size_t const bias = (std::numeric_limits<std::size_t>::max)() / 4;
+                seed ^= static_cast<std::size_t>( v >> 32 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
 
-                // 4294967291 = 2^32-5, biggest prime under 2^32
-                // we use boost::uint32_t( -5 ), because g++ warns on 4294967291
-
-                return static_cast<std::size_t>(
-                    ( static_cast<typename boost::make_unsigned<T>::type>( v ) + bias )
-                    % static_cast<boost::uint32_t>( -5 ) ) - bias;
+                return seed;
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, true>
+        template<class T> struct hash_integral_impl<T, true, 32, 128>
         {
             static std::size_t fn( T v )
             {
-                std::size_t const bias = (std::numeric_limits<std::size_t>::max)() / 4;
+                std::size_t seed = 0;
 
-                // 18446744073709551557ULL = 2^64-59, biggest prime under 2^64
-                // we have to use boost::uint64_t( -59 ), because g++ warns in C++03 mode
+                seed ^= static_cast<std::size_t>( v >> 96 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v >> 64 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v >> 32 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
 
-                return static_cast<std::size_t>(
-                    ( static_cast<typename boost::make_unsigned<T>::type>( v ) + bias )
-                    % static_cast<boost::uint64_t>( -59 ) ) - bias;
+                return seed;
+            }
+        };
+
+        template<class T> struct hash_integral_impl<T, true, 64, 128>
+        {
+            static std::size_t fn( T v )
+            {
+                std::size_t seed = 0;
+
+                seed ^= static_cast<std::size_t>( v >> 64 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
+
+                return seed;
             }
         };
 
     } // namespace hash_detail
 
     template <typename T>
-    typename boost::enable_if_<boost::is_integral<T>::value, std::size_t>::type
+    typename boost::enable_if_<boost::is_integral<T>::value && !boost::is_signed<T>::value, std::size_t>::type
         hash_value( T v )
     {
         return hash_detail::hash_integral_impl<T>::fn( v );
+    }
+
+    template <typename T>
+    typename boost::enable_if_<boost::is_integral<T>::value && boost::is_signed<T>::value, std::size_t>::type
+        hash_value( T v )
+    {
+        typedef typename boost::make_unsigned<T>::type U;
+
+        if( v >= 0 )
+        {
+            return hash_value( static_cast<U>( v ) );
+        }
+        else
+        {
+            return ~hash_value( static_cast<U>( ~static_cast<U>( v ) ) );
+        }
     }
 
     // enumeration types
