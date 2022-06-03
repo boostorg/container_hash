@@ -15,6 +15,10 @@ int main() {}
 # pragma clang diagnostic ignored "-Wlong-long"
 #endif
 
+#if defined(__GNUC__)
+# pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <string>
