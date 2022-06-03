@@ -29,7 +29,7 @@ void collision_test_()
         hashes.insert( boost::hash<T>()( i * M ) );
     }
 
-    BOOST_TEST_EQ( hashes.size(), 256 );
+    BOOST_TEST_EQ( hashes.size(), 256u );
 }
 
 template <class T>

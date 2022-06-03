@@ -101,7 +101,7 @@ template<class T> void complex_grid_test( short N )
         }
     }
 
-    BOOST_TEST_EQ( hashes.size(), N * N );
+    BOOST_TEST_EQ( hashes.size(), static_cast<std::size_t>( N * N ) );
 }
 
 int main()
