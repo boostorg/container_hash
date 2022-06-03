@@ -75,4 +75,4 @@ run hash_integral_test.cpp ;
 run hash_string_test2.cpp ;
 
 run hash_fs_path_test.cpp /boost//filesystem/<warnings>off  ;
-run detail_is_range_test2.cpp ;
+run detail_is_range_test2.cpp : ;
