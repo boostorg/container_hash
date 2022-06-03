@@ -60,7 +60,8 @@ build-project ../examples ;
 run hash_reference_values.cpp ;
 
 run detail_is_range_test.cpp ;
-run detail_is_range_test2.cpp ;
+run detail_is_range_test2.cpp
+  : : : <toolset>gcc:<cxxflags>-Wno-variadic-macros ;
 run detail_is_contiguous_range_test.cpp ;
 run detail_is_unordered_range_test.cpp ;
 
@@ -72,4 +73,4 @@ run hash_number_test2.cpp ;
 run hash_integral_test.cpp ;
 run hash_string_test2.cpp ;
 
-run hash_fs_path_test.cpp /boost//filesystem/<warnings>off ;
+run hash_fs_path_test.cpp /boost//filesystem/<warnings>off : : : <toolset>gcc:<cxxflags>-Wno-variadic-macros ;
