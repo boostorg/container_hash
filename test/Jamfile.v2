@@ -6,7 +6,7 @@
 import testing ;
 
 local gcc-flags = -Wunused-parameter -Wconversion -Wsign-conversion -Wfloat-equal -Wshadow -Wno-variadic-macros ;
-local clang-flags = $(gcc-flags) ;
+local clang-flags = $(gcc-flags) -Wno-c99-extensions ;
 
 project hash-tests
     : requirements
