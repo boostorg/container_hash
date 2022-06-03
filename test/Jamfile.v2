@@ -60,6 +60,7 @@ build-project ../examples ;
 run hash_reference_values.cpp ;
 
 run detail_is_range_test.cpp ;
+run detail_is_range_test2.cpp ;
 run detail_is_contiguous_range_test.cpp ;
 run detail_is_unordered_range_test.cpp ;
 
