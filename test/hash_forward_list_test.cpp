@@ -2,6 +2,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
+#if defined(__GNUC__) && __GNUC__ == 8
+# pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/config.hpp>
