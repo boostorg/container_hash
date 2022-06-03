@@ -6,8 +6,8 @@
 # pragma warning(disable: 4714) // forceinline not inlined
 #endif
 
-#if defined(__clang__)
-# pragma clang diagnostic ignored "-Wsign-conversion"
+#if defined(__GNUC__) || defined(__clang__)
+# pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
 
 #include <boost/filesystem/path.hpp>

@@ -9,11 +9,12 @@
 #include <set>
 
 #if defined(BOOST_MSVC)
-#pragma warning(disable:4244) // conversion from int to float
+# pragma warning(disable: 4244) // conversion from int to float
 #endif
 
 #if defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic ignored "-Wconversion"
+# pragma GCC diagnostic ignored "-Wconversion"
+# pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
 
 // This test checks for collisions in a small range of numbers

@@ -5,13 +5,16 @@
 
 import testing ;
 
+local gcc-flags = -Wunused-parameter -Wconversion -Wsign-conversion -Wfloat-equal -Wshadow -Wno-variadic-macros ;
+local clang-flags = $(gcc-flags) ;
+
 project hash-tests
     : requirements
         <warnings>pedantic
         <toolset>intel:<warnings>on
-        <toolset>gcc:<cxxflags>"-Wstrict-aliasing -Wsign-promo -Wunused-parameter -Wconversion -Wfloat-equal -Wshadow"
-        <toolset>darwin:<cxxflags>"-Wstrict-aliasing -Wsign-promo -Wunused-parameter -Wconversion -Wfloat-equal -Wshadow"
-        <toolset>clang:<cxxflags>"-Wstrict-aliasing -Wsign-promo -Wunused-parameter -Wsign-conversion -Wconversion -Wfloat-equal -Wshadow"
+        <toolset>gcc:<cxxflags>$(gcc-flags)
+        <toolset>darwin:<cxxflags>$(gcc-flags)
+        <toolset>clang:<cxxflags>$(clang-flags)
         <toolset>msvc:<warnings-as-errors>on
         <toolset>gcc:<warnings-as-errors>on
         <toolset>clang:<warnings-as-errors>on
@@ -60,8 +63,6 @@ build-project ../examples ;
 run hash_reference_values.cpp ;
 
 run detail_is_range_test.cpp ;
-run detail_is_range_test2.cpp
-  : : : <toolset>gcc:<cxxflags>-Wno-variadic-macros <toolset>clang:<cxxflags>-Wno-variadic-macros ;
 run detail_is_contiguous_range_test.cpp ;
 run detail_is_unordered_range_test.cpp ;
 
@@ -73,4 +74,5 @@ run hash_number_test2.cpp ;
 run hash_integral_test.cpp ;
 run hash_string_test2.cpp ;
 
-run hash_fs_path_test.cpp /boost//filesystem/<warnings>off : : : <toolset>gcc:<cxxflags>-Wno-variadic-macros <toolset>clang:<cxxflags>-Wno-variadic-macros ;
+run hash_fs_path_test.cpp /boost//filesystem/<warnings>off  ;
+run detail_is_range_test2.cpp ;
