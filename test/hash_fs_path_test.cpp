@@ -2,6 +2,14 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
+#if defined(_MSC_VER)
+# pragma warning(disable: 4714) // forceinline not inlined
+#endif
+
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
 #include <boost/filesystem/path.hpp>
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
