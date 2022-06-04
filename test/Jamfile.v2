@@ -74,5 +74,8 @@ run hash_number_test2.cpp ;
 run hash_integral_test.cpp ;
 run hash_string_test2.cpp ;
 
-run hash_fs_path_test.cpp /boost//filesystem/<warnings>off  ;
-run detail_is_range_test2.cpp : ;
+# for gcc-4.8
+local fs-path-req = "-<toolset>gcc:<cxxflags>-Wshadow" "-<toolset>gcc:<cxxflags>-Wconversion" ;
+
+run hash_fs_path_test.cpp /boost//filesystem/<warnings>off : : : $(fs-path-req) ;
+run detail_is_range_test2.cpp : : : $(fs-path-req) ;
