@@ -14,7 +14,8 @@
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/config.hpp>
 #include <boost/filesystem/path.hpp>
-#if !defined(BOOST_NO_CXX17_HDR_FILESYSTEM)
+
+#if !defined(BOOST_NO_CXX17_HDR_FILESYSTEM) && !defined(__MINGW32__)
 # include <filesystem>
 #endif
 
@@ -25,9 +26,11 @@ int main()
     BOOST_TEST_TRAIT_FALSE((is_range< boost::filesystem::path >));
     BOOST_TEST_TRAIT_FALSE((is_range< boost::filesystem::path const >));
 
-#if !defined(BOOST_NO_CXX17_HDR_FILESYSTEM)
+#if !defined(BOOST_NO_CXX17_HDR_FILESYSTEM) && !defined(__MINGW32__)
+
     BOOST_TEST_TRAIT_FALSE((is_range< std::filesystem::path >));
     BOOST_TEST_TRAIT_FALSE((is_range< std::filesystem::path const >));
+
 #endif
 
     return boost::report_errors();
