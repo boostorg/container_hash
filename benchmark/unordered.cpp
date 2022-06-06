@@ -192,10 +192,16 @@ template<class V, class S> void test4( int N, V const& v, char const * hash, S s
 
     std::size_t n = s.bucket_count();
     std::size_t m = 0;
+    std::size_t c = 0;
 
     for( std::size_t i = 0; i < n; ++i )
     {
         std::size_t k = s.bucket_size( i );
+
+        if( k > 1 )
+        {
+            c += k - 1;
+        }
 
         if( k > m )
         {
@@ -205,11 +211,11 @@ template<class V, class S> void test4( int N, V const& v, char const * hash, S s
 
 #if defined( _MSC_VER )
 
-    std::printf( "%25s : n=%Iu, m=%Iu, q=%Iu, %lld + %lld ms\n", hash, n, m, q, ms1, ms2 );
+    std::printf( "%25s : n=%Iu, m=%Iu, c=%Iu, q=%Iu, %lld + %lld ms\n", hash, n, m, c, q, ms1, ms2 );
 
 #else
 
-    std::printf( "%25s : n=%zu, m=%zu, q=%zu, %lld + %lld ms\n", hash, n, m, q, ms1, ms2 );
+    std::printf( "%25s : n=%zu, m=%zu, c=%zu, q=%zu, %lld + %lld ms\n", hash, n, m, c, q, ms1, ms2 );
 
 #endif
 }
