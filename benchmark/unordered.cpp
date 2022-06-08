@@ -185,7 +185,66 @@ public:
     }
 };
 
-//
+// test_hash_speed
+
+template<class H, class V> void test_hash_speed( int N, V const& v )
+{
+    typedef std::chrono::steady_clock clock_type;
+
+    clock_type::time_point t1 = clock_type::now();
+
+    std::size_t q = 0;
+
+    H const h;
+
+    for( int i = 0; i < N; ++i )
+    {
+        q += h( v[i] );
+    }
+
+    clock_type::time_point t2 = clock_type::now();
+
+    long long ms1 = std::chrono::duration_cast<std::chrono::milliseconds>( t2 - t1 ).count();
+
+    std::string hash = boost::core::type_name<H>();
+
+#if defined( _MSC_VER )
+
+    std::printf( "%25s : q=%20Iu, %lld ms\n", hash.c_str(), q, ms1 );
+
+#else
+
+    std::printf( "%25s : q=%20zu, %lld ms\n", hash.c_str(), q, ms1 );
+
+#endif
+}
+
+// test_hash_collision
+
+template<class H, class V> void test_hash_collision( int N, V const& v, std::size_t n )
+{
+    boost::unordered_set<std::size_t> s;
+    H const h;
+
+    for( int i = 0; i < N; ++i )
+    {
+        s.insert( h( v[i] ) );
+    }
+
+    std::string hash = boost::core::type_name<H>();
+
+#if defined( _MSC_VER )
+
+    std::printf( "%25s : c=%Iu\n", hash.c_str(), n - s.size() );
+
+#else
+
+    std::printf( "%25s : c=%zu\n", hash.c_str(), n - s.size() );
+
+#endif
+}
+
+// test_container_speed
 
 template<class V, class S> void test4( int N, V const& v, char const * hash, S s )
 {
@@ -242,47 +301,15 @@ template<class V, class S> void test4( int N, V const& v, char const * hash, S s
 #endif
 }
 
-template<class K, class H, class V> void test3( int N, V const& v )
+template<class K, class H, class V> void test_container_speed( int N, V const& v )
 {
     boost::unordered_set<K, H> s( 0 );
     test4( N, v, boost::core::type_name<H>().c_str(), s );
 }
 
-template<class H, class V> void test2( int N, V const& v )
-{
-    typedef std::chrono::steady_clock clock_type;
-
-    clock_type::time_point t1 = clock_type::now();
-
-    std::size_t q = 0;
-
-    H const h;
-
-    for( int i = 0; i < N; ++i )
-    {
-        q += h( v[i] );
-    }
-
-    clock_type::time_point t2 = clock_type::now();
-
-    long long ms1 = std::chrono::duration_cast<std::chrono::milliseconds>( t2 - t1 ).count();
-
-    std::string hash = boost::core::type_name<H>();
-
-#if defined( _MSC_VER )
-
-    std::printf( "%25s : q=%20Iu, %lld ms\n", hash.c_str(), q, ms1 );
-
-#else
-
-    std::printf( "%25s : q=%20zu, %lld ms\n", hash.c_str(), q, ms1 );
-
-#endif
-}
-
 int main()
 {
-    int const N = 1048576;
+    int const N = 1048576 / 2; // 1048576 is too much for 32 bit
 
     std::vector<std::string> v;
 
@@ -310,27 +337,53 @@ int main()
         }
     }
 
-    typedef std::string K;
-
     std::puts( "Hash speed test:\n" );
 
-    test2<mul31_hash>( N * 16, v );
-    test2<mul31_unrolled_hash>( N * 16, v );
-    test2<fnv1a_hash>( N * 16, v );
-    test2<old_boost_hash>( N * 16, v );
-    test2<boost::hash<std::string> >( N * 16, v );
-    test2<std::hash<std::string> >( N * 16, v );
+    test_hash_speed<mul31_hash>( N * 16, v );
+    test_hash_speed<mul31_unrolled_hash>( N * 16, v );
+    test_hash_speed<fnv1a_hash>( N * 16, v );
+    test_hash_speed<old_boost_hash>( N * 16, v );
+    test_hash_speed<boost::hash<std::string> >( N * 16, v );
+    test_hash_speed<std::hash<std::string> >( N * 16, v );
 
     std::puts( "" );
 
+    std::puts( "Hash collision test:\n" );
+
+    {
+        std::size_t n = 0;
+
+        {
+            boost::unordered_set<std::string> s;
+
+            for( int i = 0; i < N * 16; ++i )
+            {
+                s.insert( v[i] );
+            }
+
+            n = s.size();
+        }
+
+        test_hash_collision<mul31_hash>( N * 16, v, n );
+        test_hash_collision<mul31_unrolled_hash>( N * 16, v, n );
+        test_hash_collision<fnv1a_hash>( N * 16, v, n );
+        test_hash_collision<old_boost_hash>( N * 16, v, n );
+        test_hash_collision<boost::hash<std::string> >( N * 16, v, n );
+        test_hash_collision<std::hash<std::string> >( N * 16, v, n );
+    }
+
+    std::puts( "" );
+
+    typedef std::string K;
+
     std::puts( "Container speed test:\n" );
 
-    test3<K, mul31_hash>( N, v );
-    test3<K, mul31_unrolled_hash>( N, v );
-    test3<K, fnv1a_hash>( N, v );
-    test3<K, old_boost_hash>( N, v );
-    test3<K, boost::hash<std::string> >( N, v );
-    test3<K, std::hash<std::string> >( N, v );
+    test_container_speed<K, mul31_hash>( N, v );
+    test_container_speed<K, mul31_unrolled_hash>( N, v );
+    test_container_speed<K, fnv1a_hash>( N, v );
+    test_container_speed<K, old_boost_hash>( N, v );
+    test_container_speed<K, boost::hash<std::string> >( N, v );
+    test_container_speed<K, std::hash<std::string> >( N, v );
 
     std::puts( "" );
 }
