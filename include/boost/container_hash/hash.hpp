@@ -77,11 +77,12 @@ namespace boost
     {
         template<class T,
             bool bigger_than_size_t = (sizeof(T) > sizeof(std::size_t)),
+            bool is_unsigned = boost::is_unsigned<T>::value,
             std::size_t size_t_bits = sizeof(std::size_t) * CHAR_BIT,
             std::size_t type_bits = sizeof(T) * CHAR_BIT>
         struct hash_integral_impl;
 
-        template<class T, std::size_t size_t_bits, std::size_t type_bits> struct hash_integral_impl<T, false, size_t_bits, type_bits>
+        template<class T, bool is_unsigned, std::size_t size_t_bits, std::size_t type_bits> struct hash_integral_impl<T, false, is_unsigned, size_t_bits, type_bits>
         {
             static std::size_t fn( T v )
             {
@@ -89,7 +90,24 @@ namespace boost
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, 32, 64>
+        template<class T, std::size_t size_t_bits, std::size_t type_bits> struct hash_integral_impl<T, true, false, size_t_bits, type_bits>
+        {
+            static std::size_t fn( T v )
+            {
+                typedef typename boost::make_unsigned<T>::type U;
+
+                if( v >= 0 )
+                {
+                    return hash_integral_impl<U>::fn( static_cast<U>( v ) );
+                }
+                else
+                {
+                    return ~hash_integral_impl<U>::fn( static_cast<U>( ~static_cast<U>( v ) ) );
+                }
+            }
+        };
+
+        template<class T> struct hash_integral_impl<T, true, true, 32, 64>
         {
             static std::size_t fn( T v )
             {
@@ -102,7 +120,7 @@ namespace boost
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, 32, 128>
+        template<class T> struct hash_integral_impl<T, true, true, 32, 128>
         {
             static std::size_t fn( T v )
             {
@@ -117,7 +135,7 @@ namespace boost
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, 64, 128>
+        template<class T> struct hash_integral_impl<T, true, true, 64, 128>
         {
             static std::size_t fn( T v )
             {
@@ -133,26 +151,10 @@ namespace boost
     } // namespace hash_detail
 
     template <typename T>
-    typename boost::enable_if_<boost::conjunction<boost::is_integral<T>, boost::is_unsigned<T> >::value, std::size_t>::type
+    typename boost::enable_if_<boost::is_integral<T>::value, std::size_t>::type
         hash_value( T v )
     {
         return hash_detail::hash_integral_impl<T>::fn( v );
-    }
-
-    template <typename T>
-    typename boost::enable_if_<boost::conjunction<boost::is_integral<T>, boost::is_signed<T> >::value, std::size_t>::type
-        hash_value( T v )
-    {
-        typedef typename boost::make_unsigned<T>::type U;
-
-        if( v >= 0 )
-        {
-            return hash_value( static_cast<U>( v ) );
-        }
-        else
-        {
-            return ~hash_value( static_cast<U>( ~static_cast<U>( v ) ) );
-        }
     }
 
     // enumeration types
