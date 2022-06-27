@@ -1,5 +1,6 @@
 // Copyright 2005-2014 Daniel James.
 // Copyright 2021 Peter Dimov.
+// Copyright 2022 Glen Joseph Fernandes (glenjofe@gmail.com)
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
@@ -78,11 +79,10 @@ namespace boost
         template<class T,
             bool bigger_than_size_t = (sizeof(T) > sizeof(std::size_t)),
             bool is_unsigned = boost::is_unsigned<T>::value,
-            std::size_t size_t_bits = sizeof(std::size_t) * CHAR_BIT,
-            std::size_t type_bits = sizeof(T) * CHAR_BIT>
+            std::size_t blocks = sizeof(T) / sizeof(std::size_t)>
         struct hash_integral_impl;
 
-        template<class T, bool is_unsigned, std::size_t size_t_bits, std::size_t type_bits> struct hash_integral_impl<T, false, is_unsigned, size_t_bits, type_bits>
+        template<class T, bool is_unsigned, std::size_t blocks> struct hash_integral_impl<T, false, is_unsigned, blocks>
         {
             static std::size_t fn( T v )
             {
@@ -90,7 +90,7 @@ namespace boost
             }
         };
 
-        template<class T, std::size_t size_t_bits, std::size_t type_bits> struct hash_integral_impl<T, true, false, size_t_bits, type_bits>
+        template<class T, std::size_t blocks> struct hash_integral_impl<T, true, false, blocks>
         {
             static std::size_t fn( T v )
             {
@@ -107,41 +107,36 @@ namespace boost
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, true, 32, 64>
+        template<class T> struct hash_integral_impl<T, true, true, 2>
         {
             static std::size_t fn( T v )
             {
+                enum {
+                    M = sizeof(std::size_t) * CHAR_BIT
+                };
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( v >> 32 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v >> M ) + ( seed << 6 ) + ( seed >> 2 );
                 seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
 
                 return seed;
             }
         };
 
-        template<class T> struct hash_integral_impl<T, true, true, 32, 128>
+        template<class T> struct hash_integral_impl<T, true, true, 4>
         {
             static std::size_t fn( T v )
             {
+                enum {
+                    M1 = sizeof(std::size_t) * CHAR_BIT,
+                    M2 = M1 + M1,
+                    M3 = M2 + M1
+                };
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( v >> 96 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v >> 64 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v >> 32 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
-
-                return seed;
-            }
-        };
-
-        template<class T> struct hash_integral_impl<T, true, true, 64, 128>
-        {
-            static std::size_t fn( T v )
-            {
-                std::size_t seed = 0;
-
-                seed ^= static_cast<std::size_t>( v >> 64 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v >> M3 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v >> M2 ) + ( seed << 6 ) + ( seed >> 2 );
+                seed ^= static_cast<std::size_t>( v >> M1 ) + ( seed << 6 ) + ( seed >> 2 );
                 seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
 
                 return seed;
