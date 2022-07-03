@@ -344,12 +344,11 @@ namespace boost
 
     // pointer types
 
-    // Implementation by Alberto Barbati and Dave Harris.
+    // `x + (x >> 3)` adjustment by Alberto Barbati and Dave Harris.
     template <class T> std::size_t hash_value( T* const& v )
     {
-        std::size_t x = static_cast<std::size_t>(
-           reinterpret_cast<boost::uintptr_t>(v));
-        return x + (x >> 3);
+        boost::uintptr_t x = reinterpret_cast<boost::uintptr_t>( v );
+        return boost::hash_value( x + (x >> 3) );
     }
 
     // array types
