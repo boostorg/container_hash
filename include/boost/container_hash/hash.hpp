@@ -163,6 +163,20 @@ namespace boost
     typename boost::enable_if_<boost::is_enum<T>::value, std::size_t>::type
         hash_value( T v )
     {
+        // This should in principle return the equivalent of
+        //
+        // boost::hash_value( to_underlying(v) );
+        //
+        // However, the C++03 implementation of underlying_type,
+        //
+        // conditional<is_signed<T>, make_signed<T>, make_unsigned<T>>::type::type
+        //
+        // generates a legitimate -Wconversion warning in is_signed,
+        // because -1 is not a valid enum value when all the enumerators
+        // are nonnegative.
+        //
+        // So the legacy implementation will have to do for now.
+
         return static_cast<std::size_t>( v );
     }
 
