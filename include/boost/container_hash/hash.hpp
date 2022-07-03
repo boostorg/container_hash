@@ -26,7 +26,9 @@
 #include <boost/type_traits/is_floating_point.hpp>
 #include <boost/type_traits/is_signed.hpp>
 #include <boost/type_traits/is_unsigned.hpp>
+#include <boost/type_traits/make_signed.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
+#include <boost/type_traits/conditional.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/conjunction.hpp>
 #include <boost/cstdint.hpp>
@@ -37,6 +39,10 @@
 #include <limits>
 #include <climits>
 #include <cstring>
+
+#if !defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
+# include <type_traits>
+#endif
 
 #if !defined(BOOST_NO_CXX11_SMART_PTR)
 # include <memory>
@@ -163,7 +169,17 @@ namespace boost
     typename boost::enable_if_<boost::is_enum<T>::value, std::size_t>::type
         hash_value( T v )
     {
-        return static_cast<std::size_t>( v );
+#if !defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
+
+        typedef typename std::underlying_type<T>::type U;
+
+#else
+
+        typedef typename boost::conditional< boost::is_signed<T>::value, boost::make_signed<T>, boost::make_unsigned<T> >::type::type U;
+
+#endif
+
+        return boost::hash_value( static_cast<U>( v ) );
     }
 
     // floating point types
