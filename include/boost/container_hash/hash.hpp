@@ -417,7 +417,7 @@ namespace boost
         return boost::hash_unordered_range( v.begin(), v.end() );
     }
 
-#if defined(BOOST_MSVC) && BOOST_MSVC >= 1910 && BOOST_MSVC < 1920 && BOOST_CXX_VERSION >= 201700L
+#if defined(_MSVC_STL_VERSION) && _MSVC_STL_VERSION == 141 && BOOST_CXX_VERSION >= 201700L
 
     // resolve ambiguity with unconstrained stdext::hash_value in <xhash> :-/
 
@@ -670,7 +670,7 @@ namespace boost
         }
     };
 
-#if defined(BOOST_MSVC) && BOOST_MSVC >= 1910 && BOOST_MSVC < 1920 && BOOST_CXX_VERSION >= 201700L
+#if defined(_MSVC_STL_VERSION) && _MSVC_STL_VERSION == 141 && BOOST_CXX_VERSION >= 201700L
 
     // msvc-14.1 has stdext::hash_value for basic_string in <xhash> :-/
 
