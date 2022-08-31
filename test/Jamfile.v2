@@ -85,3 +85,4 @@ run hash_container_test.cpp ;
 run hash_vector_test2.cpp ;
 
 run hash_string_test3.cpp ;
+run hash_string_test4.cpp ;
