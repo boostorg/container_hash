@@ -28,11 +28,16 @@ template<class It, class T, class S>
 template<class T> decltype( is_contiguous_range_check( declval<T const&>().begin(), declval<T const&>().end(), declval<T const&>().data(), declval<T const&>().data() + declval<T const&>().size(), declval<T const&>().size() ) ) is_contiguous_range_( int );
 template<class T> false_type is_contiguous_range_( ... );
 
+} // namespace hash_detail
+
+namespace container_hash
+{
+
 template<class T> struct is_contiguous_range: decltype( hash_detail::is_contiguous_range_<T>( 0 ) )
 {
 };
 
-} // namespace hash_detail
+} // namespace container_hash
 } // namespace boost
 
 #else // !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR)
@@ -46,7 +51,7 @@ template<class T> struct is_contiguous_range: decltype( hash_detail::is_contiguo
 
 namespace boost
 {
-namespace hash_detail
+namespace container_hash
 {
 
 template<class T> struct is_contiguous_range: false_type
@@ -73,7 +78,7 @@ template<class T, std::size_t N> struct is_contiguous_range< std::array<T, N> co
 
 #endif
 
-} // namespace hash_detail
+} // namespace container_hash
 } // namespace boost
 
 #endif // !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR)

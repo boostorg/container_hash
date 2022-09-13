@@ -24,11 +24,16 @@ template<class T> struct has_hasher_< T, integral_constant< bool,
 {
 };
 
-template<class T> struct is_unordered_range: integral_constant< bool, is_range<T>::value && has_hasher_<T>::value >
+} // namespace hash_detail
+
+namespace container_hash
+{
+
+template<class T> struct is_unordered_range: integral_constant< bool, is_range<T>::value && hash_detail::has_hasher_<T>::value >
 {
 };
 
-} // namespace hash_detail
+} // namespace container_hash
 } // namespace boost
 
 #endif // #ifndef BOOST_HASH_DETAIL_IS_UNORDERED_RANGE_HPP_INCLUDED

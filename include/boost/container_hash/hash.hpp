@@ -393,7 +393,7 @@ namespace boost
     // ranges (list, set, deque...)
 
     template <typename T>
-    typename boost::enable_if_<hash_detail::is_range<T>::value && !hash_detail::is_contiguous_range<T>::value && !hash_detail::is_unordered_range<T>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_range<T>::value && !container_hash::is_contiguous_range<T>::value && !container_hash::is_unordered_range<T>::value, std::size_t>::type
         hash_value( T const& v )
     {
         return boost::hash_range( v.begin(), v.end() );
@@ -402,7 +402,7 @@ namespace boost
     // contiguous ranges (string, vector, array)
 
     template <typename T>
-    typename boost::enable_if_<hash_detail::is_contiguous_range<T>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_contiguous_range<T>::value, std::size_t>::type
         hash_value( T const& v )
     {
         return boost::hash_range( v.data(), v.data() + v.size() );
@@ -411,7 +411,7 @@ namespace boost
     // unordered ranges (unordered_set, unordered_map)
 
     template <typename T>
-    typename boost::enable_if_<hash_detail::is_unordered_range<T>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_unordered_range<T>::value, std::size_t>::type
         hash_value( T const& v )
     {
         return boost::hash_unordered_range( v.begin(), v.end() );
@@ -422,7 +422,7 @@ namespace boost
     // resolve ambiguity with unconstrained stdext::hash_value in <xhash> :-/
 
     template<template<class...> class L, class... T>
-    typename boost::enable_if_<hash_detail::is_range<L<T...>>::value && !hash_detail::is_contiguous_range<L<T...>>::value && !hash_detail::is_unordered_range<L<T...>>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_range<L<T...>>::value && !container_hash::is_contiguous_range<L<T...>>::value && !container_hash::is_unordered_range<L<T...>>::value, std::size_t>::type
         hash_value( L<T...> const& v )
     {
         return boost::hash_range( v.begin(), v.end() );
@@ -431,14 +431,14 @@ namespace boost
     // contiguous ranges (string, vector, array)
 
     template<template<class...> class L, class... T>
-    typename boost::enable_if_<hash_detail::is_contiguous_range<L<T...>>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_contiguous_range<L<T...>>::value, std::size_t>::type
         hash_value( L<T...> const& v )
     {
         return boost::hash_range( v.data(), v.data() + v.size() );
     }
 
     template<template<class, std::size_t> class L, class T, std::size_t N>
-    typename boost::enable_if_<hash_detail::is_contiguous_range<L<T, N>>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_contiguous_range<L<T, N>>::value, std::size_t>::type
         hash_value( L<T, N> const& v )
     {
         return boost::hash_range( v.data(), v.data() + v.size() );
@@ -447,7 +447,7 @@ namespace boost
     // unordered ranges (unordered_set, unordered_map)
 
     template<template<class...> class L, class... T>
-    typename boost::enable_if_<hash_detail::is_unordered_range<L<T...>>::value, std::size_t>::type
+    typename boost::enable_if_<container_hash::is_unordered_range<L<T...>>::value, std::size_t>::type
         hash_value( L<T...> const& v )
     {
         return boost::hash_unordered_range( v.begin(), v.end() );

@@ -30,7 +30,7 @@ struct X
 
 int main()
 {
-    using boost::hash_detail::is_unordered_range;
+    using boost::container_hash::is_unordered_range;
 
     BOOST_TEST_TRAIT_FALSE((is_unordered_range<void>));
     BOOST_TEST_TRAIT_FALSE((is_unordered_range<void const>));

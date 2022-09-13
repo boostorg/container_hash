@@ -16,10 +16,10 @@
 
 namespace boost
 {
+#if !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR) && !BOOST_WORKAROUND(BOOST_GCC, < 40700)
+
 namespace hash_detail
 {
-
-#if !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR) && !BOOST_WORKAROUND(BOOST_GCC, < 40700)
 
 template<class T, class It>
     integral_constant< bool, !is_same<typename remove_cv<T>::type, typename std::iterator_traits<It>::value_type>::value >
@@ -28,11 +28,21 @@ template<class T, class It>
 template<class T> decltype( is_range_check<T>( declval<T const&>().begin(), declval<T const&>().end() ) ) is_range_( int );
 template<class T> false_type is_range_( ... );
 
-template<class T> struct is_range: decltype( is_range_<T>( 0 ) )
+} // namespace hash_detail
+
+namespace container_hash
+{
+
+template<class T> struct is_range: decltype( hash_detail::is_range_<T>( 0 ) )
 {
 };
 
+} // namespace container_hash
+
 #else
+
+namespace hash_detail
+{
 
 template<class T, class E = true_type> struct is_range_: false_type
 {
@@ -45,13 +55,19 @@ template<class T> struct is_range_< T, integral_constant< bool,
 {
 };
 
-template<class T> struct is_range: is_range_<T>
+} // namespace hash_detail
+
+namespace container_hash
+{
+
+template<class T> struct is_range: hash_detail::is_range_<T>
 {
 };
 
+} // namespace container_hash
+
 #endif // !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR)
 
-} // namespace hash_detail
 } // namespace boost
 
 #endif // #ifndef BOOST_HASH_DETAIL_IS_RANGE_HPP_INCLUDED
