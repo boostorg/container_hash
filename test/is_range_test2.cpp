@@ -10,7 +10,7 @@
 # pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
 
-#include <boost/container_hash/detail/is_range.hpp>
+#include <boost/container_hash/is_range.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/config.hpp>
 #include <boost/filesystem/path.hpp>

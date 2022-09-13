@@ -17,9 +17,9 @@
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
 
 #include <boost/container_hash/hash_fwd.hpp>
-#include <boost/container_hash/detail/is_range.hpp>
-#include <boost/container_hash/detail/is_contiguous_range.hpp>
-#include <boost/container_hash/detail/is_unordered_range.hpp>
+#include <boost/container_hash/is_range.hpp>
+#include <boost/container_hash/is_contiguous_range.hpp>
+#include <boost/container_hash/is_unordered_range.hpp>
 #include <boost/container_hash/detail/hash_tuple.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>

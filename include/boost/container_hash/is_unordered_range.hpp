@@ -2,10 +2,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
-#ifndef BOOST_HASH_DETAIL_IS_UNORDERED_RANGE_HPP_INCLUDED
-#define BOOST_HASH_DETAIL_IS_UNORDERED_RANGE_HPP_INCLUDED
+#ifndef BOOST_HASH_IS_UNORDERED_RANGE_HPP_INCLUDED
+#define BOOST_HASH_IS_UNORDERED_RANGE_HPP_INCLUDED
 
-#include <boost/container_hash/detail/is_range.hpp>
+#include <boost/container_hash/is_range.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/is_same.hpp>
 
@@ -36,4 +36,4 @@ template<class T> struct is_unordered_range: integral_constant< bool, is_range<T
 } // namespace container_hash
 } // namespace boost
 
-#endif // #ifndef BOOST_HASH_DETAIL_IS_UNORDERED_RANGE_HPP_INCLUDED
+#endif // #ifndef BOOST_HASH_IS_UNORDERED_RANGE_HPP_INCLUDED

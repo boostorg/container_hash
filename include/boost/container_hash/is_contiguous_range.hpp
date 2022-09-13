@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
-#ifndef BOOST_HASH_DETAIL_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
-#define BOOST_HASH_DETAIL_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
+#ifndef BOOST_HASH_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
+#define BOOST_HASH_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
 
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/config.hpp>
@@ -83,4 +83,4 @@ template<class T, std::size_t N> struct is_contiguous_range< std::array<T, N> co
 
 #endif // !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR)
 
-#endif // #ifndef BOOST_HASH_DETAIL_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
+#endif // #ifndef BOOST_HASH_IS_CONTIGUOUS_RANGE_HPP_INCLUDED

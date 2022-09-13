@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
-#ifndef BOOST_HASH_DETAIL_IS_RANGE_HPP_INCLUDED
-#define BOOST_HASH_DETAIL_IS_RANGE_HPP_INCLUDED
+#ifndef BOOST_HASH_IS_RANGE_HPP_INCLUDED
+#define BOOST_HASH_IS_RANGE_HPP_INCLUDED
 
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/is_integral.hpp>
@@ -70,4 +70,4 @@ template<class T> struct is_range: hash_detail::is_range_<T>
 
 } // namespace boost
 
-#endif // #ifndef BOOST_HASH_DETAIL_IS_RANGE_HPP_INCLUDED
+#endif // #ifndef BOOST_HASH_IS_RANGE_HPP_INCLUDED

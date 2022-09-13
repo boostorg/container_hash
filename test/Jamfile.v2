@@ -62,9 +62,9 @@ build-project ../examples ;
 
 run hash_reference_values.cpp ;
 
-run detail_is_range_test.cpp ;
-run detail_is_contiguous_range_test.cpp ;
-run detail_is_unordered_range_test.cpp ;
+run is_range_test.cpp ;
+run is_contiguous_range_test.cpp ;
+run is_unordered_range_test.cpp ;
 
 run hash_forward_list_test.cpp ;
 
@@ -78,7 +78,7 @@ run hash_string_test2.cpp ;
 local fs-path-req = "-<toolset>gcc:<cxxflags>-Wshadow" "-<toolset>gcc:<cxxflags>-Wconversion" ;
 
 run hash_fs_path_test.cpp /boost//filesystem/<warnings>off : : : $(fs-path-req) <toolset>msvc-14.0,<cxxstd>latest:<build>no ;
-run detail_is_range_test2.cpp : : : $(fs-path-req) ;
+run is_range_test2.cpp : : : $(fs-path-req) ;
 
 run hash_container_test.cpp ;
 
