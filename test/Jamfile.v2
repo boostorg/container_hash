@@ -88,3 +88,4 @@ run hash_string_test3.cpp ;
 run hash_string_test4.cpp ;
 
 run hash_multiset_test.cpp ;
+run hash_multimap_test.cpp ;
