@@ -96,3 +96,4 @@ run hash_unordered_multiset_test.cpp ;
 run hash_unordered_multimap_test.cpp ;
 
 run hash_unordered_set_test.cpp ;
+run hash_unordered_map_test.cpp ;
