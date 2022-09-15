@@ -637,22 +637,54 @@ namespace boost
     //
 
     template <class It>
-    inline std::size_t hash_range(It first, It last)
+    inline void hash_range( std::size_t& seed, It first, It last )
+    {
+        for( ; first != last; ++first )
+        {
+            hash_combine<typename std::iterator_traits<It>::value_type>( seed, *first );
+        }
+    }
+
+    template <class It>
+    inline std::size_t hash_range( It first, It last )
     {
         std::size_t seed = 0;
 
-        hash_range(seed, first, last);
+        hash_range( seed, first, last );
 
         return seed;
     }
 
+    //
+    // boost::hash_unordered_range
+    //
+
     template <class It>
-    inline void hash_range(std::size_t& seed, It first, It last)
+    inline void hash_unordered_range( std::size_t& seed, It first, It last )
     {
-        for(; first != last; ++first)
+        std::size_t r = 0;
+        std::size_t const s2( seed );
+
+        for( ; first != last; ++first )
         {
-            hash_combine<typename std::iterator_traits<It>::value_type>(seed, *first);
+            std::size_t s3( s2 );
+
+            hash_combine<typename std::iterator_traits<It>::value_type>( s3, *first );
+
+            r += s3;
         }
+
+        seed += r;
+    }
+
+    template <class It>
+    inline std::size_t hash_unordered_range( It first, It last )
+    {
+        std::size_t seed = 0;
+
+        hash_unordered_range( seed, first, last );
+
+        return seed;
     }
 
     //

@@ -89,3 +89,5 @@ run hash_string_test4.cpp ;
 
 run hash_multiset_test.cpp ;
 run hash_multimap_test.cpp ;
+
+run hash_unordered_range_test.cpp ;
