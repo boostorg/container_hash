@@ -1,17 +1,11 @@
 // Copyright 2005-2014 Daniel James.
-// Copyright 2021 Peter Dimov.
+// Copyright 2021, 2022 Peter Dimov.
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
 // Based on Peter Dimov's proposal
 // http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2005/n1756.pdf
 // issue 6.18.
-//
-// This also contains public domain code from MurmurHash. From the
-// MurmurHash header:
-
-// MurmurHash3 was written by Austin Appleby, and is placed in the public
-// domain. The author hereby disclaims copyright to this source code.
 
 #ifndef BOOST_FUNCTIONAL_HASH_HASH_HPP
 #define BOOST_FUNCTIONAL_HASH_HASH_HPP
@@ -21,6 +15,7 @@
 #include <boost/container_hash/is_contiguous_range.hpp>
 #include <boost/container_hash/is_unordered_range.hpp>
 #include <boost/container_hash/detail/hash_tuple.hpp>
+#include <boost/container_hash/detail/hash_mix.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
@@ -56,12 +51,6 @@
 
 #if !defined(BOOST_NO_CXX17_HDR_VARIANT)
 #include <variant>
-#endif
-
-#if defined(_MSC_VER)
-#   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) _rotl(x,r)
-#else
-#   define BOOST_FUNCTIONAL_HASH_ROTL32(x, r) (x << r) | (x >> (32 - r))
 #endif
 
 namespace boost
@@ -558,81 +547,11 @@ namespace boost
     // boost::hash_combine
     //
 
-    namespace hash_detail
-    {
-
-        template<std::size_t Bits> struct hash_combine_impl
-        {
-            template <typename SizeT>
-            inline static SizeT fn(SizeT seed, SizeT value)
-            {
-                seed ^= value + 0x9e3779b9 + (seed<<6) + (seed>>2);
-                return seed;
-            }
-        };
-
-        template<> struct hash_combine_impl<32>
-        {
-            inline static boost::uint32_t fn(boost::uint32_t h1, boost::uint32_t k1)
-            {
-                const boost::uint32_t c1 = 0xcc9e2d51;
-                const boost::uint32_t c2 = 0x1b873593;
-
-                k1 *= c1;
-                k1 = BOOST_FUNCTIONAL_HASH_ROTL32(k1,15);
-                k1 *= c2;
-
-                h1 ^= k1;
-                h1 = BOOST_FUNCTIONAL_HASH_ROTL32(h1,13);
-                h1 = h1*5+0xe6546b64;
-
-                return h1;
-            }
-        };
-
-        template<> struct hash_combine_impl<64>
-        {
-            inline static boost::uint64_t fn(boost::uint64_t h, boost::uint64_t k)
-            {
-                const boost::uint64_t m = (boost::uint64_t(0xc6a4a793) << 32) + 0x5bd1e995;
-                const int r = 47;
-
-                k *= m;
-                k ^= k >> r;
-                k *= m;
-
-                h ^= k;
-                h *= m;
-
-                // Completely arbitrary number, to prevent 0's
-                // from hashing to 0.
-                h += 0xe6546b64;
-
-                return h;
-            }
-        };
-    }
-
-#if defined(BOOST_MSVC)
-#pragma warning(push)
-#if BOOST_MSVC <= 1400
-#pragma warning(disable:4267) // 'argument' : conversion from 'size_t' to
-                              // 'unsigned int', possible loss of data
-                              // A misguided attempt to detect 64-bit
-                              // incompatability.
-#endif
-#endif
-
     template <class T>
-    inline void hash_combine(std::size_t& seed, T const& v)
+    inline void hash_combine( std::size_t& seed, T const& v )
     {
-        boost::hash<T> hasher;
-        seed = boost::hash_detail::hash_combine_impl<sizeof(std::size_t) * CHAR_BIT>::fn(seed, hasher(v));
+        seed = boost::hash_detail::hash_mix( seed + 0x9e3779b9 + boost::hash<T>()( v ) );
     }
-
-#if defined(BOOST_MSVC)
-#pragma warning(pop)
-#endif
 
     //
     // boost::hash_range
