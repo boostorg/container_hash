@@ -362,8 +362,7 @@ namespace boost
         std::size_t re = boost::hash<T>()( v.real() );
         std::size_t im = boost::hash<T>()( v.imag() );
 
-        im ^= re + ( im << 6 ) + ( im >> 2 );
-        return im;
+        return re + hash_detail::hash_mix( im );
     }
 
     // pair
