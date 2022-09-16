@@ -17,6 +17,11 @@
 BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_HDR_UNORDERED_SET is defined" )
 int main() {}
 
+#elif defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && defined(_CPPLIB_VER) && _CPPLIB_VER >= 520
+
+BOOST_PRAGMA_MESSAGE( "Test skipped, _CPPLIB_VER >= 520 and BOOST_NO_CXX11_VARIADIC_TEMPLATES is defined" )
+int main() {}
+
 #else
 
 #include <unordered_set>
