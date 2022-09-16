@@ -102,8 +102,8 @@ namespace boost
             {
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( v >> 32 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( v >> 32 ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( v ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -115,10 +115,10 @@ namespace boost
             {
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( v >> 96 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v >> 64 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v >> 32 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( v >> 96 ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( v >> 64 ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( v >> 32 ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( v ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -130,8 +130,8 @@ namespace boost
             {
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( v >> 64 ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( v ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( v >> 64 ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( v ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
