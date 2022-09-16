@@ -232,12 +232,12 @@ int main()
 
 #else
 
-    BOOST_TEST_EQ( hv(1.0L), 11529215046068486143ULL );
-    BOOST_TEST_EQ( hv(-1.0L), 11529215046068518911ULL );
-    BOOST_TEST_EQ( hv(3.14L), 12059468778148142067ULL );
-    BOOST_TEST_EQ( hv(-3.14L), 12059468778147191795ULL );
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 11529215046068502527ULL );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 11529215046068535295ULL );
+    BOOST_TEST_EQ( hv(1.0L), 14512804315381774303ULL );
+    BOOST_TEST_EQ( hv(-1.0L), 14512804315381807071ULL );
+    BOOST_TEST_EQ( hv(3.14L), 7050250738942431198ULL );
+    BOOST_TEST_EQ( hv(-3.14L), 7050250738942463966ULL );
+    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 14512804315381790687ULL );
+    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 14512804315381823455ULL );
 
 #endif
 
