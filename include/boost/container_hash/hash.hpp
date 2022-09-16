@@ -560,7 +560,7 @@ namespace boost
     template <class It>
     inline void hash_range( std::size_t& seed, It first, It last )
     {
-        hash_detail::hash_range( seed, first, last );
+        seed = hash_detail::hash_range( seed, first, last );
     }
 
     template <class It>

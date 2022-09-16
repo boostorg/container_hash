@@ -8,6 +8,7 @@
 #include <boost/container_hash/hash_fwd.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/enable_if.hpp>
+#include <boost/type_traits/is_same.hpp>
 #include <boost/cstdint.hpp>
 #include <cstddef>
 #include <climits>
@@ -29,21 +30,25 @@ template<> struct is_char_type<unsigned char>: public boost::true_type {};
 #endif
 
 template<class It>
-inline typename boost::enable_if_< !is_char_type<typename std::iterator_traits<It>::value_type>::value >::type
-    hash_range( std::size_t& seed, It first, It last )
+inline typename boost::enable_if_<
+    !is_char_type<typename std::iterator_traits<It>::value_type>::value,
+std::size_t >::type
+    hash_range( std::size_t seed, It first, It last )
 {
     for( ; first != last; ++first )
     {
         hash_combine<typename std::iterator_traits<It>::value_type>( seed, *first );
     }
+
+    return seed;
 }
 
 template<class It>
 inline typename boost::enable_if_<
     is_char_type<typename std::iterator_traits<It>::value_type>::value &&
-    is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value
->::type
-    hash_range( std::size_t& seed, It first, It last )
+    is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value,
+std::size_t>::type
+    hash_range( std::size_t seed, It first, It last )
 {
     std::size_t n = static_cast<std::size_t>( last - first );
 
@@ -99,14 +104,16 @@ inline typename boost::enable_if_<
 
         hash_combine( seed, w );
     }
+
+    return seed;
 }
 
 template<class It>
 inline typename boost::enable_if_<
     is_char_type<typename std::iterator_traits<It>::value_type>::value &&
-    !is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value
->::type
-    hash_range( std::size_t& seed, It first, It last )
+    !is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value,
+std::size_t>::type
+    hash_range( std::size_t seed, It first, It last )
 {
     for( ;; )
     {
@@ -115,7 +122,7 @@ inline typename boost::enable_if_<
         if( first == last )
         {
             hash_combine( seed, w | 0x01u );
-            return;
+            return seed;
         }
 
         w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) );
@@ -124,7 +131,7 @@ inline typename boost::enable_if_<
         if( first == last )
         {
             hash_combine( seed, w | 0x0100u );
-            return;
+            return seed;
         }
 
         w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 8;
@@ -133,7 +140,7 @@ inline typename boost::enable_if_<
         if( first == last )
         {
             hash_combine( seed, w | 0x010000u );
-            return;
+            return seed;
         }
 
         w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 16;
@@ -142,7 +149,7 @@ inline typename boost::enable_if_<
         if( first == last )
         {
             hash_combine( seed, w | 0x01000000u );
-            return;
+            return seed;
         }
 
         w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 24;
