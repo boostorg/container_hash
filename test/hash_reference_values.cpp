@@ -169,12 +169,12 @@ int main()
 
     BOOST_TEST_EQ( hv(1.0), 1072693248U );
     BOOST_TEST_EQ( hv(-1.0), 3220176896U );
-    BOOST_TEST_EQ( hv(3.14), 2660156064U );
-    BOOST_TEST_EQ( hv(-3.14), 512672416U );
-    BOOST_TEST_EQ( hv(1e-308), 1553872728U );
-    BOOST_TEST_EQ( hv(-1e-308), 3701356376U );
-    BOOST_TEST_EQ( hv(1e+308), 2577739707U );
-    BOOST_TEST_EQ( hv(-1e+308), 430256059U );
+    BOOST_TEST_EQ( hv(3.14), 3972386992U );
+    BOOST_TEST_EQ( hv(-3.14), 1824903344U );
+    BOOST_TEST_EQ( hv(1e-308), 2213556530U );
+    BOOST_TEST_EQ( hv(-1e-308), 66072882U );
+    BOOST_TEST_EQ( hv(1e+308), 2623678890U );
+    BOOST_TEST_EQ( hv(-1e+308), 476195242U );
     BOOST_TEST_EQ( hv(std::numeric_limits<double>::infinity()), 2146435072U );
     BOOST_TEST_EQ( hv(-std::numeric_limits<double>::infinity()), 4293918720U );
 
@@ -203,8 +203,8 @@ int main()
 
     BOOST_TEST_EQ( hv(1.0L), 1072693248U );
     BOOST_TEST_EQ( hv(-1.0L), 3220176896U );
-    BOOST_TEST_EQ( hv(3.14L), 2660156064U );
-    BOOST_TEST_EQ( hv(-3.14L), 512672416U );
+    BOOST_TEST_EQ( hv(3.14L), 3972386992U );
+    BOOST_TEST_EQ( hv(-3.14L), 1824903344U );
     BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 2146435072U );
     BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4293918720U );
 
