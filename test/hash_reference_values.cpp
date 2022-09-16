@@ -109,7 +109,7 @@ int main()
     BOOST_TEST_EQ( hv(1ULL), 1 );
     BOOST_TEST_EQ( hv(65535ULL), 65535 );
 #if SIZE_MAX == 4294967295U
-    BOOST_TEST_EQ( hv((unsigned long long)-1), 3221225537U );
+    BOOST_TEST_EQ( hv((unsigned long long)-1), 2578835074U );
 #else
     BOOST_TEST_EQ( hv((unsigned long long)-1), (std::size_t)-1 );
 #endif
@@ -141,7 +141,7 @@ int main()
 
 #else
 
-    BOOST_TEST_EQ( hv((uint128)-1), 13835058055282163777ULL );
+    BOOST_TEST_EQ( hv((uint128)-1), 10287990671619978405ULL );
 
 #endif
 
