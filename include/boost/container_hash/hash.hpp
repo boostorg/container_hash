@@ -212,8 +212,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -229,8 +229,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -245,9 +245,9 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[2] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[2] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -263,8 +263,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -279,9 +279,9 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[2] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[2] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -297,8 +297,8 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
@@ -313,10 +313,10 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed ^= static_cast<std::size_t>( w[0] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[1] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[2] ) + ( seed << 6 ) + ( seed >> 2 );
-                seed ^= static_cast<std::size_t>( w[3] ) + ( seed << 6 ) + ( seed >> 2 );
+                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[2] ) + hash_detail::hash_mix( seed );
+                seed = static_cast<std::size_t>( w[3] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
