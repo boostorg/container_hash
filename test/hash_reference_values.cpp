@@ -290,17 +290,18 @@ int main()
     // complex<int>
     BOOST_TEST_EQ( hv(std::complex<int>(0, 0)), 0U );
     BOOST_TEST_EQ( hv(std::complex<int>(+1, 0)), 1U );
-    BOOST_TEST_EQ( hv(std::complex<int>(0, +1)), 65U );
 
 #if SIZE_MAX == 4294967295U
 
+    BOOST_TEST_EQ( hv(std::complex<int>(0, +1)), 2261973619U );
     BOOST_TEST_EQ( hv(std::complex<int>(-1, 0)), 4294967295U );
-    BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 3221225536U );
+    BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 2578835075U );
 
 #else
 
+    BOOST_TEST_EQ( hv(std::complex<int>(0, +1)), 13608915716659090931U );
     BOOST_TEST_EQ( hv(std::complex<int>(-1, 0)), 18446744073709551615ULL );
-    BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 13835058055282163776ULL );
+    BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 10287990671619978406ULL );
 
 #endif
 
@@ -311,13 +312,13 @@ int main()
 
 #if SIZE_MAX == 4294967295U
 
-    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, +1.0f)), 3495952384U );
-    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, -1.0f)), 2959081472U );
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, +1.0f)), 1867597054U );
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, -1.0f)), 1969397420U );
 
 #else
 
-    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, +1.0f)), 67920461824ULL );
-    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, -1.0f)), 209117511680ULL );
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, +1.0f)), 1260547444531503442ULL );
+    BOOST_TEST_EQ( hv(std::complex<float>(0.0f, -1.0f)), 16057162702393538507ULL );
 
 #endif
 
@@ -328,15 +329,15 @@ int main()
 
     BOOST_TEST_EQ( hv(std::complex<double>(+1.0, 0.0)), 1072693248U );
     BOOST_TEST_EQ( hv(std::complex<double>(-1.0, 0.0)), 3220176896U );
-    BOOST_TEST_EQ( hv(std::complex<double>(0.0, +1.0)), 873201664U );
-    BOOST_TEST_EQ( hv(std::complex<double>(0.0, -1.0)), 2483814400U );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, +1.0)), 2619008688U );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, -1.0)), 146497060U );
 
 #else
 
     BOOST_TEST_EQ( hv(std::complex<double>(+1.0, 0.0)), 4607182418800017408ULL );
     BOOST_TEST_EQ( hv(std::complex<double>(-1.0, 0.0)), 13830554455654793216ULL );
-    BOOST_TEST_EQ( hv(std::complex<double>(0.0, +1.0)), 3750372589692780544ULL );
-    BOOST_TEST_EQ( hv(std::complex<double>(0.0, -1.0)), 10667901617333862400ULL );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, +1.0)), 5354450804264310069ULL );
+    BOOST_TEST_EQ( hv(std::complex<double>(0.0, -1.0)), 11008692613062313397ULL );
 
 #endif
 
