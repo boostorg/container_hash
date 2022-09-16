@@ -122,9 +122,9 @@ int main()
     complex_integral_tests((unsigned long*) 0);
 
     complex_grid_test<int>( 16 );
-    complex_grid_test<float>( 7 );
+    complex_grid_test<float>( 16 );
     complex_grid_test<double>( 16 );
-    complex_grid_test<long double>( 15 );
+    complex_grid_test<long double>( 16 );
 
     return boost::report_errors();
 }
