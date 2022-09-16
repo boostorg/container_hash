@@ -275,11 +275,11 @@ int main()
 
 #else
 
-    BOOST_TEST_EQ( hv(std::string()), 0 );
-    BOOST_TEST_EQ( hv(std::string("abc")), 17736246373122650712ULL );
-    BOOST_TEST_EQ( hv(std::string("\0", 1)), 8006145293405189825ULL );
-    BOOST_TEST_EQ( hv(std::string("\0\0", 2)), 7439257709208145534ULL );
-    BOOST_TEST_EQ( hv(std::string("\0\0\0", 3)), 7286414041821110851ULL );
+    BOOST_TEST_EQ( hv(std::string()), 10645185168516823943ULL );
+    BOOST_TEST_EQ( hv(std::string("abc")), 14563236671082775605ULL );
+    BOOST_TEST_EQ( hv(std::string("\0", 1)), 9256685384866056948ULL );
+    BOOST_TEST_EQ( hv(std::string("\0\0", 2)), 13684215574975288094ULL );
+    BOOST_TEST_EQ( hv(std::string("\0\0\0", 3)), 16454809222747503401ULL );
 
 #endif
 
@@ -366,10 +366,10 @@ int main()
 
 #else
 
-    BOOST_TEST_EQ( hv(std::vector<char>(0)), 0 );
-    BOOST_TEST_EQ( hv(std::vector<char>(1)), 8006145293405189825ULL );
-    BOOST_TEST_EQ( hv(std::vector<char>(2)), 7439257709208145534ULL );
-    BOOST_TEST_EQ( hv(std::vector<char>(3)), 7286414041821110851ULL );
+    BOOST_TEST_EQ( hv(std::vector<char>(0)), 10645185168516823943ULL );
+    BOOST_TEST_EQ( hv(std::vector<char>(1)), 9256685384866056948ULL );
+    BOOST_TEST_EQ( hv(std::vector<char>(2)), 13684215574975288094ULL );
+    BOOST_TEST_EQ( hv(std::vector<char>(3)), 16454809222747503401ULL );
 
 #endif
 
@@ -417,10 +417,10 @@ int main()
 
 #else
 
-    BOOST_TEST_EQ( hv(std::list<char>(0)), 0 );
-    BOOST_TEST_EQ( hv(std::list<char>(1)), 8006145293405189825ULL );
-    BOOST_TEST_EQ( hv(std::list<char>(2)), 7439257709208145534ULL );
-    BOOST_TEST_EQ( hv(std::list<char>(3)), 7286414041821110851ULL );
+    BOOST_TEST_EQ( hv(std::list<char>(0)), 10645185168516823943ULL );
+    BOOST_TEST_EQ( hv(std::list<char>(1)), 9256685384866056948ULL );
+    BOOST_TEST_EQ( hv(std::list<char>(2)), 13684215574975288094ULL );
+    BOOST_TEST_EQ( hv(std::list<char>(3)), 16454809222747503401ULL );
 
 #endif
 
