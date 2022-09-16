@@ -267,11 +267,11 @@ int main()
     // string
 #if SIZE_MAX == 4294967295U
 
-    BOOST_TEST_EQ( hv(std::string()), 0 );
-    BOOST_TEST_EQ( hv(std::string("abc")), 1060977432U );
-    BOOST_TEST_EQ( hv(std::string("\0", 1)), 1684164658U );
-    BOOST_TEST_EQ( hv(std::string("\0\0", 2)), 3385628684U );
-    BOOST_TEST_EQ( hv(std::string("\0\0\0", 3)), 354805152U );
+    BOOST_TEST_EQ( hv(std::string()), 1580013426U );
+    BOOST_TEST_EQ( hv(std::string("abc")), 469308065U );
+    BOOST_TEST_EQ( hv(std::string("\0", 1)), 165258820U );
+    BOOST_TEST_EQ( hv(std::string("\0\0", 2)), 4017288109U );
+    BOOST_TEST_EQ( hv(std::string("\0\0\0", 3)), 1352445396U );
 
 #else
 
@@ -359,10 +359,10 @@ int main()
     // vector<char>
 #if SIZE_MAX == 4294967295U
 
-    BOOST_TEST_EQ( hv(std::vector<char>(0)), 0 );
-    BOOST_TEST_EQ( hv(std::vector<char>(1)), 1684164658U );
-    BOOST_TEST_EQ( hv(std::vector<char>(2)), 3385628684U );
-    BOOST_TEST_EQ( hv(std::vector<char>(3)), 354805152U );
+    BOOST_TEST_EQ( hv(std::vector<char>(0)), 1580013426U );
+    BOOST_TEST_EQ( hv(std::vector<char>(1)), 165258820U );
+    BOOST_TEST_EQ( hv(std::vector<char>(2)), 4017288109U );
+    BOOST_TEST_EQ( hv(std::vector<char>(3)), 1352445396U );
 
 #else
 
@@ -410,10 +410,10 @@ int main()
     // list<char>
 #if SIZE_MAX == 4294967295U
 
-    BOOST_TEST_EQ( hv(std::list<char>(0)), 0 );
-    BOOST_TEST_EQ( hv(std::list<char>(1)), 1684164658U );
-    BOOST_TEST_EQ( hv(std::list<char>(2)), 3385628684U );
-    BOOST_TEST_EQ( hv(std::list<char>(3)), 354805152U );
+    BOOST_TEST_EQ( hv(std::list<char>(0)), 1580013426U );
+    BOOST_TEST_EQ( hv(std::list<char>(1)), 165258820U );
+    BOOST_TEST_EQ( hv(std::list<char>(2)), 4017288109U );
+    BOOST_TEST_EQ( hv(std::list<char>(3)), 1352445396U );
 
 #else
 
