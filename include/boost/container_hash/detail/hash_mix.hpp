@@ -52,7 +52,7 @@ template<std::size_t Bits> struct hash_mix_impl;
 //	x *= 0xe9846af9b1a615d;
 //	x ^= x >> 32;
 //	x *= 0xe9846af9b1a615d;
-//	x ^= x >> 28;    	
+//	x ^= x >> 28;
 //
 // An equally good alternative is Pelle Evensen's Moremur:
 //
@@ -68,7 +68,7 @@ template<> struct hash_mix_impl<64>
 {
     inline static boost::uint64_t fn( boost::uint64_t x )
     {
-        boost::uint64_t const m = (boost::uint64_t(0xe9846af9) << 32) + 0xb1a615d;
+        boost::uint64_t const m = (boost::uint64_t(0xe9846af) << 32) + 0x9b1a615d;
 
         x ^= x >> 32;
         x *= m;
