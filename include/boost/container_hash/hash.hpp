@@ -16,6 +16,7 @@
 #include <boost/container_hash/is_unordered_range.hpp>
 #include <boost/container_hash/detail/hash_tuple.hpp>
 #include <boost/container_hash/detail/hash_mix.hpp>
+#include <boost/container_hash/detail/hash_range.hpp>
 #include <boost/type_traits/is_enum.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
@@ -559,10 +560,7 @@ namespace boost
     template <class It>
     inline void hash_range( std::size_t& seed, It first, It last )
     {
-        for( ; first != last; ++first )
-        {
-            hash_combine<typename std::iterator_traits<It>::value_type>( seed, *first );
-        }
+        hash_detail::hash_range( seed, first, last );
     }
 
     template <class It>
