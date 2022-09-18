@@ -99,3 +99,4 @@ run hash_unordered_set_test.cpp ;
 run hash_unordered_map_test.cpp ;
 
 run is_range_test3.cpp ;
+run is_contiguous_range_test2.cpp ;

@@ -5,6 +5,7 @@
 #ifndef BOOST_HASH_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
 #define BOOST_HASH_IS_CONTIGUOUS_RANGE_HPP_INCLUDED
 
+#include <boost/container_hash/is_range.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/config.hpp>
 #include <boost/config/workaround.hpp>
@@ -28,12 +29,16 @@ template<class It, class T, class S>
 template<class T> decltype( is_contiguous_range_check( declval<T const&>().begin(), declval<T const&>().end(), declval<T const&>().data(), declval<T const&>().data() + declval<T const&>().size(), declval<T const&>().size() ) ) is_contiguous_range_( int );
 template<class T> false_type is_contiguous_range_( ... );
 
+template<class T> struct is_contiguous_range: decltype( hash_detail::is_contiguous_range_<T>( 0 ) )
+{
+};
+
 } // namespace hash_detail
 
 namespace container_hash
 {
 
-template<class T> struct is_contiguous_range: decltype( hash_detail::is_contiguous_range_<T>( 0 ) )
+template<class T> struct is_contiguous_range: integral_constant< bool, is_range<T>::value && hash_detail::is_contiguous_range<T>::value >
 {
 };
 
