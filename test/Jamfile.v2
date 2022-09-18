@@ -100,3 +100,4 @@ run hash_unordered_map_test.cpp ;
 
 run is_range_test3.cpp ;
 run is_contiguous_range_test2.cpp ;
+run is_unordered_range_test2.cpp ;
