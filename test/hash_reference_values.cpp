@@ -21,6 +21,10 @@ int main() {}
 # pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
 
+#if defined(_MSC_VER)
+# pragma warning(disable: 4127) // conditional expression is constant
+#endif
+
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <string>
@@ -197,49 +201,55 @@ int main()
     BOOST_TEST_EQ( hv(0.0L), 0 );
     BOOST_TEST_EQ( hv(-0.0L), 0 );
 
-#if defined(_WIN32) && !defined(__GNUC__) // Under MS ABI, long double == double
+    int const ldbits = sizeof( long double ) * CHAR_BIT;
 
 #if SIZE_MAX == 4294967295U
 
-    BOOST_TEST_EQ( hv(1.0L), 1072693248U );
-    BOOST_TEST_EQ( hv(-1.0L), 3220176896U );
-    BOOST_TEST_EQ( hv(3.14L), 3972386992U );
-    BOOST_TEST_EQ( hv(-3.14L), 1824903344U );
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 2146435072U );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4293918720U );
+    if( ldbits == 64 )
+    {
+        BOOST_TEST_EQ( hv(1.0L), 1072693248U );
+        BOOST_TEST_EQ( hv(-1.0L), 3220176896U );
+        BOOST_TEST_EQ( hv(3.14L), 3972386992U );
+        BOOST_TEST_EQ( hv(-3.14L), 1824903344U );
+        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 2146435072U );
+        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 4293918720U );
+    }
+    else
+    {
+        BOOST_TEST_EQ( hv(1.0L), 3770520689U );
+        BOOST_TEST_EQ( hv(-1.0L), 3770553457U );
+        BOOST_TEST_EQ( hv(3.14L), 1150018772U );
+        BOOST_TEST_EQ( hv(-3.14L), 1150051540U );
+        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 3770537073U );
+        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 3770569841U );
+    }
 
 #else
 
-    BOOST_TEST_EQ( hv(1.0L), 4607182418800017408ULL );
-    BOOST_TEST_EQ( hv(-1.0L), 13830554455654793216ULL );
-    BOOST_TEST_EQ( hv(3.14L), 4614253070214989087ULL );
-    BOOST_TEST_EQ( hv(-3.14L), 13837625107069764895ULL );
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 9218868437227405312ULL );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18442240474082181120ULL );
-
-#endif
-
-#else
-
-#if SIZE_MAX == 4294967295U
-
-    BOOST_TEST_EQ( hv(1.0L), 3770520689U );
-    BOOST_TEST_EQ( hv(-1.0L), 3770553457U );
-    BOOST_TEST_EQ( hv(3.14L), 1150018772U );
-    BOOST_TEST_EQ( hv(-3.14L), 1150051540U );
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 3770537073U );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 3770569841U );
-
-#else
-
-    BOOST_TEST_EQ( hv(1.0L), 18308860000934227808ULL );
-    BOOST_TEST_EQ( hv(-1.0L), 18308860000934260576ULL );
-    BOOST_TEST_EQ( hv(3.14L), 13482288377848558187ULL );
-    BOOST_TEST_EQ( hv(-3.14L), 13482288377848590955ULL );
-    BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 18308860000934244192ULL );
-    BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18308860000934276960ULL );
-
-#endif
+    if( ldbits == 64 )
+    {
+        BOOST_TEST_EQ( hv(1.0L), 4607182418800017408ULL );
+        BOOST_TEST_EQ( hv(-1.0L), 13830554455654793216ULL );
+        BOOST_TEST_EQ( hv(3.14L), 4614253070214989087ULL );
+        BOOST_TEST_EQ( hv(-3.14L), 13837625107069764895ULL );
+        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 9218868437227405312ULL );
+        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18442240474082181120ULL );
+    }
+    else if( ldbits == 128 && std::numeric_limits<long double>::digits == 64 )
+    {
+        BOOST_TEST_EQ( hv(1.0L), 18308860000934227808ULL );
+        BOOST_TEST_EQ( hv(-1.0L), 18308860000934260576ULL );
+        BOOST_TEST_EQ( hv(3.14L), 13482288377848558187ULL );
+        BOOST_TEST_EQ( hv(-3.14L), 13482288377848590955ULL );
+        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 18308860000934244192ULL );
+        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18308860000934276960ULL );
+    }
+    else
+    {
+        // ldbits == 128  && std::numeric_limits<long double>::digits == 113
+        // under ARM64 and S390x, but the values differ presumably because of
+        // __FLOAT_WORD_ORDER__
+    }
 
 #endif
 
