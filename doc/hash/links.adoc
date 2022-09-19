@@ -33,9 +33,18 @@ The library implements the extension described in Issue 6.18, pages 63-67.
 
 *Methods for Identifying Versioned and Plagiarised Documents* +
 _Timothy C. Hoad, Justin Zobel_ +
-http://www.cs.rmit.edu.au/~jz/fulltext/jasist-tch.pdf
+https://people.eng.unimelb.edu.au/jzobel/fulltext/jasist03thz.pdf
 
 Contains the hash function that the initial implementation of `boost::hash_combine` was based on.
+
+---
+
+*Performance in Practice of String Hashing Functions* +
+_M.V. Ramakrishna, J. Zobel_ +
+In Proc. Int. Conf. on Database Systems for Advanced Applications, pages 215-223, Melbourne, Australia, April 1997. +
+https://www.comp.nus.edu.sg/~lingtw/dasfaa_proceedings/DASFAA97/P215.pdf
+
+Referenced in the above paper as the source of the hash function.
 
 ---
 
@@ -53,7 +62,9 @@ transformation that approximates a random permutation.
 _Austin Appleby_ +
 https://github.com/aappleby/smhasher
 
-Contains a battery of tests for evaluating hash functions.
+Contains a battery of tests for evaluating hash functions. The current
+64 bit implementation of `boost::hash` for strings passes SMHasher.
+Previous iterations did not.
 
 ---
 
@@ -62,8 +73,8 @@ _David Stafford_ +
 https://zimbry.blogspot.com/2011/09/better-bit-mixing-improving-on.html
 
 Describes the so-called "variant 13" mixing function, an improvement
-over `fmix64` from MurmurHash3, made famous by its adoption by the `splitmix64`
-http://xorshift.di.unimi.it/splitmix64.c[random number generator].
+over `fmix64` from MurmurHash3, made famous by its adoption by the
+`splitmix64` http://xorshift.di.unimi.it/splitmix64.c[random number generator].
 
 ---
 
@@ -71,7 +82,8 @@ http://xorshift.di.unimi.it/splitmix64.c[random number generator].
 _Pelle Evensen_ +
 https://mostlymangling.blogspot.com/2019/12/stronger-better-morer-moremur-better.html
 
-Describes Moremur, an improvement over MurmurHash3 fmix64 and Stafford "variant 13".
+Describes Moremur, an improvement over MurmurHash3 `fmix64` and Stafford
+"variant 13".
 
 ---
 
@@ -79,7 +91,9 @@ Describes Moremur, an improvement over MurmurHash3 fmix64 and Stafford "variant 
 _John Maiga_ +
 http://jonkagstrom.com/mx3/mx3_rev2.html
 
-Contains another improvement over MurmurHash3 fmix64 and "variant 13".
+Contains another improvement over MurmurHash3 `fmix64` and "variant 13". This
+is what the current implementation of `boost::hash_combine` uses when
+`std::size_t` is 64 bits.
 
 ---
 
@@ -96,4 +110,5 @@ a utility for discovering and evaluating mixing functions.
 _"TheIronBorn"_ +
 https://github.com/skeeto/hash-prospector/issues/19
 
-Describes a good 32 bit mixing function.
+Describes a good 32 bit mixing function, used by the current implementation
+of `boost::hash_combine` when `std::size_t` is 32 bits.
