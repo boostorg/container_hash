@@ -16,7 +16,7 @@ git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost
 cd boost-root
 git submodule update --init tools/boostdep
 cp -r $DRONE_BUILD_DIR/* libs/$LIBRARY
-python tools/boostdep/depinst/depinst.py $LIBRARY
+python tools/boostdep/depinst/depinst.py -I examples $LIBRARY
 ./bootstrap.sh
 ./b2 -d0 headers
 
