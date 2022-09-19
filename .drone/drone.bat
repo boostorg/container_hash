@@ -20,4 +20,5 @@ b2 -d0 headers
 
 if not "%CXXSTD%" == "" set CXXSTD=cxxstd=%CXXSTD%
 if not "%ADDRMD%" == "" set ADDRMD=address-model=%ADDRMD%
+b2 -j3 --verbose-test libs/%LIBRARY%/test//hash_info toolset=%TOOLSET% %CXXSTD% %ADDRMD% variant=debug,release embed-manifest-via=linker
 b2 -j3 libs/%LIBRARY%/test toolset=%TOOLSET% %CXXSTD% %ADDRMD% variant=debug,release embed-manifest-via=linker
