@@ -18,6 +18,7 @@ https://www.boost.org/LICENSE_1_0.txt
 :leveloffset: +1
 
 include::hash/intro.adoc[]
+include::hash/recent.adoc[]
 include::hash/tutorial.adoc[]
 include::hash/user.adoc[]
 include::hash/combine.adoc[]
