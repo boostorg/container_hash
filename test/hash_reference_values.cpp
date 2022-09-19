@@ -201,7 +201,7 @@ int main()
     BOOST_TEST_EQ( hv(0.0L), 0 );
     BOOST_TEST_EQ( hv(-0.0L), 0 );
 
-    int const ldbits = sizeof( long double ) * CHAR_BIT;
+    std::size_t const ldbits = sizeof( long double ) * CHAR_BIT;
 
 #if SIZE_MAX == 4294967295U
 
