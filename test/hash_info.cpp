@@ -50,10 +50,11 @@ void write_compiler_info() {
         msvc) - 1;
     unsigned difference = msvc.version - v->version;
 
-    std::cout << v->description << std::endl;
+    std::cout << v->description;
     if (difference) {
-        std::cout << "+" << difference << std::endl;
+        std::cout << " +" << difference;
     }
+    std::cout << std::endl;
 }
 
 #else
@@ -109,6 +110,7 @@ int main() {
     std::cout << std::endl;
 
     PRINT(sizeof(std::size_t)*CHAR_BIT);
+    PRINT(std::numeric_limits<std::size_t>::digits);
     std::cout << std::endl;
 
     PRINT(sizeof(float)*CHAR_BIT);
