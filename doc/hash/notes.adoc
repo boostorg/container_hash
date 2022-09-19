@@ -74,7 +74,7 @@ void hash_combine(size_t & seed, T const & v)
 }
 ----
 
-This is what shipped in the first release of Boost containing the library.
+This is what shipped in Boost 1.33, the first release containing the library.
 
 This function was a reasonable compromise between quality and speed for its
 time, when the input consisted of ``char``s, but it's less suitable for
