@@ -88,7 +88,7 @@ Describes Moremur, an improvement over MurmurHash3 `fmix64` and Stafford
 ---
 
 *Improved mx3 and the RRC test* +
-_John Maiga_ +
+_Jon Maiga_ +
 http://jonkagstrom.com/mx3/mx3_rev2.html
 
 Contains another improvement over MurmurHash3 `fmix64` and "variant 13". This
