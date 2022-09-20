@@ -176,12 +176,11 @@ namespace boost
     {
         template<class T,
             std::size_t Bits = sizeof(T) * CHAR_BIT,
-            int Digits = std::numeric_limits<T>::digits,
-            std::size_t size_t_bits = sizeof(std::size_t) * CHAR_BIT>
+            int Digits = std::numeric_limits<T>::digits>
         struct hash_float_impl;
 
         // float
-        template<class T, int Digits, std::size_t size_t_bits> struct hash_float_impl<T, 32, Digits, size_t_bits>
+        template<class T, int Digits> struct hash_float_impl<T, 32, Digits>
         {
             static std::size_t fn( T v )
             {
@@ -193,35 +192,19 @@ namespace boost
         };
 
         // double
-        template<class T, int Digits> struct hash_float_impl<T, 64, Digits, 64>
+        template<class T, int Digits> struct hash_float_impl<T, 64, Digits>
         {
             static std::size_t fn( T v )
             {
                 boost::uint64_t w;
                 std::memcpy( &w, &v, sizeof( v ) );
 
-                return w;
-            }
-        };
-
-        template<class T, int Digits> struct hash_float_impl<T, 64, Digits, 32>
-        {
-            static std::size_t fn( T v )
-            {
-                boost::uint32_t w[ 2 ];
-                std::memcpy( &w, &v, sizeof( v ) );
-
-                std::size_t seed = 0;
-
-                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
-
-                return seed;
+                return hash_value( w );
             }
         };
 
         // 80 bit long double in 12 bytes
-        template<class T> struct hash_float_impl<T, 96, 64, 64>
+        template<class T> struct hash_float_impl<T, 96, 64>
         {
             static std::size_t fn( T v )
             {
@@ -230,32 +213,15 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
-
-                return seed;
-            }
-        };
-
-        template<class T> struct hash_float_impl<T, 96, 64, 32>
-        {
-            static std::size_t fn( T v )
-            {
-                boost::uint32_t w[ 3 ] = {};
-                std::memcpy( &w, &v, 80 / CHAR_BIT );
-
-                std::size_t seed = 0;
-
-                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[2] ) + hash_detail::hash_mix( seed );
+                seed = hash_value( w[0] ) + hash_detail::hash_mix( seed );
+                seed = hash_value( w[1] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
         };
 
         // 80 bit long double in 16 bytes
-        template<class T> struct hash_float_impl<T, 128, 64, 64>
+        template<class T> struct hash_float_impl<T, 128, 64>
         {
             static std::size_t fn( T v )
             {
@@ -264,32 +230,15 @@ namespace boost
 
                 std::size_t seed = 0;
 
-                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
-
-                return seed;
-            }
-        };
-
-        template<class T> struct hash_float_impl<T, 128, 64, 32>
-        {
-            static std::size_t fn( T v )
-            {
-                boost::uint32_t w[ 3 ] = {};
-                std::memcpy( &w, &v, 80 / CHAR_BIT );
-
-                std::size_t seed = 0;
-
-                seed = static_cast<std::size_t>( w[0] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[1] ) + hash_detail::hash_mix( seed );
-                seed = static_cast<std::size_t>( w[2] ) + hash_detail::hash_mix( seed );
+                seed = hash_value( w[0] ) + hash_detail::hash_mix( seed );
+                seed = hash_value( w[1] ) + hash_detail::hash_mix( seed );
 
                 return seed;
             }
         };
 
         // 128 bit long double
-        template<class T, int Digits, std::size_t size_t_bits> struct hash_float_impl<T, 128, Digits, size_t_bits>
+        template<class T, int Digits> struct hash_float_impl<T, 128, Digits>
         {
             static std::size_t fn( T v )
             {
@@ -629,7 +578,5 @@ namespace boost
 
 #endif
 }
-
-#undef BOOST_FUNCTIONAL_HASH_ROTL32
 
 #endif // #ifndef BOOST_FUNCTIONAL_HASH_HASH_HPP
