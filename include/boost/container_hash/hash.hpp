@@ -298,9 +298,17 @@ namespace boost
 
                 std::size_t seed = 0;
 
+#if defined(__FLOAT_WORD_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __FLOAT_WORD_ORDER__ == __ORDER_BIG_ENDIAN__
+
+                seed = hash_value( w[1] ) + hash_detail::hash_mix( seed );
+                seed = hash_value( w[0] ) + hash_detail::hash_mix( seed );
+
+#else
+
                 seed = hash_value( w[0] ) + hash_detail::hash_mix( seed );
                 seed = hash_value( w[1] ) + hash_detail::hash_mix( seed );
 
+#endif
                 return seed;
             }
         };
