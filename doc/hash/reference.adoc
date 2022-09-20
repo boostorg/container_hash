@@ -225,7 +225,7 @@ Effects: ::
 +
 --
 When `typename std::iterator_traits<It>::value_type` is not `char`, `signed char`,
-`unsigned char`,
+`unsigned char`, `std::byte`, or `char8_t`,
 
 [source]
 ----
