@@ -216,12 +216,14 @@ int main()
     }
     else
     {
-        BOOST_TEST_EQ( hv(1.0L), 3770520689U );
-        BOOST_TEST_EQ( hv(-1.0L), 3770553457U );
-        BOOST_TEST_EQ( hv(3.14L), 1150018772U );
-        BOOST_TEST_EQ( hv(-3.14L), 1150051540U );
-        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 3770537073U );
-        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 3770569841U );
+        // ldbits == 96
+
+        BOOST_TEST_EQ( hv(1.0L), 3632050780U );
+        BOOST_TEST_EQ( hv(-1.0L), 3632083548U );
+        BOOST_TEST_EQ( hv(3.14L), 1742026549U );
+        BOOST_TEST_EQ( hv(-3.14L), 1742059317U );
+        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 3632067164U );
+        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 3632099932U );
     }
 
 #else
@@ -246,9 +248,7 @@ int main()
     }
     else
     {
-        // ldbits == 128  && std::numeric_limits<long double>::digits == 113
-        // under ARM64 and S390x, but the values differ presumably because of
-        // __FLOAT_WORD_ORDER__
+        // ldbits == 128 && std::numeric_limits<long double>::digits == 113
 
         BOOST_TEST_EQ( hv(1.0L), 4611404543450677248ULL );
         BOOST_TEST_EQ( hv(-1.0L), 13834776580305453056ULL );
