@@ -249,6 +249,13 @@ int main()
         // ldbits == 128  && std::numeric_limits<long double>::digits == 113
         // under ARM64 and S390x, but the values differ presumably because of
         // __FLOAT_WORD_ORDER__
+
+        BOOST_TEST_EQ( hv(1.0L), 4611404543450677248ULL );
+        BOOST_TEST_EQ( hv(-1.0L), 13834776580305453056ULL );
+        BOOST_TEST_EQ( hv(3.14L), 5967435363179612952ULL );
+        BOOST_TEST_EQ( hv(-3.14L), 15190807400034388760ULL );
+        BOOST_TEST_EQ( hv(std::numeric_limits<long double>::infinity()), 9223090561878065152ULL );
+        BOOST_TEST_EQ( hv(-std::numeric_limits<long double>::infinity()), 18446462598732840960ULL );
     }
 
 #endif
