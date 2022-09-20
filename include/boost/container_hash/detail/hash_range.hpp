@@ -27,6 +27,14 @@ template<> struct is_char_type<char>: public boost::true_type {};
 template<> struct is_char_type<signed char>: public boost::true_type {};
 template<> struct is_char_type<unsigned char>: public boost::true_type {};
 
+#if defined(__cpp_char8_t) && __cpp_char8_t >= 201811L
+template<> struct is_char_type<char8_t>: public boost::true_type {};
+#endif
+
+#if defined(__cpp_lib_byte) && __cpp_lib_byte >= 201603L
+template<> struct is_char_type<std::byte>: public boost::true_type {};
+#endif
+
 #endif
 
 template<class It>

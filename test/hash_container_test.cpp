@@ -48,5 +48,13 @@ int main()
     test<float>();
     test<double>();
 
+#if defined(__cpp_char8_t) && __cpp_char8_t >= 201811L
+    test<char8_t>();
+#endif
+
+#if defined(__cpp_lib_byte) && __cpp_lib_byte >= 201603L
+    test<std::byte>();
+#endif
+
     return boost::report_errors();
 }
