@@ -16,7 +16,7 @@ https://en.wikipedia.org/wiki/Hash_function[hash function] object specified by
 link:../../../unordered/index.html[Boost.Unordered],
 link:../../../intrusive/index.html[Boost.Intrusive]'s unordered associative
 containers, link:../../../multi_index/index.html[Boost.MultiIndex]'s hash
-indicies, and link:../../../bimap/index.html[Boost.Bimap]'s `unordered_set_of`.
+indices, and link:../../../bimap/index.html[Boost.Bimap]'s `unordered_set_of`.
 
 Out of the box, `boost::hash` supports
 

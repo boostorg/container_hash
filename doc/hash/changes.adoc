@@ -12,7 +12,6 @@ https://www.boost.org/LICENSE_1_0.txt
 
 :int128: __int128
 
-[discrete]
 == Boost 1.67.0
 * Moved library into its own module, `container_hash`.
 * Moved headers for new module name, now at: `<boost/container_hash/hash.hpp>`, `<boost/container_hash/hash_fwd.hpp>`, `<boost/container_hash/extensions.hpp>`.
@@ -23,11 +22,9 @@ https://www.boost.org/LICENSE_1_0.txt
 * Fix tutorial example (https://svn.boost.org/trac/boost/ticket/11017[#11017]).
 * Quick fix for hashing `vector<bool>` when using libc++. Will try to introduce a more general fix in the next release.
 
-[discrete]
 == Boost 1.66.0
 * Avoid float comparison warning when using Clang - this workaround was already in place for GCC, and was used when Clang pretends to be GCC, but the warning was appearing when running Clang in other contexts.
 
-[discrete]
 == Boost 1.65.0
 * Support for `char16_t`, `char32_t`, `u16string`, `u32string`
 
