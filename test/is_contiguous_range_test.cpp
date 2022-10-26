@@ -51,7 +51,7 @@ int main()
     BOOST_TEST_TRAIT_TRUE((is_contiguous_range<std::wstring const>));
 
 // std::vector doesn't have data() in C++03
-#if !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR) && !BOOST_WORKAROUND(BOOST_GCC, < 40700)
+#if !defined(BOOST_NO_CXX11_DECLTYPE) && !defined(BOOST_NO_SFINAE_EXPR) && !BOOST_WORKAROUND(BOOST_GCC, < 40700) && !BOOST_WORKAROUND(BOOST_MSVC, < 1910)
     BOOST_TEST_TRAIT_TRUE((is_contiguous_range< std::vector<X> >));
     BOOST_TEST_TRAIT_TRUE((is_contiguous_range< std::vector<X> const >));
 #endif
