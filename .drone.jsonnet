@@ -135,45 +135,99 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
     ),
 
     linux_pipeline(
-        "Linux 20.04 GCC 9 ARM64",
+        "Linux 16.04 GCC 5*",
+        "cppalliance/droneubuntu1604:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14' },
+    ),
+
+    linux_pipeline(
+        "Linux 18.04 GCC 7* 32/64",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14,17', ADDRMD: '32,64' },
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 GCC 9* ARM64",
         "cppalliance/droneubuntu2004:multiarch",
         { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14,17,2a' },
         arch="arm64",
     ),
 
     linux_pipeline(
-        "Linux 20.04 GCC 9 S390x",
+        "Linux 20.04 GCC 9* S390x",
         "cppalliance/droneubuntu2004:multiarch",
         { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14,17,2a' },
         arch="s390x",
     ),
 
     linux_pipeline(
+        "Linux 22.04 GCC 11* 32/64",
+        "cppalliance/droneubuntu2204:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14,17,2a', ADDRMD: '32,64' },
+    ),
+
+    linux_pipeline(
         "Linux 22.04 GCC 12 32 ASAN",
         "cppalliance/droneubuntu2204:1",
-        { TOOLSET: 'gcc', COMPILER: 'g++-12', CXXSTD: '03,11,14,17,20', ADDRMD: '32' } + asan,
+        { TOOLSET: 'gcc', COMPILER: 'g++-12', CXXSTD: '03,11,14,17,20,2b', ADDRMD: '32' } + asan,
         "g++-12-multilib",
     ),
 
     linux_pipeline(
         "Linux 22.04 GCC 12 64 ASAN",
         "cppalliance/droneubuntu2204:1",
-        { TOOLSET: 'gcc', COMPILER: 'g++-12', CXXSTD: '03,11,14,17,20', ADDRMD: '64' } + asan,
+        { TOOLSET: 'gcc', COMPILER: 'g++-12', CXXSTD: '03,11,14,17,20,2b', ADDRMD: '64' } + asan,
         "g++-12-multilib",
+    ),
+
+    linux_pipeline(
+        "Linux 16.04 Clang 3.5",
+        "cppalliance/droneubuntu1604:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-3.5', CXXSTD: '03,11' },
+        "clang-3.5",
+    ),
+
+    linux_pipeline(
+        "Linux 16.04 Clang 3.6",
+        "cppalliance/droneubuntu1604:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-3.6', CXXSTD: '03,11,14' },
+        "clang-3.6",
+    ),
+
+    linux_pipeline(
+        "Linux 16.04 Clang 3.7",
+        "cppalliance/droneubuntu1604:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-3.7', CXXSTD: '03,11,14' },
+        "clang-3.7",
+    ),
+
+    linux_pipeline(
+        "Linux 16.04 Clang 3.8",
+        "cppalliance/droneubuntu1604:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-3.8', CXXSTD: '03,11,14' },
+        "clang-3.8",
     ),
 
     linux_pipeline(
         "Linux 22.04 Clang 14 UBSAN",
         "cppalliance/droneubuntu2204:1",
-        { TOOLSET: 'clang', COMPILER: 'clang++-14', CXXSTD: '03,11,14,17,20' } + ubsan,
+        { TOOLSET: 'clang', COMPILER: 'clang++-14', CXXSTD: '03,11,14,17,20,2b' } + ubsan,
         "clang-14",
     ),
 
     linux_pipeline(
         "Linux 22.04 Clang 14 ASAN",
         "cppalliance/droneubuntu2204:1",
-        { TOOLSET: 'clang', COMPILER: 'clang++-14', CXXSTD: '03,11,14,17,20' } + asan,
+        { TOOLSET: 'clang', COMPILER: 'clang++-14', CXXSTD: '03,11,14,17,20,2b' } + asan,
         "clang-14",
+    ),
+
+    linux_pipeline(
+        "Linux 22.04 Clang 15",
+        "cppalliance/droneubuntu2204:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-15', CXXSTD: '03,11,14,17,20,2b' },
+        "clang-15",
+        ["deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main"],
     ),
 
     macos_pipeline(
@@ -187,8 +241,26 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
     ),
 
     windows_pipeline(
+        "Windows VS2015 msvc-14.0",
+        "cppalliance/dronevs2015",
+        { TOOLSET: 'msvc-14.0', CXXSTD: '14,latest' },
+    ),
+
+    windows_pipeline(
         "Windows VS2017 msvc-14.1",
         "cppalliance/dronevs2017",
         { TOOLSET: 'msvc-14.1', CXXSTD: '14,17,latest' },
+    ),
+
+    windows_pipeline(
+        "Windows VS2019 msvc-14.2",
+        "cppalliance/dronevs2019",
+        { TOOLSET: 'msvc-14.2', CXXSTD: '14,17,20,latest' },
+    ),
+
+    windows_pipeline(
+        "Windows VS2022 msvc-14.3",
+        "cppalliance/dronevs2022:1",
+        { TOOLSET: 'msvc-14.3', CXXSTD: '14,17,20,latest' },
     ),
 ]
