@@ -102,3 +102,8 @@ run is_range_test3.cpp ;
 run is_contiguous_range_test2.cpp ;
 run is_unordered_range_test2.cpp ;
 run is_contiguous_range_test3.cpp ;
+
+run is_described_class_test.cpp
+  : : : <warnings>extra ;
+run is_described_class_test2.cpp
+  : : : <warnings>extra ;
