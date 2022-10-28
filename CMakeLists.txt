@@ -16,6 +16,7 @@ target_link_libraries(boost_container_hash
   INTERFACE
     Boost::config
     Boost::describe
+    Boost::mp11
     Boost::type_traits
 )
 
