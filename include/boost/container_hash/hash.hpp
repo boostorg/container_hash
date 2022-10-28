@@ -14,6 +14,7 @@
 #include <boost/container_hash/is_range.hpp>
 #include <boost/container_hash/is_contiguous_range.hpp>
 #include <boost/container_hash/is_unordered_range.hpp>
+#include <boost/container_hash/is_described_class.hpp>
 #include <boost/container_hash/detail/hash_tuple.hpp>
 #include <boost/container_hash/detail/hash_mix.hpp>
 #include <boost/container_hash/detail/hash_range.hpp>
