@@ -15,6 +15,7 @@ target_include_directories(boost_container_hash INTERFACE include)
 target_link_libraries(boost_container_hash
   INTERFACE
     Boost::config
+    Boost::describe
     Boost::type_traits
 )
 
