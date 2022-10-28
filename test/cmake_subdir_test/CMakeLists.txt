@@ -11,6 +11,8 @@ add_subdirectory(../.. boostorg/container_hash)
 add_subdirectory(../../../config boostorg/config)
 add_subdirectory(../../../type_traits boostorg/type_traits)
 add_subdirectory(../../../static_assert boostorg/static_assert)
+add_subdirectory(../../../describe boostorg/describe)
+add_subdirectory(../../../mp11 boostorg/mp11)
 
 add_executable(quick ../quick.cpp)
 target_link_libraries(quick Boost::container_hash)
