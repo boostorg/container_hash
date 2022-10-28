@@ -2,6 +2,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wunused-private-field"
+#endif
+
 #include <boost/container_hash/hash.hpp>
 #include <boost/describe/class.hpp>
 #include <boost/describe/operators.hpp>
