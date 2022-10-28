@@ -109,3 +109,6 @@ run is_described_class_test2.cpp
   : : : <warnings>extra ;
 run is_described_class_test3.cpp
   : : : <warnings>extra ;
+
+run described_class_test.cpp
+  : : : <warnings>extra ;
