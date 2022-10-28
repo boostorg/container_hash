@@ -141,9 +141,23 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
     ),
 
     linux_pipeline(
+        "Linux 18.04 GCC 6 32/64",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++-6', CXXSTD: '03,11,14', ADDRMD: '32,64' },
+        "g++-6-multilib",
+    ),
+
+    linux_pipeline(
         "Linux 18.04 GCC 7* 32/64",
         "cppalliance/droneubuntu1804:1",
         { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14,17', ADDRMD: '32,64' },
+    ),
+
+    linux_pipeline(
+        "Linux 18.04 GCC 8 32/64",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++-8', CXXSTD: '03,11,14,17', ADDRMD: '32,64' },
+        "g++-8-multilib",
     ),
 
     linux_pipeline(
@@ -164,6 +178,13 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
         "cppalliance/droneubuntu2004:multiarch",
         { TOOLSET: 'gcc', COMPILER: 'g++', CXXSTD: '03,11,14,17,2a' },
         arch="s390x",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 GCC 10 32/64",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'gcc', COMPILER: 'g++-10', CXXSTD: '03,11,14,17,20', ADDRMD: '32,64' },
+        "g++-10-multilib",
     ),
 
     linux_pipeline(
@@ -212,6 +233,83 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
         "cppalliance/droneubuntu1604:1",
         { TOOLSET: 'clang', COMPILER: 'clang++-3.8', CXXSTD: '03,11,14' },
         "clang-3.8",
+    ),
+
+    linux_pipeline(
+        "Linux 18.04 Clang 3.9",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-3.9', CXXSTD: '03,11,14' },
+        "clang-3.9",
+    ),
+
+    linux_pipeline(
+        "Linux 18.04 Clang 4.0",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-4.0', CXXSTD: '03,11,14' },
+        "clang-4.0",
+    ),
+
+    linux_pipeline(
+        "Linux 18.04 Clang 5.0",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-5.0', CXXSTD: '03,11,14,1z' },
+        "clang-5.0",
+    ),
+
+    linux_pipeline(
+        "Linux 18.04 Clang 6.0",
+        "cppalliance/droneubuntu1804:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-6.0', CXXSTD: '03,11,14,17' },
+        "clang-6.0",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 Clang 7",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-7', CXXSTD: '03,11,14,17' },
+        "clang-7",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 Clang 8",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-8', CXXSTD: '03,11,14,17' },
+        "clang-8",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 Clang 9",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-9', CXXSTD: '03,11,14,17,2a' },
+        "clang-9",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 Clang 10",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-10', CXXSTD: '03,11,14,17,2a' },
+        "clang-10",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 Clang 11",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-11', CXXSTD: '03,11,14,17,2a' },
+        "clang-11",
+    ),
+
+    linux_pipeline(
+        "Linux 20.04 Clang 12",
+        "cppalliance/droneubuntu2004:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-12', CXXSTD: '03,11,14,17,2a' },
+        "clang-12",
+    ),
+
+    linux_pipeline(
+        "Linux 22.04 Clang 13",
+        "cppalliance/droneubuntu2204:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-13', CXXSTD: '03,11,14,17,20' },
+        "clang-13",
     ),
 
     linux_pipeline(
