@@ -63,6 +63,10 @@
 #include <variant>
 #endif
 
+#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+# include <string_view>
+#endif
+
 namespace boost
 {
 
@@ -629,6 +633,30 @@ namespace boost
     };
 
 #endif
-}
+
+    // boost::unordered::hash_is_avalanching
+
+    namespace unordered
+    {
+        template<class T> struct hash_is_avalanching;
+        template<class Ch> struct hash_is_avalanching< boost::hash< std::basic_string<Ch> > >: boost::is_integral<Ch> {};
+
+        // boost::is_integral<char8_t> is false, but should be true (https://github.com/boostorg/type_traits/issues/175)
+#if defined(__cpp_char8_t) && __cpp_char8_t >= 201811L
+        template<> struct hash_is_avalanching< boost::hash< std::u8string > >: boost::true_type {};
+#endif
+
+#if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+
+        template<class Ch> struct hash_is_avalanching< boost::hash< std::basic_string_view<Ch> > >: boost::is_integral<Ch> {};
+
+#if defined(__cpp_char8_t) && __cpp_char8_t >= 201811L
+        template<> struct hash_is_avalanching< boost::hash< std::u8string_view > >: boost::true_type {};
+#endif
+
+#endif
+    } // namespace unordered
+
+} // namespace boost
 
 #endif // #ifndef BOOST_FUNCTIONAL_HASH_HASH_HPP

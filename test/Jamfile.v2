@@ -112,3 +112,6 @@ run is_described_class_test3.cpp
 
 run described_class_test.cpp
   : : : <warnings>extra ;
+
+run hash_is_avalanching_test.cpp ;
+run hash_is_avalanching_test2.cpp ;
