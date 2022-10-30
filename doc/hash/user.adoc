@@ -74,7 +74,7 @@ assert(books.find(knife) != books.end());
 assert(books.find(dandelion) == books.end());
 ----
 
-The full example can be found in:
+The full example can be found in
 link:../../examples/books.hpp[examples/books.hpp] and
 link:../../examples/books.cpp[examples/books.cpp].
 

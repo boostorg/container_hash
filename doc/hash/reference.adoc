@@ -29,6 +29,7 @@ namespace container_hash
 template<class T> struct is_range;
 template<class T> struct is_contiguous_range;
 template<class T> struct is_unordered_range;
+template<class T> struct is_described_class;
 
 } // namespace container_hash
 
@@ -100,6 +101,10 @@ template<class T>
   std::size_t hash_value( T const& v );
 
 // Enabled only when container_hash::is_unordered_range<T>::value is true
+template<class T>
+  std::size_t hash_value( T const& v );
+
+// Enabled only when container_hash::is_described_class<T>::value is true
 template<class T>
   std::size_t hash_value( T const& v );
 
@@ -448,6 +453,34 @@ This overload handles the standard unordered containers, such as
 
 [source]
 ----
+// Enabled only when container_hash::is_described_class<T>::value is true
+template<class T>
+  std::size_t hash_value( T const& v );
+----
+
+Effects: ::
++
+[source]
+----
+std::size_t seed = 0;
+
+boost::hash_combine( seed, b1 );
+boost::hash_combine( seed, b2 );
+// ...
+boost::hash_combine( seed, bM );
+
+boost::hash_combine( seed, m1 );
+boost::hash_combine( seed, m2 );
+// ...
+boost::hash_combine( seed, mN );
+
+return seed;
+----
++
+where `bi` are the bases of `v` and `mi` are its members.
+
+[source]
+----
 template<class T>
   std::size_t hash_value( std::shared_ptr<T> const& v );
 
@@ -632,4 +665,41 @@ template<class T> struct is_unordered_range
 `true` and when `T::hasher` is a valid type.
 
 Users are allowed to specialize `is_unordered_range` for their types
+if the default behavior does not deduce the correct value.
+
+== <boost/container_hash/{zwsp}is_described_class.hpp>
+
+Defines the trait `boost::container_hash::is_described_class`.
+
+[source]
+----
+namespace boost
+{
+
+namespace container_hash
+{
+
+template<class T> struct is_described_class;
+
+} // namespace container_hash
+
+} // namespace boost
+----
+
+=== is_described_class<T>
+
+[source]
+----
+template<class T> struct is_described_class
+{
+    static constexpr bool value = /* see below */;
+};
+----
+
+`is_described_class<T>::value` is `true` when
+`boost::describe::has_describe_bases<T>::value` is `true`,
+`boost::describe::has_describe_members<T>::value` is `true`, and
+`T` is not a union.
+
+Users are allowed to specialize `is_described_class` for their types
 if the default behavior does not deduce the correct value.

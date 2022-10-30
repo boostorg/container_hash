@@ -21,6 +21,9 @@ Major update.
 * User-defined containers (types that have `begin()` and `end()`
   member functions that return iterators) are now supported out
   of the box.
+* Described structs and classes (those annotated with
+  `BOOST_DESCRIBE_STRUCT` or `BOOST_DESCRIBE_CLASS`) are now
+  supported out of the box.
 * `hash_combine` has been improved.
 * The performance (and quality, as a result of the above change)
   of string hashing has been improved. `boost::hash` for strings

@@ -32,6 +32,9 @@ Out of the box, `boost::hash` supports
 * unordered sequences, standard or user-defined (sequences for which the hash
   value does not depend on the element order, such as `std::unordered_set` and
   `std::unordered_map`);
+* described structs and classes -- ones that have been annotated with the
+  `BOOST_DESCRIBE_STRUCT` or `BOOST_DESCRIBE_CLASS` macros from
+  link:../../../describe/index.html[Boost.Describe];
 * `std::unique_ptr`, `std::shared_ptr`;
 * `std::type_index`;
 * `std::error_code`, `std::error_condition`;
