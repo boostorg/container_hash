@@ -50,7 +50,7 @@ int main()
 
 #if defined(__cpp_char8_t) && __cpp_char8_t >= 201811L
 
-    BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< boost::hash<std::u8string_view> > ));
+    BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< boost::hash< std::basic_string_view<char8_t> > > ));
 
 #endif
 
