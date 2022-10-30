@@ -12,6 +12,11 @@
 BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_HDR_TYPE_TRAITS is defined" )
 int main() {}
 
+#elif defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
+
+BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_TEMPLATE_ALIASES is defined" )
+int main() {}
+
 #else
 
 #include <boost/unordered/hash_traits.hpp>
