@@ -4,22 +4,8 @@
 
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
-#include <boost/config.hpp>
-#include <boost/config/pragma_message.hpp>
-
-#if defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
-
-BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_HDR_TYPE_TRAITS is defined" )
-int main() {}
-
-#elif defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
-
-BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_TEMPLATE_ALIASES is defined" )
-int main() {}
-
-#else
-
 #include <boost/unordered/hash_traits.hpp>
+#include <boost/config.hpp>
 #include <string>
 
 enum my_char { min = 0, max = 255 };
@@ -53,5 +39,3 @@ int main()
 
     return boost::report_errors();
 }
-
-#endif

@@ -7,17 +7,7 @@
 #include <boost/config.hpp>
 #include <boost/config/pragma_message.hpp>
 
-#if defined(BOOST_NO_CXX11_HDR_TYPE_TRAITS)
-
-BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_HDR_TYPE_TRAITS is defined" )
-int main() {}
-
-#elif defined(BOOST_NO_CXX11_TEMPLATE_ALIASES)
-
-BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX11_TEMPLATE_ALIASES is defined" )
-int main() {}
-
-#elif defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+#if defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
 
 BOOST_PRAGMA_MESSAGE( "Test skipped, BOOST_NO_CXX17_HDR_STRING_VIEW is defined" )
 int main() {}
