@@ -9,6 +9,9 @@
 #include <boost/core/detail/splitmix64.hpp>
 #include <boost/core/type_name.hpp>
 #include <boost/config.hpp>
+#ifdef HAVE_ABSEIL
+# include "absl/hash/hash.h"
+#endif
 #include <cstddef>
 #include <cstdio>
 #include <cstdint>
@@ -210,11 +213,11 @@ template<class H, class V> void test_hash_speed( int N, V const& v )
 
 #if defined( _MSC_VER )
 
-    std::printf( "%25s : q=%20Iu, %lld ms\n", hash.c_str(), q, ms1 );
+    std::printf( "%53s : q=%20Iu, %lld ms\n", hash.c_str(), q, ms1 );
 
 #else
 
-    std::printf( "%25s : q=%20zu, %lld ms\n", hash.c_str(), q, ms1 );
+    std::printf( "%53s : q=%20zu, %lld ms\n", hash.c_str(), q, ms1 );
 
 #endif
 }
@@ -235,11 +238,11 @@ template<class H, class V> void test_hash_collision( int N, V const& v, std::siz
 
 #if defined( _MSC_VER )
 
-    std::printf( "%25s : c=%Iu\n", hash.c_str(), n - s.size() );
+    std::printf( "%53s : c=%Iu\n", hash.c_str(), n - s.size() );
 
 #else
 
-    std::printf( "%25s : c=%zu\n", hash.c_str(), n - s.size() );
+    std::printf( "%53s : c=%zu\n", hash.c_str(), n - s.size() );
 
 #endif
 }
@@ -292,11 +295,11 @@ template<class V, class S> void test4( int N, V const& v, char const * hash, S s
 
 #if defined( _MSC_VER )
 
-    std::printf( "%25s : n=%Iu, m=%Iu, c=%Iu, q=%Iu, %lld + %lld ms\n", hash, n, m, c, q, ms1, ms2 );
+    std::printf( "%53s : n=%Iu, m=%Iu, c=%Iu, q=%Iu, %4lld + %4lld = %4lld ms\n", hash, n, m, c, q, ms1, ms2, ms1 + ms2 );
 
 #else
 
-    std::printf( "%25s : n=%zu, m=%zu, c=%zu, q=%zu, %lld + %lld ms\n", hash, n, m, c, q, ms1, ms2 );
+    std::printf( "%53s : n=%zu, m=%zu, c=%zu, q=%zu, %4lld + %4lld = %4lld ms\n", hash, n, m, c, q, ms1, ms2, ms1 + ms2 );
 
 #endif
 }
@@ -345,6 +348,9 @@ int main()
     test_hash_speed<old_boost_hash>( N * 16, v );
     test_hash_speed<boost::hash<std::string> >( N * 16, v );
     test_hash_speed<std::hash<std::string> >( N * 16, v );
+#ifdef HAVE_ABSEIL
+    test_hash_speed<absl::Hash<std::string> >( N * 16, v );
+#endif
 
     std::puts( "" );
 
@@ -370,6 +376,9 @@ int main()
         test_hash_collision<old_boost_hash>( N * 16, v, n );
         test_hash_collision<boost::hash<std::string> >( N * 16, v, n );
         test_hash_collision<std::hash<std::string> >( N * 16, v, n );
+#ifdef HAVE_ABSEIL
+        test_hash_collision<absl::Hash<std::string> >( N * 16, v, n );
+#endif
     }
 
     std::puts( "" );
@@ -384,6 +393,15 @@ int main()
     test_container_speed<K, old_boost_hash>( N, v );
     test_container_speed<K, boost::hash<std::string> >( N, v );
     test_container_speed<K, std::hash<std::string> >( N, v );
+#ifdef HAVE_ABSEIL
+    test_container_speed<K, absl::Hash<std::string> >( N, v );
+#endif
 
     std::puts( "" );
 }
+
+#ifdef HAVE_ABSEIL
+# include "absl/hash/internal/hash.cc"
+# include "absl/hash/internal/low_level_hash.cc"
+# include "absl/hash/internal/city.cc"
+#endif
