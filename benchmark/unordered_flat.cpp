@@ -212,10 +212,8 @@ template<class Hash> BOOST_NOINLINE void test( char const* label )
 
 // mul31_hash
 
-class mul31_hash
+struct mul31_hash
 {
-public:
-
     // not avalanching
 
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
@@ -238,18 +236,22 @@ public:
     }
 };
 
-// mul31_unrolled_hash
+// mul31_x4_hash
 
-template<int Bits> struct mul31_unrolled_hash_impl;
-
-template<> struct mul31_unrolled_hash_impl<32>
+struct mul31_x4_hash
 {
+    // not avalanching
+
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         char const * p = st.data();
         std::size_t n = st.size();
 
+#if SIZE_MAX > UINT32_MAX
+        std::size_t h = 0xCBF29CE484222325ull;
+#else
         std::size_t h = 0x811C9DC5u;
+#endif
 
         while( n >= 4 )
         {
@@ -275,14 +277,18 @@ template<> struct mul31_unrolled_hash_impl<32>
     }
 };
 
-template<> struct mul31_unrolled_hash_impl<64>
+// mul31_x8_hash
+
+struct mul31_x8_hash
 {
+    // not avalanching
+
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         char const * p = st.data();
         std::size_t n = st.size();
 
-        std::size_t h = 0xCBF29CE484222325ull;
+        boost::uint64_t h = 0xCBF29CE484222325ull;
 
         while( n >= 8 )
         {
@@ -308,13 +314,8 @@ template<> struct mul31_unrolled_hash_impl<64>
             --n;
         }
 
-        return h;
+        return static_cast<std::size_t>( h );
     }
-};
-
-struct mul31_unrolled_hash: mul31_unrolled_hash_impl< std::numeric_limits<std::size_t>::digits >
-{
-    // not avalanching
 };
 
 // fnv1a_hash
@@ -437,7 +438,8 @@ int main()
     test< boost::hash<std::string> >( "boost::hash" );
     test< std_hash >( "std::hash" );
     test< mul31_hash >( "mul31_hash" );
-    test< mul31_unrolled_hash >( "mul31_unrolled_hash" );
+    test< mul31_x4_hash >( "mul31_x4_hash" );
+    test< mul31_x8_hash >( "mul31_x8_hash" );
     test< fnv1a_hash >( "fnv1a_hash" );
 
 #ifdef HAVE_ABSEIL

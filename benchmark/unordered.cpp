@@ -26,10 +26,8 @@
 
 // mul31_hash
 
-class mul31_hash
+struct mul31_hash
 {
-public:
-
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         char const * p = st.data();
@@ -50,18 +48,20 @@ public:
     }
 };
 
-// mul31_unrolled_hash
+// mul31_x4_hash
 
-template<int Bits> struct mul31_unrolled_hash_impl;
-
-template<> struct mul31_unrolled_hash_impl<32>
+struct mul31_x4_hash
 {
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         char const * p = st.data();
         std::size_t n = st.size();
 
+#if SIZE_MAX > UINT32_MAX
+        std::size_t h = 0xCBF29CE484222325ull;
+#else
         std::size_t h = 0x811C9DC5u;
+#endif
 
         while( n >= 4 )
         {
@@ -87,14 +87,16 @@ template<> struct mul31_unrolled_hash_impl<32>
     }
 };
 
-template<> struct mul31_unrolled_hash_impl<64>
+// mul31_x8_hash
+
+struct mul31_x8_hash
 {
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         char const * p = st.data();
         std::size_t n = st.size();
 
-        std::size_t h = 0xCBF29CE484222325ull;
+        boost::uint64_t h = 0xCBF29CE484222325ull;
 
         while( n >= 8 )
         {
@@ -120,11 +122,9 @@ template<> struct mul31_unrolled_hash_impl<64>
             --n;
         }
 
-        return h;
+        return static_cast<std::size_t>( h );
     }
 };
-
-struct mul31_unrolled_hash: mul31_unrolled_hash_impl< std::numeric_limits<std::size_t>::digits > {};
 
 // fnv1a_hash
 
@@ -363,7 +363,8 @@ int main()
     std::puts( "Hash speed test:\n" );
 
     test_hash_speed<mul31_hash>( N * 16, v );
-    test_hash_speed<mul31_unrolled_hash>( N * 16, v );
+    test_hash_speed<mul31_x4_hash>( N * 16, v );
+    test_hash_speed<mul31_x8_hash>( N * 16, v );
     test_hash_speed<fnv1a_hash>( N * 16, v );
     test_hash_speed<boost::hash<std::string> >( N * 16, v );
     test_hash_speed<std::hash<std::string> >( N * 16, v );
@@ -396,7 +397,8 @@ int main()
         }
 
         test_hash_collision<mul31_hash>( N * 16, v, n );
-        test_hash_collision<mul31_unrolled_hash>( N * 16, v, n );
+        test_hash_collision<mul31_x4_hash>( N * 16, v, n );
+        test_hash_collision<mul31_x8_hash>( N * 16, v, n );
         test_hash_collision<fnv1a_hash>( N * 16, v, n );
         test_hash_collision<boost::hash<std::string> >( N * 16, v, n );
         test_hash_collision<std::hash<std::string> >( N * 16, v, n );
@@ -418,7 +420,8 @@ int main()
     std::puts( "Container speed test:\n" );
 
     test_container_speed<K, mul31_hash>( N, v );
-    test_container_speed<K, mul31_unrolled_hash>( N, v );
+    test_container_speed<K, mul31_x4_hash>( N, v );
+    test_container_speed<K, mul31_x8_hash>( N, v );
     test_container_speed<K, fnv1a_hash>( N, v );
     test_container_speed<K, boost::hash<std::string> >( N, v );
     test_container_speed<K, std::hash<std::string> >( N, v );
