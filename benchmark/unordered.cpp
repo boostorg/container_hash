@@ -3,6 +3,7 @@
 // https://www.boost.org/LICENSE_1_0.txt
 
 #define _CRT_SECURE_NO_WARNINGS
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 #include <boost/container_hash/hash.hpp>
 #include <boost/unordered_set.hpp>
@@ -11,6 +12,9 @@
 #include <boost/config.hpp>
 #ifdef HAVE_ABSEIL
 # include "absl/hash/hash.h"
+#endif
+#ifdef HAVE_MULXP_HASH
+# include "mulxp_hash.hpp"
 #endif
 #include <cstddef>
 #include <cstdio>
@@ -188,6 +192,44 @@ public:
     }
 };
 
+// mulxp_hash
+
+#ifdef HAVE_MULXP_HASH
+
+struct mulxp0_hash_
+{
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp0_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp1_hash_
+{
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp1_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp2_hash_
+{
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp2_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp3_hash_
+{
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp3_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+#endif
+
 // test_hash_speed
 
 template<class H, class V> void test_hash_speed( int N, V const& v )
@@ -351,6 +393,12 @@ int main()
 #ifdef HAVE_ABSEIL
     test_hash_speed<absl::Hash<std::string> >( N * 16, v );
 #endif
+#ifdef HAVE_MULXP_HASH
+    test_hash_speed<mulxp0_hash_>( N * 16, v );
+    test_hash_speed<mulxp1_hash_>( N * 16, v );
+    test_hash_speed<mulxp2_hash_>( N * 16, v );
+    test_hash_speed<mulxp3_hash_>( N * 16, v );
+#endif
 
     std::puts( "" );
 
@@ -379,6 +427,12 @@ int main()
 #ifdef HAVE_ABSEIL
         test_hash_collision<absl::Hash<std::string> >( N * 16, v, n );
 #endif
+#ifdef HAVE_MULXP_HASH
+        test_hash_collision<mulxp0_hash_>( N * 16, v, n );
+        test_hash_collision<mulxp1_hash_>( N * 16, v, n );
+        test_hash_collision<mulxp2_hash_>( N * 16, v, n );
+        test_hash_collision<mulxp3_hash_>( N * 16, v, n );
+#endif
     }
 
     std::puts( "" );
@@ -395,6 +449,12 @@ int main()
     test_container_speed<K, std::hash<std::string> >( N, v );
 #ifdef HAVE_ABSEIL
     test_container_speed<K, absl::Hash<std::string> >( N, v );
+#endif
+#ifdef HAVE_MULXP_HASH
+    test_container_speed<K, mulxp0_hash_>( N, v );
+    test_container_speed<K, mulxp1_hash_>( N, v );
+    test_container_speed<K, mulxp2_hash_>( N, v );
+    test_container_speed<K, mulxp3_hash_>( N, v );
 #endif
 
     std::puts( "" );
