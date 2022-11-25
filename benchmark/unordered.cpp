@@ -170,28 +170,6 @@ template<> struct fnv1a_hash_impl<64>
 
 struct fnv1a_hash: fnv1a_hash_impl< std::numeric_limits<std::size_t>::digits > {};
 
-// old_boost_hash
-
-class old_boost_hash
-{
-public:
-
-    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
-    {
-        char const * p = st.data();
-        std::size_t n = st.size();
-
-        std::size_t h = 0;
-
-        for( std::size_t i = 0; i < n; ++i )
-        {
-            h ^= static_cast<unsigned char>( p[i] ) + 0x9e3779b9 + ( h << 6 ) + ( h >> 2 );
-        }
-
-        return h;
-    }
-};
-
 // mulxp_hash
 
 #ifdef HAVE_MULXP_HASH
@@ -387,7 +365,6 @@ int main()
     test_hash_speed<mul31_hash>( N * 16, v );
     test_hash_speed<mul31_unrolled_hash>( N * 16, v );
     test_hash_speed<fnv1a_hash>( N * 16, v );
-    test_hash_speed<old_boost_hash>( N * 16, v );
     test_hash_speed<boost::hash<std::string> >( N * 16, v );
     test_hash_speed<std::hash<std::string> >( N * 16, v );
 #ifdef HAVE_ABSEIL
@@ -421,7 +398,6 @@ int main()
         test_hash_collision<mul31_hash>( N * 16, v, n );
         test_hash_collision<mul31_unrolled_hash>( N * 16, v, n );
         test_hash_collision<fnv1a_hash>( N * 16, v, n );
-        test_hash_collision<old_boost_hash>( N * 16, v, n );
         test_hash_collision<boost::hash<std::string> >( N * 16, v, n );
         test_hash_collision<std::hash<std::string> >( N * 16, v, n );
 #ifdef HAVE_ABSEIL
@@ -444,7 +420,6 @@ int main()
     test_container_speed<K, mul31_hash>( N, v );
     test_container_speed<K, mul31_unrolled_hash>( N, v );
     test_container_speed<K, fnv1a_hash>( N, v );
-    test_container_speed<K, old_boost_hash>( N, v );
     test_container_speed<K, boost::hash<std::string> >( N, v );
     test_container_speed<K, std::hash<std::string> >( N, v );
 #ifdef HAVE_ABSEIL
