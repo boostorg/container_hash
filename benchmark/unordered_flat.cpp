@@ -3,12 +3,16 @@
 // https://www.boost.org/LICENSE_1_0.txt
 
 #define _SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 #include <boost/unordered/unordered_flat_map.hpp>
 #include <boost/core/detail/splitmix64.hpp>
 #include <boost/config.hpp>
 #ifdef HAVE_ABSEIL
 # include "absl/hash/hash.h"
+#endif
+#ifdef HAVE_MULXP_HASH
+# include "mulxp_hash.hpp"
 #endif
 #include <vector>
 #include <memory>
@@ -400,6 +404,51 @@ struct absl_hash: absl::Hash<std::string>
     using is_avalanching = void;
 };
 
+#endif
+
+// mulxp_hash
+
+#ifdef HAVE_MULXP_HASH
+
+struct mulxp0_hash_
+{
+    using is_avalanching = void;
+
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp0_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp1_hash_
+{
+    using is_avalanching = void;
+
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp1_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp2_hash_
+{
+    using is_avalanching = void;
+
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp2_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp3_hash_
+{
+    using is_avalanching = void;
+
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp3_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
 
 #endif
 
@@ -415,8 +464,20 @@ int main()
     test< mul31_unrolled_hash >( "mul31_unrolled_hash" );
     test< fnv1a_hash >( "fnv1a_hash" );
     test< old_boost_hash >( "old_boost_hash" );
+
 #ifdef HAVE_ABSEIL
+
     test< absl_hash >( "absl::Hash" );
+
+#endif
+
+#ifdef HAVE_MULXP_HASH
+
+    test< mulxp0_hash_ >( "mulxp0_hash" );
+    test< mulxp1_hash_ >( "mulxp1_hash" );
+    test< mulxp2_hash_ >( "mulxp2_hash" );
+    test< mulxp3_hash_ >( "mulxp3_hash" );
+
 #endif
 
     std::cout << "---\n\n";
