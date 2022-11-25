@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING
+
 #include "./config.hpp"
 
 #if !defined(BOOST_HASH_TEST_EXTENSIONS)
