@@ -503,9 +503,9 @@ namespace boost
 
     template <typename T>
     typename boost::enable_if_<boost::is_same<T, std::nullptr_t>::value, std::size_t>::type
-        hash_value( T const& v )
+        hash_value( T const& /*v*/ )
     {
-        return boost::hash_value( static_cast<void*>( v ) );
+        return boost::hash_value( static_cast<void*>( nullptr ) );
     }
 
 #endif
