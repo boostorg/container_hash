@@ -2,6 +2,10 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
+#if defined(__clang__)
+# pragma clang diagnostic ignored "-Wmismatched-tags"
+#endif
+
 #include <boost/container_hash/is_tuple_like.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/config.hpp>
