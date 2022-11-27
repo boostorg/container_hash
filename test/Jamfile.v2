@@ -117,3 +117,5 @@ run hash_is_avalanching_test.cpp ;
 run hash_is_avalanching_test2.cpp ;
 
 run hash_nullptr_test.cpp ;
+
+run is_tuple_like_test.cpp ;
