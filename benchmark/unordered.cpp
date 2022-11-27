@@ -96,7 +96,11 @@ struct mul31_x8_hash
         char const * p = st.data();
         std::size_t n = st.size();
 
+#if SIZE_MAX > UINT32_MAX
         boost::uint64_t h = 0xCBF29CE484222325ull;
+#else
+        boost::uint64_t h = 0x811C9DC5u;
+#endif
 
         while( n >= 8 )
         {
@@ -203,6 +207,14 @@ struct mulxp3_hash_
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         return mulxp3_hash( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
+struct mulxp3_hash32_
+{
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp3_hash32( (unsigned char const*)st.data(), st.size(), 0 );
     }
 };
 
@@ -376,6 +388,7 @@ int main()
     test_hash_speed<mulxp1_hash_>( N * 16, v );
     test_hash_speed<mulxp2_hash_>( N * 16, v );
     test_hash_speed<mulxp3_hash_>( N * 16, v );
+    test_hash_speed<mulxp3_hash32_>( N * 16, v );
 #endif
 
     std::puts( "" );
@@ -410,6 +423,7 @@ int main()
         test_hash_collision<mulxp1_hash_>( N * 16, v, n );
         test_hash_collision<mulxp2_hash_>( N * 16, v, n );
         test_hash_collision<mulxp3_hash_>( N * 16, v, n );
+        test_hash_collision<mulxp3_hash32_>( N * 16, v, n );
 #endif
     }
 
@@ -433,6 +447,7 @@ int main()
     test_container_speed<K, mulxp1_hash_>( N, v );
     test_container_speed<K, mulxp2_hash_>( N, v );
     test_container_speed<K, mulxp3_hash_>( N, v );
+    test_container_speed<K, mulxp3_hash32_>( N, v );
 #endif
 
     std::puts( "" );
