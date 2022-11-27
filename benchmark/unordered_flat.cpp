@@ -435,7 +435,7 @@ struct mulxp3_hash32_
 {
     using is_avalanching = void;
 
-    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         std::size_t r = mulxp3_hash32( (unsigned char const*)st.data(), st.size(), 0 );
 
