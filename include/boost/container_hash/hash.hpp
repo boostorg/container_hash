@@ -27,6 +27,7 @@
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/conjunction.hpp>
 #include <boost/type_traits/is_union.hpp>
+#include <boost/type_traits/is_same.hpp>
 #include <boost/describe/bases.hpp>
 #include <boost/describe/members.hpp>
 #include <boost/cstdint.hpp>
@@ -492,6 +493,19 @@ namespace boost
         boost::hash_combine( seed, &v.category() );
 
         return seed;
+    }
+
+#endif
+
+    // std::nullptr_t
+
+#if !defined(BOOST_NO_CXX11_NULLPTR)
+
+    template <typename T>
+    typename boost::enable_if_<boost::is_same<T, std::nullptr_t>::value, std::size_t>::type
+        hash_value( T const& v )
+    {
+        return boost::hash_value( static_cast<void*>( v ) );
     }
 
 #endif

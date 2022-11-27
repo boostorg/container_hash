@@ -115,3 +115,5 @@ run described_class_test.cpp
 
 run hash_is_avalanching_test.cpp ;
 run hash_is_avalanching_test2.cpp ;
+
+run hash_nullptr_test.cpp ;
