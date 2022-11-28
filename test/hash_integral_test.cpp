@@ -7,7 +7,7 @@
 #include <boost/core/lightweight_test.hpp>
 #include <boost/core/type_name.hpp>
 #include <boost/type_traits/is_signed.hpp>
-#include <set>
+#include <boost/config.hpp>
 
 #if defined(BOOST_MSVC)
 #pragma warning(disable: 4127) // conditional expression is constant
