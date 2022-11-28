@@ -9,6 +9,7 @@
 #include <boost/container_hash/is_tuple_like.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/config.hpp>
+#include <boost/config/workaround.hpp>
 #include <utility>
 
 struct X
@@ -73,7 +74,7 @@ int main()
     BOOST_TEST_TRAIT_FALSE((is_tuple_like<X>));
     BOOST_TEST_TRAIT_FALSE((is_tuple_like<int[2]>));
 
-#if !defined(BOOST_NO_CXX11_HDR_TUPLE)
+#if !defined(BOOST_NO_CXX11_HDR_TUPLE) && !BOOST_WORKAROUND(BOOST_MSVC, <= 1800)
 
     BOOST_TEST_TRAIT_TRUE((is_tuple_like< std::pair<int, X> >));
 
