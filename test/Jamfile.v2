@@ -121,3 +121,4 @@ run hash_integral_test2.cpp ;
 run hash_nullptr_test.cpp ;
 
 run is_tuple_like_test.cpp ;
+run hash_tuple_like_test.cpp ;
