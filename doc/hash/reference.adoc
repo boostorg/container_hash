@@ -30,6 +30,7 @@ template<class T> struct is_range;
 template<class T> struct is_contiguous_range;
 template<class T> struct is_unordered_range;
 template<class T> struct is_described_class;
+template<class T> struct is_tuple_like;
 
 } // namespace container_hash
 
@@ -89,8 +90,9 @@ template<class T>
 template<class A, class B>
   std::size_t hash_value( std::pair<A, B> const& v );
 
-template<class... T>
-  std::size_t hash_value( std::tuple<T...> const& v );
+// Enabled only when container_hash::is_tuple_like<T>::value is true
+template<class T>
+  std::size_t hash_value( T const& v );
 
 // Enabled only when container_hash::is_range<T>::value is true
 template<class T>
@@ -385,8 +387,9 @@ return seed;
 
 [source]
 ----
-template<class... T>
-  std::size_t hash_value( std::tuple<T...> const& v );
+// Enabled only when container_hash::is_tuple_like<T>::value is true
+template<class T>
+  std::size_t hash_value( T const& v );
 ----
 
 Effects: ::
@@ -395,15 +398,21 @@ Effects: ::
 ----
 std::size_t seed = 0;
 
-boost::hash_combine( seed, std::get<0>(v) );
-boost::hash_combine( seed, std::get<1>(v) );
+using std::get;
+
+boost::hash_combine( seed, get<0>(v) );
+boost::hash_combine( seed, get<1>(v) );
 // ...
-boost::hash_combine( seed, std::get<N-1>(v) );
+boost::hash_combine( seed, get<N-1>(v) );
 
 return seed;
 ----
 +
-where `N` is `sizeof...(T)`.
+where `N` is `std::tuple_size<T>::value`.
+
+Remarks: ::
+This overload is only enabled when
+`container_hash::is_range<T>::value` is `false`.
 
 [source]
 ----
@@ -702,4 +711,39 @@ template<class T> struct is_described_class
 `T` is not a union.
 
 Users are allowed to specialize `is_described_class` for their types
+if the default behavior does not deduce the correct value.
+
+== <boost/container_hash/{zwsp}is_tuple_like.hpp>
+
+Defines the trait `boost::container_hash::is_tuple_like`.
+
+[source]
+----
+namespace boost
+{
+
+namespace container_hash
+{
+
+template<class T> struct is_tuple_like;
+
+} // namespace container_hash
+
+} // namespace boost
+----
+
+=== is_tuple_like<T>
+
+[source]
+----
+template<class T> struct is_tuple_like
+{
+    static constexpr bool value = /* see below */;
+};
+----
+
+`is_tuple_like<T>::value` is `true` when `std::tuple_size<T>::value`
+is valid.
+
+Users are allowed to specialize `is_tuple_like` for their types
 if the default behavior does not deduce the correct value.

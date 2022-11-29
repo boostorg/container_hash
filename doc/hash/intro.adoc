@@ -22,11 +22,13 @@ Out of the box, `boost::hash` supports
 
 * standard integral types (integers, character types, and `bool`);
 * standard floating point types (`float`, `double`, `long double`);
-* pointers (to objects and to functions, but not pointers to members);
+* pointers (to objects and to functions, but not pointers to members)
+  and `nullptr`;
 * enumeration types;
 * C arrays;
 * `std::complex`;
-* `std::pair`, `std::tuple`;
+* tuple-like types, such as `std::pair`, `std::tuple`, and user-defined
+  types that specialize `std::tuple_size` and provide `get<I>`;
 * sequence-like types, both standard and user-defined (sequence-like types
   have `begin()` and `end()` member functions returning iterators);
 * unordered sequences, standard or user-defined (sequences for which the hash
