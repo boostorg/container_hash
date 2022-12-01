@@ -140,118 +140,6 @@ template<class Hash> BOOST_NOINLINE void test( char const* label )
     times.push_back( rec );
 }
 
-// mul31_hash
-
-struct mul31_hash
-{
-    // not avalanching
-
-    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
-    {
-        char const * p = st.data();
-        std::size_t n = st.size();
-
-#if SIZE_MAX > UINT32_MAX
-        std::size_t h = 0xCBF29CE484222325ull;
-#else
-        std::size_t h = 0x811C9DC5u;
-#endif
-
-        for( std::size_t i = 0; i < n; ++i )
-        {
-            h = h * 31 + static_cast<unsigned char>( p[i] );
-        }
-
-        return h;
-    }
-};
-
-// mul31_x4_hash
-
-struct mul31_x4_hash
-{
-    // not avalanching
-
-    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
-    {
-        char const * p = st.data();
-        std::size_t n = st.size();
-
-#if SIZE_MAX > UINT32_MAX
-        std::size_t h = 0xCBF29CE484222325ull;
-#else
-        std::size_t h = 0x811C9DC5u;
-#endif
-
-        while( n >= 4 )
-        {
-            h = h * (31u * 31u * 31u * 31u)
-                + static_cast<unsigned char>( p[0] ) * (31u * 31u * 31u)
-                + static_cast<unsigned char>( p[1] ) * (31u * 31u)
-                + static_cast<unsigned char>( p[2] ) * 31u
-                + static_cast<unsigned char>( p[3] );
-
-            p += 4;
-            n -= 4;
-        }
-
-        while( n > 0 )
-        {
-            h = h * 31u + static_cast<unsigned char>( *p );
-
-            ++p;
-            --n;
-        }
-
-        return h;
-    }
-};
-
-// mul31_x8_hash
-
-struct mul31_x8_hash
-{
-    // not avalanching
-
-    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
-    {
-        char const * p = st.data();
-        std::size_t n = st.size();
-
-#if SIZE_MAX > UINT32_MAX
-        boost::uint64_t h = 0xCBF29CE484222325ull;
-#else
-        boost::uint64_t h = 0x811C9DC5u;
-#endif
-
-        while( n >= 8 )
-        {
-            h = h * (31ull * 31ull * 31ull * 31ull * 31ull * 31ull * 31ull * 31ull)
-                + static_cast<unsigned char>( p[0] ) * (31ull * 31ull * 31ull * 31ull * 31ull * 31ull * 31ull)
-                + static_cast<unsigned char>( p[1] ) * (31ull * 31ull * 31ull * 31ull * 31ull * 31ull)
-                + static_cast<unsigned char>( p[2] ) * (31ull * 31ull * 31ull * 31ull * 31ull)
-                + static_cast<unsigned char>( p[3] ) * (31ull * 31ull * 31ull * 31ull)
-                + static_cast<unsigned char>( p[4] ) * (31ull * 31ull * 31ull)
-                + static_cast<unsigned char>( p[5] ) * (31ull * 31ull)
-                + static_cast<unsigned char>( p[6] ) * 31ull
-                + static_cast<unsigned char>( p[7] );
-
-            p += 8;
-            n -= 8;
-        }
-
-        while( n > 0 )
-        {
-            h = h * 31u + static_cast<unsigned char>( *p );
-
-            ++p;
-            --n;
-        }
-
-        return static_cast<std::size_t>( h );
-    }
-};
-
 // fnv1a_hash
 
 template<int Bits> struct fnv1a_hash_impl;
@@ -319,16 +207,6 @@ struct absl_hash: absl::Hash<std::string_view>
 
 #ifdef HAVE_MULXP_HASH
 
-struct mulxp0_hash_
-{
-    using is_avalanching = void;
-
-    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
-    {
-        return mulxp0_hash( (unsigned char const*)st.data(), st.size(), 0 );
-    }
-};
-
 struct mulxp1_hash_
 {
     using is_avalanching = void;
@@ -336,16 +214,6 @@ struct mulxp1_hash_
     std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
     {
         return mulxp1_hash( (unsigned char const*)st.data(), st.size(), 0 );
-    }
-};
-
-struct mulxp2_hash_
-{
-    using is_avalanching = void;
-
-    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
-    {
-        return mulxp2_hash( (unsigned char const*)st.data(), st.size(), 0 );
     }
 };
 
@@ -387,9 +255,6 @@ int main()
 
     test< boost::hash<std::string_view> >( "boost::hash" );
     test< std_hash >( "std::hash" );
-    test< mul31_hash >( "mul31_hash" );
-    test< mul31_x4_hash >( "mul31_x4_hash" );
-    test< mul31_x8_hash >( "mul31_x8_hash" );
     test< fnv1a_hash >( "fnv1a_hash" );
 
 #ifdef HAVE_ABSEIL
@@ -406,9 +271,7 @@ int main()
 
 #ifdef HAVE_MULXP_HASH
 
-    test< mulxp0_hash_ >( "mulxp0_hash" );
     test< mulxp1_hash_ >( "mulxp1_hash" );
-    test< mulxp2_hash_ >( "mulxp2_hash" );
     test< mulxp3_hash_ >( "mulxp3_hash" );
     test< mulxp3_hash32_ >( "mulxp3_hash32" );
 
