@@ -13,6 +13,9 @@
 #ifdef HAVE_ABSEIL
 # include "absl/hash/hash.h"
 #endif
+#ifdef HAVE_ANKERL_UNORDERED_DENSE
+# include "ankerl/unordered_dense.h"
+#endif
 #ifdef HAVE_MULXP_HASH
 # include "mulxp_hash.hpp"
 #endif
@@ -245,11 +248,11 @@ template<class H, class V> void test_hash_speed( int N, V const& v )
 
 #if defined( _MSC_VER )
 
-    std::printf( "%53s : q=%20Iu, %lld ms\n", hash.c_str(), q, ms1 );
+    std::printf( "%57s : q=%20Iu, %lld ms\n", hash.c_str(), q, ms1 );
 
 #else
 
-    std::printf( "%53s : q=%20zu, %lld ms\n", hash.c_str(), q, ms1 );
+    std::printf( "%57s : q=%20zu, %lld ms\n", hash.c_str(), q, ms1 );
 
 #endif
 }
@@ -270,11 +273,11 @@ template<class H, class V> void test_hash_collision( int N, V const& v, std::siz
 
 #if defined( _MSC_VER )
 
-    std::printf( "%53s : c=%Iu\n", hash.c_str(), n - s.size() );
+    std::printf( "%57s : c=%Iu\n", hash.c_str(), n - s.size() );
 
 #else
 
-    std::printf( "%53s : c=%zu\n", hash.c_str(), n - s.size() );
+    std::printf( "%57s : c=%zu\n", hash.c_str(), n - s.size() );
 
 #endif
 }
@@ -327,11 +330,11 @@ template<class V, class S> void test4( int N, V const& v, char const * hash, S s
 
 #if defined( _MSC_VER )
 
-    std::printf( "%53s : n=%Iu, m=%Iu, c=%Iu, q=%Iu, %4lld + %4lld = %4lld ms\n", hash, n, m, c, q, ms1, ms2, ms1 + ms2 );
+    std::printf( "%57s : n=%Iu, m=%Iu, c=%Iu, q=%Iu, %4lld + %4lld = %4lld ms\n", hash, n, m, c, q, ms1, ms2, ms1 + ms2 );
 
 #else
 
-    std::printf( "%53s : n=%zu, m=%zu, c=%zu, q=%zu, %4lld + %4lld = %4lld ms\n", hash, n, m, c, q, ms1, ms2, ms1 + ms2 );
+    std::printf( "%57s : n=%zu, m=%zu, c=%zu, q=%zu, %4lld + %4lld = %4lld ms\n", hash, n, m, c, q, ms1, ms2, ms1 + ms2 );
 
 #endif
 }
@@ -383,6 +386,9 @@ int main()
 #ifdef HAVE_ABSEIL
     test_hash_speed<absl::Hash<std::string> >( N * 16, v );
 #endif
+#ifdef HAVE_ANKERL_UNORDERED_DENSE
+    test_hash_speed<ankerl::unordered_dense::hash<std::string> >( N * 16, v );
+#endif
 #ifdef HAVE_MULXP_HASH
     test_hash_speed<mulxp0_hash_>( N * 16, v );
     test_hash_speed<mulxp1_hash_>( N * 16, v );
@@ -418,6 +424,9 @@ int main()
 #ifdef HAVE_ABSEIL
         test_hash_collision<absl::Hash<std::string> >( N * 16, v, n );
 #endif
+#ifdef HAVE_ANKERL_UNORDERED_DENSE
+        test_hash_collision<ankerl::unordered_dense::hash<std::string> >( N * 16, v, n );
+#endif
 #ifdef HAVE_MULXP_HASH
         test_hash_collision<mulxp0_hash_>( N * 16, v, n );
         test_hash_collision<mulxp1_hash_>( N * 16, v, n );
@@ -441,6 +450,9 @@ int main()
     test_container_speed<K, std::hash<std::string> >( N, v );
 #ifdef HAVE_ABSEIL
     test_container_speed<K, absl::Hash<std::string> >( N, v );
+#endif
+#ifdef HAVE_ANKERL_UNORDERED_DENSE
+    test_container_speed<K, ankerl::unordered_dense::hash<std::string> >( N, v );
 #endif
 #ifdef HAVE_MULXP_HASH
     test_container_speed<K, mulxp0_hash_>( N, v );

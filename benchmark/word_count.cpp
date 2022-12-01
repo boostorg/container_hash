@@ -9,6 +9,9 @@
 #ifdef HAVE_ABSEIL
 # include "absl/hash/hash.h"
 #endif
+#ifdef HAVE_ANKERL_UNORDERED_DENSE
+# include "ankerl/unordered_dense.h"
+#endif
 #ifdef HAVE_MULXP_HASH
 # include "mulxp_hash.hpp"
 #endif
@@ -395,6 +398,12 @@ int main()
 
 #endif
 
+#ifdef HAVE_ANKERL_UNORDERED_DENSE
+
+    test< ankerl::unordered_dense::hash<std::string_view> >( "ankerl::unordered_dense::hash" );
+
+#endif
+
 #ifdef HAVE_MULXP_HASH
 
     test< mulxp0_hash_ >( "mulxp0_hash" );
@@ -409,7 +418,7 @@ int main()
 
     for( auto const& x: times )
     {
-        std::cout << std::setw( 22 ) << ( x.label_ + ": " ) << std::setw( 5 ) << x.time_ << " ms\n";
+        std::cout << std::setw( 32 ) << ( x.label_ + ": " ) << std::setw( 5 ) << x.time_ << " ms\n";
     }
 }
 
