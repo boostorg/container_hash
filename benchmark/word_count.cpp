@@ -41,7 +41,15 @@ static std::vector<std::string> words;
 
 static void init_words()
 {
+#if SIZE_MAX > UINT32_MAX
+
     char const* fn = "enwik9"; // http://mattmahoney.net/dc/textdata
+
+#else
+
+    char const* fn = "enwik8"; // ditto
+
+#endif
 
     auto t1 = std::chrono::steady_clock::now();
 
@@ -245,6 +253,24 @@ struct mulxp3_hash32_
     }
 };
 
+struct mulxp1_hash32_
+{
+    using is_avalanching = void;
+
+    std::size_t operator()( std::string_view const& st ) const BOOST_NOEXCEPT
+    {
+        std::size_t r = mulxp1_hash32( (unsigned char const*)st.data(), st.size(), 0 );
+
+#if SIZE_MAX > UINT32_MAX
+
+        r |= r << 32;
+
+#endif
+
+        return r;
+    }
+};
+
 #endif
 
 //
@@ -273,6 +299,7 @@ int main()
 
     test< mulxp1_hash_ >( "mulxp1_hash" );
     test< mulxp3_hash_ >( "mulxp3_hash" );
+    test< mulxp1_hash32_ >( "mulxp1_hash32" );
     test< mulxp3_hash32_ >( "mulxp3_hash32" );
 
 #endif

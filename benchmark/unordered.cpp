@@ -213,6 +213,14 @@ struct mulxp3_hash_
     }
 };
 
+struct mulxp1_hash32_
+{
+    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
+    {
+        return mulxp1_hash32( (unsigned char const*)st.data(), st.size(), 0 );
+    }
+};
+
 struct mulxp3_hash32_
 {
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
@@ -394,6 +402,7 @@ int main()
     test_hash_speed<mulxp1_hash_>( N * 16, v );
     test_hash_speed<mulxp2_hash_>( N * 16, v );
     test_hash_speed<mulxp3_hash_>( N * 16, v );
+    test_hash_speed<mulxp1_hash32_>( N * 16, v );
     test_hash_speed<mulxp3_hash32_>( N * 16, v );
 #endif
 
@@ -432,6 +441,7 @@ int main()
         test_hash_collision<mulxp1_hash_>( N * 16, v, n );
         test_hash_collision<mulxp2_hash_>( N * 16, v, n );
         test_hash_collision<mulxp3_hash_>( N * 16, v, n );
+        test_hash_collision<mulxp1_hash32_>( N * 16, v, n );
         test_hash_collision<mulxp3_hash32_>( N * 16, v, n );
 #endif
     }
@@ -459,6 +469,7 @@ int main()
     test_container_speed<K, mulxp1_hash_>( N, v );
     test_container_speed<K, mulxp2_hash_>( N, v );
     test_container_speed<K, mulxp3_hash_>( N, v );
+    test_container_speed<K, mulxp1_hash32_>( N, v );
     test_container_speed<K, mulxp3_hash32_>( N, v );
 #endif
 
