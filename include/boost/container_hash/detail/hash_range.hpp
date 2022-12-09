@@ -10,9 +10,10 @@
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/cstdint.hpp>
+#include <iterator>
 #include <cstddef>
 #include <climits>
-#include <iterator>
+#include <cstring>
 
 namespace boost
 {
@@ -115,6 +116,67 @@ std::size_t>::type
 
     return seed;
 }
+
+#if defined(_MSC_VER) && !defined(__clang__)
+
+template<class T>
+inline typename boost::enable_if_<is_char_type<T>::value, std::size_t>::type
+    hash_range( std::size_t seed, T const* first, T const* last )
+{
+    std::size_t n = static_cast<std::size_t>( last - first );
+
+    for( ; n >= 4; first += 4, n -= 4 )
+    {
+        boost::uint32_t w;
+
+        std::memcpy( &w, first, 4 );
+
+        hash_combine( seed, w );
+    }
+
+    {
+        // add a trailing suffix byte of 0x01 because otherwise sequences of
+        // trailing zeroes are indistinguishable from end of string
+
+        boost::uint32_t w = 0x01u;
+
+        switch( n )
+        {
+        case 1:
+
+            w =
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+                0x0100u;
+
+            break;
+
+        case 2:
+
+            w =
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
+                0x010000u;
+
+            break;
+
+        case 3:
+
+            w =
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[2] ) ) << 16 |
+                0x01000000u;
+
+            break;
+        }
+
+        hash_combine( seed, w );
+    }
+
+    return seed;
+}
+
+#endif
 
 template<class It>
 inline typename boost::enable_if_<
