@@ -181,27 +181,11 @@ struct fnv1a_hash: fnv1a_hash_impl< std::numeric_limits<std::size_t>::digits > {
 
 #ifdef HAVE_MULXP_HASH
 
-struct mulxp0_hash_
-{
-    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
-    {
-        return mulxp0_hash( (unsigned char const*)st.data(), st.size(), 0 );
-    }
-};
-
 struct mulxp1_hash_
 {
     std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
     {
         return mulxp1_hash( (unsigned char const*)st.data(), st.size(), 0 );
-    }
-};
-
-struct mulxp2_hash_
-{
-    std::size_t operator()( std::string const& st ) const BOOST_NOEXCEPT
-    {
-        return mulxp2_hash( (unsigned char const*)st.data(), st.size(), 0 );
     }
 };
 
@@ -398,9 +382,7 @@ int main()
     test_hash_speed<ankerl::unordered_dense::hash<std::string> >( N * 16, v );
 #endif
 #ifdef HAVE_MULXP_HASH
-    test_hash_speed<mulxp0_hash_>( N * 16, v );
     test_hash_speed<mulxp1_hash_>( N * 16, v );
-    test_hash_speed<mulxp2_hash_>( N * 16, v );
     test_hash_speed<mulxp3_hash_>( N * 16, v );
     test_hash_speed<mulxp1_hash32_>( N * 16, v );
     test_hash_speed<mulxp3_hash32_>( N * 16, v );
@@ -437,9 +419,7 @@ int main()
         test_hash_collision<ankerl::unordered_dense::hash<std::string> >( N * 16, v, n );
 #endif
 #ifdef HAVE_MULXP_HASH
-        test_hash_collision<mulxp0_hash_>( N * 16, v, n );
         test_hash_collision<mulxp1_hash_>( N * 16, v, n );
-        test_hash_collision<mulxp2_hash_>( N * 16, v, n );
         test_hash_collision<mulxp3_hash_>( N * 16, v, n );
         test_hash_collision<mulxp1_hash32_>( N * 16, v, n );
         test_hash_collision<mulxp3_hash32_>( N * 16, v, n );
@@ -450,7 +430,7 @@ int main()
 
     typedef std::string K;
 
-    std::puts( "Container speed test:\n" );
+    std::puts( "Container speed test:\n---\n" );
 
     test_container_speed<K, mul31_hash>( N, v );
     test_container_speed<K, mul31_x4_hash>( N, v );
@@ -465,9 +445,7 @@ int main()
     test_container_speed<K, ankerl::unordered_dense::hash<std::string> >( N, v );
 #endif
 #ifdef HAVE_MULXP_HASH
-    test_container_speed<K, mulxp0_hash_>( N, v );
     test_container_speed<K, mulxp1_hash_>( N, v );
-    test_container_speed<K, mulxp2_hash_>( N, v );
     test_container_speed<K, mulxp3_hash_>( N, v );
     test_container_speed<K, mulxp1_hash32_>( N, v );
     test_container_speed<K, mulxp3_hash32_>( N, v );
