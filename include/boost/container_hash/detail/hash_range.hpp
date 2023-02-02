@@ -82,6 +82,11 @@ template<class T> inline boost::uint32_t read32le( T* p )
 
 #endif
 
+inline boost::uint64_t mul32( boost::uint32_t x, boost::uint32_t y )
+{
+    return static_cast<boost::uint64_t>( x ) * y;
+}
+
 template<class It>
 inline typename boost::enable_if_<
     is_char_type<typename std::iterator_traits<It>::value_type>::value &&
@@ -89,54 +94,50 @@ inline typename boost::enable_if_<
 std::size_t>::type
     hash_range( std::size_t seed, It first, It last )
 {
+    It p = first;
     std::size_t n = static_cast<std::size_t>( last - first );
 
-    for( ; n >= 4; first += 4, n -= 4 )
+    boost::uint32_t const q = 0x9e3779b9U;
+    boost::uint32_t const k = q * q;
+
+    boost::uint64_t h = mul32( static_cast<boost::uint32_t>( seed ) + q, k );
+    boost::uint32_t w = static_cast<boost::uint32_t>( h );
+
+    h ^= n;
+
+    while( n >= 4 )
     {
-        boost::uint32_t w = read32le( first );
-        hash_combine( seed, w );
+        boost::uint32_t v1 = read32le( p );
+
+        w += q;
+        h ^= mul32( v1 + w, k );
+
+        p += 4;
+        n -= 4;
     }
 
     {
-        // add a trailing suffix byte of 0x01 because otherwise sequences of
-        // trailing zeroes are indistinguishable from end of string
+        boost::uint32_t v1 = 0;
 
-        boost::uint32_t w = 0x01u;
-
-        switch( n )
+        if( n >= 1 )
         {
-        case 1:
+            std::size_t const x1 = ( n - 1 ) & 2; // 1: 0, 2: 0, 3: 2
+            std::size_t const x2 = n >> 1;        // 1: 0, 2: 1, 3: 1
 
-            w =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
-                0x0100u;
-
-            break;
-
-        case 2:
-
-            w =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
-                0x010000u;
-
-            break;
-
-        case 3:
-
-            w =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[2] ) ) << 16 |
-                0x01000000u;
-
-            break;
+            v1 =
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ x1 ] ) ) << x1 * 8 |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ x2 ] ) ) << x2 * 8 |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[  0 ] ) );
         }
 
-        hash_combine( seed, w );
+        w += q;
+        h ^= mul32( v1 + w, k );
     }
 
-    return seed;
+    w += q;
+    h ^= mul32( static_cast<boost::uint32_t>( h ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
+
+    return static_cast<boost::uint32_t>( h ) ^ static_cast<boost::uint32_t>( h >> 32 );
 }
 
 template<class It>
@@ -146,48 +147,69 @@ inline typename boost::enable_if_<
 std::size_t>::type
     hash_range( std::size_t seed, It first, It last )
 {
+    std::size_t n = 0;
+
+    boost::uint32_t const q = 0x9e3779b9U;
+    boost::uint32_t const k = q * q;
+
+    boost::uint64_t h = mul32( static_cast<boost::uint32_t>( seed ) + q, k );
+    boost::uint32_t w = static_cast<boost::uint32_t>( h );
+
+    boost::uint32_t v1 = 0;
+
     for( ;; )
     {
-        boost::uint32_t w = 0;
+        v1 = 0;
 
         if( first == last )
         {
-            hash_combine( seed, w | 0x01u );
-            return seed;
+            break;
         }
 
-        w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) );
+        v1 |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) );
         ++first;
+        ++n;
 
         if( first == last )
         {
-            hash_combine( seed, w | 0x0100u );
-            return seed;
+            break;
         }
 
-        w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 8;
+        v1 |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 8;
         ++first;
+        ++n;
 
         if( first == last )
         {
-            hash_combine( seed, w | 0x010000u );
-            return seed;
+            break;
         }
 
-        w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 16;
+        v1 |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 16;
         ++first;
+        ++n;
 
         if( first == last )
         {
-            hash_combine( seed, w | 0x01000000u );
-            return seed;
+            break;
         }
 
-        w |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 24;
+        v1 |= static_cast<boost::uint32_t>( static_cast<unsigned char>( *first ) ) << 24;
         ++first;
+        ++n;
 
-        hash_combine( seed, w );
+        w += q;
+        h ^= mul32( v1 + w, k );
     }
+
+    h ^= n;
+
+    w += q;
+    h ^= mul32( v1 + w, k );
+
+    w += q;
+    h ^= mul32( static_cast<boost::uint32_t>( h ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
+
+    return static_cast<boost::uint32_t>( h ) ^ static_cast<boost::uint32_t>( h >> 32 );
 }
 
 } // namespace hash_detail
