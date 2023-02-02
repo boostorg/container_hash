@@ -278,7 +278,7 @@ std::size_t>::type
 
         if( n >= 4 )
         {
-            v1 = static_cast<boost::uint64_t>( read32le( p + n - 4 ) ) << ( n - 4 ) * 8 | read32le( p );
+            v1 = static_cast<boost::uint64_t>( read32le( p + static_cast<std::ptrdiff_t>( n - 4 ) ) ) << ( n - 4 ) * 8 | read32le( p );
         }
         else if( n >= 1 )
         {
@@ -286,8 +286,8 @@ std::size_t>::type
             std::size_t const x2 = n >> 1;        // 1: 0, 2: 1, 3: 1
 
             v1 =
-                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ x1 ] ) ) << x1 * 8 |
-                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ x2 ] ) ) << x2 * 8 |
+                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ static_cast<std::ptrdiff_t>( x1 ) ] ) ) << x1 * 8 |
+                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ static_cast<std::ptrdiff_t>( x2 ) ] ) ) << x2 * 8 |
                 static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ 0 ] ) );
         }
 
