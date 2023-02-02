@@ -98,7 +98,7 @@ std::size_t>::type
     std::size_t n = static_cast<std::size_t>( last - first );
 
     boost::uint32_t const q = 0x9e3779b9U;
-    boost::uint32_t const k = q * q;
+    boost::uint32_t const k = 0xe35e67b1U; // q * q
 
     boost::uint64_t h = mul32( static_cast<boost::uint32_t>( seed ) + q, k );
     boost::uint32_t w = static_cast<boost::uint32_t>( h );
@@ -150,7 +150,7 @@ std::size_t>::type
     std::size_t n = 0;
 
     boost::uint32_t const q = 0x9e3779b9U;
-    boost::uint32_t const k = q * q;
+    boost::uint32_t const k = 0xe35e67b1U; // q * q
 
     boost::uint64_t h = mul32( static_cast<boost::uint32_t>( seed ) + q, k );
     boost::uint32_t w = static_cast<boost::uint32_t>( h );
