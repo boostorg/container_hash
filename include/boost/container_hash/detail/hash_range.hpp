@@ -256,8 +256,8 @@ std::size_t>::type
     It p = first;
     std::size_t n = static_cast<std::size_t>( last - first );
 
-    boost::uint64_t const q = 0x9e3779b97f4a7c15ULL;
-    boost::uint64_t const k = 0xdf442d22ce4859b9ULL; // q * q
+    boost::uint64_t const q = static_cast<boost::uint64_t>( 0x9e3779b9 ) << 32 | 0x7f4a7c15;
+    boost::uint64_t const k = static_cast<boost::uint64_t>( 0xdf442d22 ) << 32 | 0xce4859b9; // q * q
 
     boost::uint64_t w = mulx( seed + q, k );
     boost::uint64_t h = w ^ n;
@@ -308,8 +308,8 @@ std::size_t>::type
 {
     std::size_t n = 0;
 
-    boost::uint64_t const q = 0x9e3779b97f4a7c15ULL;
-    boost::uint64_t const k = 0xdf442d22ce4859b9ULL; // q * q
+    boost::uint64_t const q = static_cast<boost::uint64_t>( 0x9e3779b9 ) << 32 | 0x7f4a7c15;
+    boost::uint64_t const k = static_cast<boost::uint64_t>( 0xdf442d22 ) << 32 | 0xce4859b9; // q * q
 
     boost::uint64_t w = mulx( seed + q, k );
     boost::uint64_t h = w;
