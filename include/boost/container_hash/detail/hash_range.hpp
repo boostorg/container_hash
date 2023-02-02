@@ -6,11 +6,13 @@
 #define BOOST_HASH_DETAIL_HASH_RANGE_HPP
 
 #include <boost/container_hash/hash_fwd.hpp>
+#include <boost/container_hash/detail/mulx.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/enable_if.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/cstdint.hpp>
 #include <iterator>
+#include <limits>
 #include <cstddef>
 #include <climits>
 #include <cstring>
@@ -54,7 +56,7 @@ std::size_t >::type
     return seed;
 }
 
-// specialized char[] version
+// specialized char[] version, 32 bit
 
 template<class It> inline boost::uint32_t read32le( It p )
 {
@@ -90,7 +92,8 @@ inline boost::uint64_t mul32( boost::uint32_t x, boost::uint32_t y )
 template<class It>
 inline typename boost::enable_if_<
     is_char_type<typename std::iterator_traits<It>::value_type>::value &&
-    is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value,
+    is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value &&
+    std::numeric_limits<std::size_t>::digits <= 32,
 std::size_t>::type
     hash_range( std::size_t seed, It first, It last )
 {
@@ -143,7 +146,8 @@ std::size_t>::type
 template<class It>
 inline typename boost::enable_if_<
     is_char_type<typename std::iterator_traits<It>::value_type>::value &&
-    !is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value,
+    !is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value &&
+    std::numeric_limits<std::size_t>::digits <= 32,
 std::size_t>::type
     hash_range( std::size_t seed, It first, It last )
 {
@@ -210,6 +214,194 @@ std::size_t>::type
     h ^= mul32( static_cast<boost::uint32_t>( h ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
 
     return static_cast<boost::uint32_t>( h ) ^ static_cast<boost::uint32_t>( h >> 32 );
+}
+
+// specialized char[] version, 64 bit
+
+template<class It> inline boost::uint64_t read64le( It p )
+{
+    boost::uint64_t w =
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[0] ) ) |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[1] ) ) <<  8 |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[2] ) ) << 16 |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[3] ) ) << 24 |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[4] ) ) << 32 |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[5] ) ) << 40 |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[6] ) ) << 48 |
+        static_cast<boost::uint64_t>( static_cast<unsigned char>( p[7] ) ) << 56;
+
+    return w;
+}
+
+#if defined(_MSC_VER) && !defined(__clang__)
+
+template<class T> inline boost::uint64_t read64le( T* p )
+{
+    boost::uint64_t w;
+
+    std::memcpy( &w, p, 8 );
+    return w;
+}
+
+#endif
+
+template<class It>
+inline typename boost::enable_if_<
+    is_char_type<typename std::iterator_traits<It>::value_type>::value &&
+    is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value &&
+    (std::numeric_limits<std::size_t>::digits > 32),
+std::size_t>::type
+    hash_range( std::size_t seed, It first, It last )
+{
+    It p = first;
+    std::size_t n = static_cast<std::size_t>( last - first );
+
+    boost::uint64_t const q = 0x9e3779b97f4a7c15ULL;
+    boost::uint64_t const k = q * q;
+
+    boost::uint64_t w = mulx( seed + q, k );
+    boost::uint64_t h = w ^ n;
+
+    while( n >= 8 )
+    {
+        boost::uint64_t v1 = read64le( p );
+
+        w += q;
+        h ^= mulx( v1 + w, k );
+
+        p += 8;
+        n -= 8;
+    }
+
+    {
+        boost::uint64_t v1 = 0;
+
+        if( n >= 4 )
+        {
+            v1 = static_cast<boost::uint64_t>( read32le( p + n - 4 ) ) << ( n - 4 ) * 8 | read32le( p );
+        }
+        else if( n >= 1 )
+        {
+            std::size_t const x1 = ( n - 1 ) & 2; // 1: 0, 2: 0, 3: 2
+            std::size_t const x2 = n >> 1;        // 1: 0, 2: 1, 3: 1
+
+            v1 =
+                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ x1 ] ) ) << x1 * 8 |
+                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ x2 ] ) ) << x2 * 8 |
+                static_cast<boost::uint64_t>( static_cast<unsigned char>( p[ 0 ] ) );
+        }
+
+        w += q;
+        h ^= mulx( v1 + w, k );
+    }
+
+    return mulx( h + w, k );
+}
+
+template<class It>
+inline typename boost::enable_if_<
+    is_char_type<typename std::iterator_traits<It>::value_type>::value &&
+    !is_same<typename std::iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value &&
+    (std::numeric_limits<std::size_t>::digits > 32),
+std::size_t>::type
+    hash_range( std::size_t seed, It first, It last )
+{
+    std::size_t n = 0;
+
+    boost::uint64_t const q = 0x9e3779b97f4a7c15ULL;
+    boost::uint64_t const k = q * q;
+
+    boost::uint64_t w = mulx( seed + q, k );
+    boost::uint64_t h = w;
+
+    boost::uint64_t v1 = 0;
+
+    for( ;; )
+    {
+        v1 = 0;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) );
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 8;
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 16;
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 24;
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 32;
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 40;
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 48;
+        ++first;
+        ++n;
+
+        if( first == last )
+        {
+            break;
+        }
+
+        v1 |= static_cast<boost::uint64_t>( static_cast<unsigned char>( *first ) ) << 56;
+        ++first;
+        ++n;
+
+        w += q;
+        h ^= mulx( v1 + w, k );
+    }
+
+    h ^= n;
+
+    w += q;
+    h ^= mulx( v1 + w, k );
+
+    return mulx( h + w, k );
 }
 
 } // namespace hash_detail
