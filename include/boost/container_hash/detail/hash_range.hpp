@@ -125,9 +125,9 @@ std::size_t>::type
             std::size_t const x2 = n >> 1;        // 1: 0, 2: 1, 3: 1
 
             v1 =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ x1 ] ) ) << x1 * 8 |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ x2 ] ) ) << x2 * 8 |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[  0 ] ) );
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ static_cast<std::ptrdiff_t>( x1 ) ] ) ) << x1 * 8 |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ static_cast<std::ptrdiff_t>( x2 ) ] ) ) << x2 * 8 |
+                static_cast<boost::uint32_t>( static_cast<unsigned char>( p[ 0 ] ) );
         }
 
         w += q;
