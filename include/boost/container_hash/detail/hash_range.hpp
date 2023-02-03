@@ -104,7 +104,7 @@ std::size_t>::type
     boost::uint32_t const k = 0xe35e67b1U; // q * q
 
     boost::uint64_t h = mul32( static_cast<boost::uint32_t>( seed ) + q, k );
-    boost::uint32_t w = static_cast<boost::uint32_t>( h );
+    boost::uint32_t w = static_cast<boost::uint32_t>( h & 0xFFFFFFFF );
 
     h ^= n;
 
@@ -138,9 +138,9 @@ std::size_t>::type
     }
 
     w += q;
-    h ^= mul32( static_cast<boost::uint32_t>( h ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
+    h ^= mul32( static_cast<boost::uint32_t>( h & 0xFFFFFFFF ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
 
-    return static_cast<boost::uint32_t>( h ) ^ static_cast<boost::uint32_t>( h >> 32 );
+    return static_cast<boost::uint32_t>( h & 0xFFFFFFFF ) ^ static_cast<boost::uint32_t>( h >> 32 );
 }
 
 template<class It>
@@ -157,7 +157,7 @@ std::size_t>::type
     boost::uint32_t const k = 0xe35e67b1U; // q * q
 
     boost::uint64_t h = mul32( static_cast<boost::uint32_t>( seed ) + q, k );
-    boost::uint32_t w = static_cast<boost::uint32_t>( h );
+    boost::uint32_t w = static_cast<boost::uint32_t>( h & 0xFFFFFFFF );
 
     boost::uint32_t v1 = 0;
 
@@ -211,9 +211,9 @@ std::size_t>::type
     h ^= mul32( v1 + w, k );
 
     w += q;
-    h ^= mul32( static_cast<boost::uint32_t>( h ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
+    h ^= mul32( static_cast<boost::uint32_t>( h & 0xFFFFFFFF ) + w, static_cast<boost::uint32_t>( h >> 32 ) + w + k );
 
-    return static_cast<boost::uint32_t>( h ) ^ static_cast<boost::uint32_t>( h >> 32 );
+    return static_cast<boost::uint32_t>( h & 0xFFFFFFFF ) ^ static_cast<boost::uint32_t>( h >> 32 );
 }
 
 // specialized char[] version, 64 bit
