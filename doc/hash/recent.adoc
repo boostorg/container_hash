@@ -13,6 +13,9 @@ https://www.boost.org/LICENSE_1_0.txt
 * Added an overload of `hash_value` for `std::nullptr_t`.
 * Added `is_tuple_like` and an overload of `hash_value` for
   tuple-like types.
+* Changed string hashing to use
+  https://github.com/pdimov/mulxp_hash[`mulxp1_hash`]. This
+  improves both quality and speed.
 
 == Boost 1.81.0
 

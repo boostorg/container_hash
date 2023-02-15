@@ -242,10 +242,15 @@ for( ; first != last; ++first )
 }
 ----
 
-Otherwise, bytes from `[first, last)` are coalesced in an unspecified manner
-and then passed to `hash_combine`, more than one at a time. This is done in
-order to improve performance when hashing strings.
+Otherwise, bytes from `[first, last)` are coalesced and hashed in an
+unspecified manner. This is done in order to improve performance when hashing
+strings.
 --
+
+Remarks: ::
+  For chars, the current implementation uses
+  https://github.com/pdimov/mulxp_hash[`mulxp1_hash`] when `std::size_t` is
+  64 bit, and `mulxp1_hash32` when it's 32 bit.
 
 [source]
 ----
