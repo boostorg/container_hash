@@ -200,16 +200,9 @@ In Boost 1.81, `hash_range` was changed to process elements of type `char`,
 A `uint32_t` is composed from `first[0]` to `first[3]`, and that `uint32_t`
 is fed to `hash_combine`.
 
-In principle, when `size_t` is 64 bit, we could have used `uint64_t` instead.
-We do not, because this allows producing an arbitrary hash value by choosing
-the input bytes appropriately (because `hash_combine` is reversible.)
-
-Allowing control only over 32 bits of the full 64 bit `size_t` value makes
-these "chosen plaintext attacks" harder.
-
-This is not as harmful to performance as it first appears, because the
-input to `hash<string>` (e.g. the key in an unordered container) is often
-short (9 to 13 bytes in some typical scenarios.)
+In Boost 1.82, `hash_range` for these types was changed to use
+https://github.com/pdimov/mulxp_hash[`mulxp1_hash`]. This improves both
+quality and speed of string hashing.
 
 Note that `hash_range` has also traditionally guaranteed that the same element
 sequence yields the same hash value regardless of the iterator type. This
