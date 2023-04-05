@@ -55,6 +55,22 @@ to be templates constrained on e.g. `std::is_integral` or its moral
 equivalent. This causes types convertible to an integral to no longer
 match, avoiding the problem.
 
+== Hash Value Stability
+
+In general, the library does not promise that the hash values will stay
+the same from release to release (otherwise improvements would be
+impossible). However, historically values have been quite stable. Before
+release 1.81, the previous changes have been in 1.56 (a better
+`hash_combine`) and 1.78 (macOS-specific change to `hash_combine`.)
+
+Code should generally not depend on specific hash values, but for those
+willing to take the risk of occasional breaks due to hash value changes,
+the library now has a test that checks hash values for a number of types
+against reference values (`test/hash_reference_values.cpp`),
+whose https://github.com/boostorg/container_hash/commits/develop/test/hash_reference_values.cpp[version history]
+can be used as a rough guide to when hash values have changed, and for what
+types.
+
 == hash_combine
 
 The initial implementation of the library was based on Issue 6.18 of the
