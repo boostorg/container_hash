@@ -3,6 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#define _SILENCE_CXX23_DENORM_DEPRECATION_WARNING
+
 #include "hash_float_test.hpp"
 
 int main()
