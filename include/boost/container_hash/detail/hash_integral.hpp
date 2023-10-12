@@ -15,9 +15,53 @@ namespace boost
 namespace hash_detail
 {
 
+// libstdc++ doesn't provide support for __int128 in the standard traits
+
+template<class T> struct is_integral: public std::is_integral<T>
+{
+};
+
+template<class T> struct is_unsigned: public std::is_unsigned<T>
+{
+};
+
+template<class T> struct make_unsigned: public std::make_unsigned<T>
+{
+};
+
+#if defined(__SIZEOF_INT128__)
+
+template<> struct is_integral<__int128_t>: public std::true_type
+{
+};
+
+template<> struct is_integral<__uint128_t>: public std::true_type
+{
+};
+
+template<> struct is_unsigned<__int128_t>: public std::false_type
+{
+};
+
+template<> struct is_unsigned<__uint128_t>: public std::true_type
+{
+};
+
+template<> struct make_unsigned<__int128_t>
+{
+    typedef __uint128_t type;
+};
+
+template<> struct make_unsigned<__uint128_t>
+{
+    typedef __uint128_t type;
+};
+
+#endif
+
 template<class T,
     bool bigger_than_size_t = (sizeof(T) > sizeof(std::size_t)),
-    bool is_unsigned = std::is_unsigned<T>::value,
+    bool is_unsigned = is_unsigned<T>::value,
     std::size_t size_t_bits = sizeof(std::size_t) * CHAR_BIT,
     std::size_t type_bits = sizeof(T) * CHAR_BIT>
 struct hash_integral_impl;
@@ -34,7 +78,7 @@ template<class T, std::size_t size_t_bits, std::size_t type_bits> struct hash_in
 {
     static std::size_t fn( T v )
     {
-        typedef typename std::make_unsigned<T>::type U;
+        typedef typename make_unsigned<T>::type U;
 
         if( v >= 0 )
         {
@@ -91,7 +135,7 @@ template<class T> struct hash_integral_impl<T, true, true, 64, 128>
 } // namespace hash_detail
 
 template <typename T>
-typename std::enable_if<std::is_integral<T>::value, std::size_t>::type
+typename std::enable_if<hash_detail::is_integral<T>::value, std::size_t>::type
     hash_value( T v )
 {
     return hash_detail::hash_integral_impl<T>::fn( v );
