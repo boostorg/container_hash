@@ -3,7 +3,7 @@
 # Distributed under the Boost Software License, Version 1.0.
 # https://www.boost.org/LICENSE_1_0.txt
 
-cmake_minimum_required(VERSION 3.5...3.20)
+cmake_minimum_required(VERSION 3.8...3.20)
 
 project(boost_container_hash VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
@@ -17,8 +17,9 @@ target_link_libraries(boost_container_hash
     Boost::config
     Boost::describe
     Boost::mp11
-    Boost::type_traits
 )
+
+target_compile_features(boost_container_hash INTERFACE cxx_std_11)
 
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
