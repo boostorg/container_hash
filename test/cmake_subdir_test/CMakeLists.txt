@@ -9,8 +9,6 @@ project(cmake_subdir_test LANGUAGES CXX)
 add_subdirectory(../.. boostorg/container_hash)
 
 add_subdirectory(../../../config boostorg/config)
-add_subdirectory(../../../type_traits boostorg/type_traits)
-add_subdirectory(../../../static_assert boostorg/static_assert)
 add_subdirectory(../../../describe boostorg/describe)
 add_subdirectory(../../../mp11 boostorg/mp11)
 
