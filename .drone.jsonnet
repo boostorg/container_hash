@@ -32,13 +32,11 @@ local linux_pipeline(name, image, environment, packages = "", sources = [], arch
             commands:
             [
                 'set -e',
-
                 'uname -a',
                 'echo $DRONE_STAGE_MACHINE',
-
                 'wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -',
             ] +
-            (if sources != [] then [ ('apt-add-repository "' + source + '"') for source in sources ] else []) +
+            (if sources != [] then [ 'apt-get update' ] + [ ('apt-add-repository "' + source + '"') for source in sources ] else []) +
             (if packages != "" then [ 'apt-get update', 'apt-get -y install ' + packages ] else []) +
             [
                 'export LIBRARY=' + library,
