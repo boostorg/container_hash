@@ -68,7 +68,7 @@ namespace boost
     //
 
     // integral types
-	//   in detail/hash_integral.hpp
+    //   in detail/hash_integral.hpp
 
     // enumeration types
 
