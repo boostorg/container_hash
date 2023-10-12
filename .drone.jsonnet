@@ -97,25 +97,9 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
 
 [
     linux_pipeline(
-        "Linux 14.04 GCC 4.4",
-        "cppalliance/droneubuntu1404:1",
-        { TOOLSET: 'gcc', COMPILER: 'g++-4.4', CXXSTD: '98,0x' },
-        "g++-4.4",
-        [ "ppa:ubuntu-toolchain-r/test" ],
-    ),
-
-    linux_pipeline(
-        "Linux 14.04 GCC 4.6 32/64",
-        "cppalliance/droneubuntu1404:1",
-        { TOOLSET: 'gcc', COMPILER: 'g++-4.6', CXXSTD: '98,0x', ADDRMD: '32,64' },
-        "g++-4.6-multilib",
-        [ "ppa:ubuntu-toolchain-r/test" ],
-    ),
-
-    linux_pipeline(
         "Linux 14.04 GCC 4.7 32/64",
         "cppalliance/droneubuntu1404:1",
-        { TOOLSET: 'gcc', COMPILER: 'g++-4.7', CXXSTD: '98,0x', ADDRMD: '32,64' },
+        { TOOLSET: 'gcc', COMPILER: 'g++-4.7', CXXSTD: '0x', ADDRMD: '32,64' },
         "g++-4.7-multilib",
         [ "ppa:ubuntu-toolchain-r/test" ],
     ),
