@@ -125,3 +125,5 @@ run is_tuple_like_test.cpp ;
 run hash_tuple_like_test.cpp ;
 run hash_tuple_like_test2.cpp
   : : : <warnings>extra ;
+
+run hash_coroutine_handle.cpp ;

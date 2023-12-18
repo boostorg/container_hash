@@ -60,6 +60,10 @@
 # include <string_view>
 #endif
 
+#if !defined(BOOST_NO_CXX20_HDR_COROUTINE)
+# include <coroutine>
+#endif
+
 namespace boost
 {
 
@@ -457,6 +461,18 @@ namespace boost
         std::visit( [&seed](auto&& x) { hash_combine(seed, x); }, v );
 
         return seed;
+    }
+
+#endif
+
+    // std::coroutine_handle
+
+#if !defined(BOOST_NO_CXX20_HDR_COROUTINE)
+
+    template <typename T>
+    std::size_t hash_value( std::coroutine_handle<T> h )
+    {
+      return hash_value( h.address() );
     }
 
 #endif
