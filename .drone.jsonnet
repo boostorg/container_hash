@@ -333,6 +333,13 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
         "clang-16",
     ),
 
+    linux_pipeline(
+        "Linux 23.10 Clang 17",
+        "cppalliance/droneubuntu2310:1",
+        { TOOLSET: 'clang', COMPILER: 'clang++-17', CXXSTD: '11,14,17,20,2b' },
+        "clang-17",
+    ),
+
     macos_pipeline(
         "MacOS 10.15 Xcode 12.2 UBSAN",
         { TOOLSET: 'clang', COMPILER: 'clang++', CXXSTD: '11,14,17,2a' } + ubsan,
@@ -358,7 +365,7 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
     windows_pipeline(
         "Windows VS2015 msvc-14.0",
         "cppalliance/dronevs2015",
-        { TOOLSET: 'msvc-14.0', CXXSTD: '14,latest' },
+        { TOOLSET: 'msvc-14.0', CXXSTD: '14,latest', B2_DONT_EMBED_MANIFEST: '1' },
     ),
 
     windows_pipeline(
