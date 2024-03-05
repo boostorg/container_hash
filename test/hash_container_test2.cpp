@@ -30,10 +30,10 @@ std::size_t hash_value( X2 const& )
 int main()
 {
     X1 x1;
-    BOOST_TEST_EQ( boost::hash<X1>()( x1 ), 1 );
+    BOOST_TEST_EQ( boost::hash<X1>()( x1 ), 1u );
 
     X2 x2;
-    BOOST_TEST_EQ( boost::hash<X2>()( x2 ), 2 );
+    BOOST_TEST_EQ( boost::hash<X2>()( x2 ), 2u );
 
     return boost::report_errors();
 }
