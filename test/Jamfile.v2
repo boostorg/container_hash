@@ -79,7 +79,6 @@ local fs-path-req = "-<toolset>gcc:<cxxflags>-Wshadow" "-<toolset>gcc:<cxxflags>
 
 run hash_fs_path_test.cpp /boost//filesystem/<warnings>off : : : $(fs-path-req)
   <toolset>msvc-14.0,<cxxstd>latest:<build>no
-  <toolset>gcc,<address-model>32,<target-os>windows:<build>no
   <undefined-sanitizer>norecover:<link>static ;
 
 run is_range_test2.cpp : : : $(fs-path-req) ;
