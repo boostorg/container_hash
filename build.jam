@@ -1,0 +1,23 @@
+# Copyright René Ferdinand Rivera Morell 2023
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+import project ;
+
+project /boost/container_hash
+    : common-requirements
+        <source>/boost/config//boost_config
+        <source>/boost/describe//boost_describe
+        <source>/boost/mp11//boost_mp11
+        <source>/boost/type_traits//boost_type_traits
+        <include>include
+    ;
+
+explicit
+    [ alias boost_container_hash ]
+    [ alias all : boost_container_hash examples test ]
+    ;
+
+call-if : boost-library container_hash
+    ;
