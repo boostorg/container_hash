@@ -7,10 +7,10 @@ import project ;
 
 project /boost/container_hash
     : common-requirements
-        <source>/boost/config//boost_config
-        <source>/boost/describe//boost_describe
-        <source>/boost/mp11//boost_mp11
-        <source>/boost/type_traits//boost_type_traits
+        <library>/boost/config//boost_config
+        <library>/boost/describe//boost_describe
+        <library>/boost/mp11//boost_mp11
+        <library>/boost/type_traits//boost_type_traits
         <include>include
     ;
 
