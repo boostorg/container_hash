@@ -5,18 +5,21 @@
 
 require-b2 5.2 ;
 
+constant boost_dependencies :
+    /boost/config//boost_config
+    /boost/describe//boost_describe
+    /boost/mp11//boost_mp11 ;
+
 project /boost/container_hash
     : common-requirements
-        <library>/boost/config//boost_config
-        <library>/boost/describe//boost_describe
-        <library>/boost/mp11//boost_mp11
         <include>include
     ;
 
 explicit
-    [ alias boost_container_hash ]
+    [ alias boost_container_hash : : : : <library>$(boost_dependencies) ]
     [ alias all : boost_container_hash examples test ]
     ;
 
 call-if : boost-library container_hash
     ;
+
