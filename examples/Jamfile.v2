@@ -5,6 +5,8 @@
 
 import testing ;
 
+project : requirements <library>/boost/container_hash//boost_container_hash ;
+
 run books.cpp ;
 run point.cpp ;
 run portable.cpp ;
