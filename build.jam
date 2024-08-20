@@ -1,25 +1,22 @@
-# Copyright René Ferdinand Rivera Morell 2023-2024
+# Copyright 2023-2024 René Ferdinand Rivera Morell
+# Copyright 2024 Peter Dimov
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# https://www.boost.org/LICENSE_1_0.txt
 
 require-b2 5.2 ;
 
 constant boost_dependencies :
     /boost/config//boost_config
     /boost/describe//boost_describe
-    /boost/mp11//boost_mp11 ;
-
-project /boost/container_hash
-    : common-requirements
-        <include>include
+    /boost/mp11//boost_mp11
     ;
 
+project /boost/container_hash ;
+
 explicit
-    [ alias boost_container_hash : : : : <library>$(boost_dependencies) ]
+    [ alias boost_container_hash : : : : <include>include <library>$(boost_dependencies) ]
     [ alias all : boost_container_hash examples test ]
     ;
 
 call-if : boost-library container_hash
     ;
-
