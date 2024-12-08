@@ -298,7 +298,6 @@ jobs:
         include:
           - os: ubuntu-20.04
           - os: ubuntu-22.04
-          - os: macos-12
           - os: macos-13
           - os: macos-14
 
@@ -346,7 +345,6 @@ jobs:
         include:
           - os: ubuntu-20.04
           - os: ubuntu-22.04
-          - os: macos-12
           - os: macos-13
           - os: macos-14
 
@@ -404,7 +402,6 @@ jobs:
         include:
           - os: ubuntu-20.04
           - os: ubuntu-22.04
-          - os: macos-12
           - os: macos-13
           - os: macos-14
 
