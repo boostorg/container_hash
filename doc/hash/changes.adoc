@@ -12,9 +12,6 @@ https://www.boost.org/LICENSE_1_0.txt
 
 :int128: __int128
 
-== Boost 1.89.0
-* Added the `hash_is_avalanching` trait class.
-
 == Boost 1.67.0
 * Moved library into its own module, `container_hash`.
 * Moved headers for new module name, now at: `<boost/container_hash/hash.hpp>`, `<boost/container_hash/hash_fwd.hpp>`, `<boost/container_hash/extensions.hpp>`.
