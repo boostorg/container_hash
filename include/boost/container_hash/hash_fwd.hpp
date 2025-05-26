@@ -1,5 +1,5 @@
 // Copyright 2005-2009 Daniel James.
-// Copyright 2021, 2022 Peter Dimov.
+// Copyright 2021, 2022, 2025 Peter Dimov.
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
@@ -14,6 +14,7 @@ namespace boost
 namespace container_hash
 {
 
+template<class Hash> struct hash_is_avalanching;
 template<class T> struct is_range;
 template<class T> struct is_contiguous_range;
 template<class T> struct is_unordered_range;
