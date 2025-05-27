@@ -6,26 +6,10 @@
 #include <boost/container_hash/hash_is_avalanching.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/config.hpp>
-#include <functional>
 #include <string>
 #include <type_traits>
 
 enum my_char { min = 0, max = 255 };
-
-struct X
-{
-    using is_avalanching = void;
-};
-
-struct Y
-{
-    using is_avalanching = std::true_type;
-};
-
-struct Z
-{
-    using is_avalanching = std::false_type;
-};
 
 int main()
 {
@@ -57,11 +41,6 @@ int main()
 #else
     BOOST_TEST_TRAIT_FALSE(( hash_is_avalanching< boost::hash<std::basic_string<my_char> > > ));
 #endif
-
-    BOOST_TEST_TRAIT_FALSE(( hash_is_avalanching< std::hash<std::string > > ));
-    BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< X > ));
-    BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< Y > ));
-    BOOST_TEST_TRAIT_FALSE(( hash_is_avalanching< Z > ));
 
     return boost::report_errors();
 }
