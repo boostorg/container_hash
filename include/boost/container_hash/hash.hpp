@@ -560,16 +560,13 @@ namespace boost
 
     // hash_is_avalanching
 
-    namespace container_hash
-    {
-        template<class Ch> struct hash_is_avalanching< boost::hash< std::basic_string<Ch> > >: std::is_integral<Ch> {};
+    template<class Ch> struct hash_is_avalanching< boost::hash< std::basic_string<Ch> > >: std::is_integral<Ch> {};
 
 #if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
 
-        template<class Ch> struct hash_is_avalanching< boost::hash< std::basic_string_view<Ch> > >: std::is_integral<Ch> {};
+    template<class Ch> struct hash_is_avalanching< boost::hash< std::basic_string_view<Ch> > >: std::is_integral<Ch> {};
 
 #endif
-    } // namespace container_hash
 
 } // namespace boost
 
