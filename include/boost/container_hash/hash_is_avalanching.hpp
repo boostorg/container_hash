@@ -43,7 +43,7 @@ template<class Hash>
 struct hash_is_avalanching_impl<Hash, typename std::enable_if< ((void)Hash::is_avalanching, true) >::type>
 {
   // Hash::is_avalanching is not a type: we don't define value to produce
-  // compile error downstream
+  // a compile error downstream
 }; 
 
 } // namespace hash_detail
