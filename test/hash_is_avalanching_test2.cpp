@@ -21,7 +21,7 @@ enum my_char { min = 0, max = 255 };
 
 int main()
 {
-    using boost::container_hash::hash_is_avalanching;
+    using boost::hash_is_avalanching;
 
     BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< boost::hash<std::string_view> > ));
     BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< boost::hash<std::wstring_view> > ));

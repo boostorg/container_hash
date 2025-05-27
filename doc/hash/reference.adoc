@@ -26,7 +26,6 @@ namespace boost
 namespace container_hash
 {
 
-template<class Hash> struct hash_is_avalanching;
 template<class T> struct is_range;
 template<class T> struct is_contiguous_range;
 template<class T> struct is_unordered_range;
@@ -44,6 +43,8 @@ template<class It> std::size_t hash_range( It first, It last );
 
 template<class It> void hash_unordered_range( std::size_t& seed, It first, It last );
 template<class It> std::size_t hash_unordered_range( It first, It last );
+
+template<class Hash> struct hash_is_avalanching;
 
 } // namespace boost
 ----
@@ -575,19 +576,14 @@ Throws: ::
 
 == <boost/container_hash/{zwsp}hash_is_avalanching.hpp>
 
-Defines the trait `boost::container_hash::hash_is_avalanching`.
+Defines the trait `boost::hash_is_avalanching`.
 
 [source]
 ----
 namespace boost
 {
 
-namespace container_hash
-{
-
 template<class Hash> struct hash_is_avalanching;
-
-} // namespace container_hash
 
 } // namespace boost
 ----
@@ -622,7 +618,7 @@ Users can set this trait for a particular `Hash` type by:
 
 * Inserting the nested `is_avalanching` typedef in the class definition
 if they have access to its source code. 
-* Writing a specialization of `boost::container_hash::hash_is_avalanching`
+* Writing a specialization of `boost::hash_is_avalanching`
 for `Hash`.
 
 Note that usage of this trait is not restricted to hash functions produced

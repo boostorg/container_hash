@@ -14,7 +14,6 @@ namespace boost
 namespace container_hash
 {
 
-template<class Hash> struct hash_is_avalanching;
 template<class T> struct is_range;
 template<class T> struct is_contiguous_range;
 template<class T> struct is_unordered_range;
@@ -32,6 +31,8 @@ template<class It> std::size_t hash_range( It, It );
 
 template<class It> void hash_unordered_range( std::size_t&, It, It );
 template<class It> std::size_t hash_unordered_range( It, It );
+
+template<class Hash> struct hash_is_avalanching;
 
 } // namespace boost
 

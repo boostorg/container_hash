@@ -27,7 +27,7 @@ struct W
 
 int main()
 {
-    using boost::container_hash::hash_is_avalanching;
+    using boost::hash_is_avalanching;
 
     BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< X > ));
     BOOST_TEST_TRAIT_TRUE(( hash_is_avalanching< Y > ));

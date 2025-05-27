@@ -48,14 +48,10 @@ struct hash_is_avalanching_impl<Hash, typename std::enable_if< ((void)Hash::is_a
 
 } // namespace hash_detail
 
-namespace container_hash
-{
-
 template<class Hash> struct hash_is_avalanching: hash_detail::hash_is_avalanching_impl<Hash>::type
 {
 };
 
-} // namespace container_hash
 } // namespace boost
 
 #endif // #ifndef BOOST_HASH_HASH_IS_AVALANCHING_HPP_INCLUDED
