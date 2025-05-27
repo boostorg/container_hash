@@ -618,7 +618,7 @@ to determine if the supplied hash function is of high quality.
 `boost::hash` for `std::basic_string<Ch>` and `std::basic_string_view<Ch>`
 has this trait set to `true` when `Ch` is an integral type (this includes
 `std::string` and `std::string_view`, among others).
-Users can set this this trait for a particular `Hash` type by:
+Users can set this trait for a particular `Hash` type by:
 
 * Inserting the nested `is_avalanching` typedef in the class definition
 if they have access to its source code. 
