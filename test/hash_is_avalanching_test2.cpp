@@ -15,7 +15,6 @@ int main() {}
 
 #else
 
-#include <boost/unordered/hash_traits.hpp>
 #include <string_view>
 
 enum my_char { min = 0, max = 255 };
