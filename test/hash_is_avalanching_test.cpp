@@ -7,7 +7,6 @@
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/config.hpp>
 #include <string>
-#include <type_traits>
 
 enum my_char { min = 0, max = 255 };
 
