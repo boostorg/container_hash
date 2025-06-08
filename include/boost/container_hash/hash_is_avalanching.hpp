@@ -44,7 +44,7 @@ struct hash_is_avalanching_impl<Hash, typename std::enable_if< ((void)Hash::is_a
 {
   // Hash::is_avalanching is not a type: we don't define value to produce
   // a compile error downstream
-}; 
+};
 
 } // namespace hash_detail
 

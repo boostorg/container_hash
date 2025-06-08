@@ -610,14 +610,14 @@ in the input translate to large changes in the returned hash code
 &#8212;ideally, flipping one bit in the representation of the input value results
 in each bit of the hash code flipping with probability 50%. Libraries
 such as link:../../../unordered/index.html[Boost.Unordered] consult this trait
-to determine if the supplied hash function is of high quality. 
+to determine if the supplied hash function is of high quality.
 `boost::hash` for `std::basic_string<Ch>` and `std::basic_string_view<Ch>`
 has this trait set to `true` when `Ch` is an integral type (this includes
 `std::string` and `std::string_view`, among others).
 Users can set this trait for a particular `Hash` type by:
 
 * Inserting the nested `is_avalanching` typedef in the class definition
-if they have access to its source code. 
+if they have access to its source code.
 * Writing a specialization of `boost::hash_is_avalanching`
 for `Hash`.
 
