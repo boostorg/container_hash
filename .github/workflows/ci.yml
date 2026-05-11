@@ -67,9 +67,15 @@ jobs:
             address-model: 32,64
           - toolset: gcc-15
             cxxstd: "11,14,17,20,23,2c"
-            container: ubuntu:25.10
+            container: ubuntu:26.04
             os: ubuntu-latest
             install: g++-15-multilib
+            address-model: 32,64
+          - toolset: gcc-16
+            cxxstd: "11,14,17,20,23,2c"
+            container: ubuntu:26.04
+            os: ubuntu-latest
+            install: g++-16-multilib
             address-model: 32,64
           - toolset: clang
             compiler: clang++-6.0
@@ -164,9 +170,15 @@ jobs:
           - toolset: clang
             compiler: clang++-21
             cxxstd: "11,14,17,20,23,2c"
-            container: ubuntu:25.10
+            container: ubuntu:26.04
             os: ubuntu-latest
             install: clang-21
+          - toolset: clang
+            compiler: clang++-22
+            cxxstd: "11,14,17,20,23,2c"
+            container: ubuntu:26.04
+            os: ubuntu-latest
+            install: clang-22
           - toolset: clang
             cxxstd: "11,14,17,20,2b"
             os: macos-14
@@ -178,12 +190,7 @@ jobs:
             os: macos-26
 
     runs-on: ${{matrix.os}}
-
-    container:
-      image: ${{matrix.container}}
-      volumes:
-        - /node20217:/node20217:rw,rshared
-        - ${{ startsWith(matrix.container, 'ubuntu:1') && '/node20217:/__e/node20:ro,rshared' || ' ' }}
+    container: ${{matrix.container}}
 
     defaults:
       run:
@@ -247,14 +254,18 @@ jobs:
             cxxstd: "14,17,20,latest"
             addrmd: 32,64
             os: windows-2022
+          - toolset: msvc-14.5
+            cxxstd: "14,17,20,latest"
+            addrmd: 32,64
+            os: windows-2025-vs2026
           - toolset: clang-win
             cxxstd: "14,17,20,latest"
             addrmd: 32,64
-            os: windows-2022
+            os: windows-2025
           - toolset: gcc
             cxxstd: "11,14,17,2a"
             addrmd: 64
-            os: windows-2022
+            os: windows-2025
 
     runs-on: ${{matrix.os}}
 
