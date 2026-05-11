@@ -15,19 +15,22 @@ int main() {}
 
 #include <boost/core/lightweight_test.hpp>
 #include <variant>
+#include <set>
 
 struct X
 {
-    operator int() const { throw 5; }
+    operator std::set<float>() const { throw 5; }
 };
 
-std::variant<int, float> make_valueless_variant()
+using V = std::variant<std::set<int>, std::set<float>>;
+
+V make_valueless_variant()
 {
-    std::variant<int, float> v;
+    V v;
 
     try
     {
-        v.emplace<int>( X() );
+        v.emplace<1>( X() );
     }
     catch( int )
     {
@@ -40,9 +43,9 @@ std::variant<int, float> make_valueless_variant()
 
 int main()
 {
-    std::variant<int, float> v1, v2 = make_valueless_variant();
+    V v1, v2 = make_valueless_variant();
 
-    BOOST_TEST_NE( (boost::hash<std::variant<int, float>>()( v1 )), (boost::hash<std::variant<int, float>>()( v2 )) );
+    BOOST_TEST_NE( (boost::hash<V>()( v1 )), (boost::hash<V>()( v2 )) );
 
     return boost::report_errors();
 }
