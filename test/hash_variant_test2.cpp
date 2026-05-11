@@ -11,6 +11,11 @@
 BOOST_PRAGMA_MESSAGE( "Skipping test because BOOST_NO_CXX17_HDR_VARIANT is defined" )
 int main() {}
 
+#elif defined(BOOST_CLANG_VERSION) && BOOST_CLANG_VERSION < 70100
+
+BOOST_PRAGMA_MESSAGE( "Skipping test because BOOST_CLANG_VERSION < 70100" )
+int main() {}
+
 #else
 
 #include <boost/core/lightweight_test.hpp>
