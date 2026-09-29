@@ -89,6 +89,7 @@ namespace container_hash
 {
 
     template<> struct is_tuple_like<user::Y2>: boost::false_type {};
+    template<> struct is_described_class<user::Y2>: boost::false_type {};
 
 } // namespace container_hash
 } // namespace boost
