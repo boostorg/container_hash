@@ -35,8 +35,19 @@ int main()
 
     BOOST_TEST_TRAIT_FALSE((is_described_class<void>));
     BOOST_TEST_TRAIT_FALSE((is_described_class<int>));
+
+#if defined(BOOST_DESCRIBE_HAS_REFLECTION)
+
+    BOOST_TEST_TRAIT_TRUE((is_described_class<X1>));
+    BOOST_TEST_TRAIT_TRUE((is_described_class<X2>));
+
+#else
+
     BOOST_TEST_TRAIT_FALSE((is_described_class<X1>));
     BOOST_TEST_TRAIT_FALSE((is_described_class<X2>));
+
+#endif
+
     BOOST_TEST_TRAIT_FALSE((is_described_class<int[2]>));
     BOOST_TEST_TRAIT_FALSE((is_described_class<std::string>));
 
