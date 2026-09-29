@@ -140,3 +140,6 @@ run hash_variant_test2.cpp ;
 
 run is_described_class_test4.cpp
   : : : <warnings>extra ;
+
+run is_described_class_test5.cpp
+  : : : <warnings>extra ;
