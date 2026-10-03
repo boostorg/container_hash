@@ -564,15 +564,12 @@ Effects: ::
 std::size_t seed = 0;
 
 boost::hash_combine( seed, v.index() );
-boost::hash_combine( seed, x );
+boost::hash_combine( seed, x ); // if v is not valueless
 
 return seed;
 ----
 +
 where `x` is the currently contained value in `v`.
-
-Throws: ::
-`std::bad_variant_access` when `v.valueless_by_exception()` is `true`.
 
 == <boost/container_hash/{zwsp}hash_is_avalanching.hpp>
 
@@ -733,43 +730,6 @@ template<class T> struct is_unordered_range
 Users are allowed to specialize `is_unordered_range` for their types
 if the default behavior does not deduce the correct value.
 
-== <boost/container_hash/{zwsp}is_described_class.hpp>
-
-Defines the trait `boost::container_hash::is_described_class`.
-
-[source]
-----
-namespace boost
-{
-
-namespace container_hash
-{
-
-template<class T> struct is_described_class;
-
-} // namespace container_hash
-
-} // namespace boost
-----
-
-=== is_described_class<T>
-
-[source]
-----
-template<class T> struct is_described_class
-{
-    static constexpr bool value = /* see below */;
-};
-----
-
-`is_described_class<T>::value` is `true` when
-`boost::describe::has_describe_bases<T>::value` is `true`,
-`boost::describe::has_describe_members<T>::value` is `true`, and
-`T` is not a union.
-
-Users are allowed to specialize `is_described_class` for their types
-if the default behavior does not deduce the correct value.
-
 == <boost/container_hash/{zwsp}is_tuple_like.hpp>
 
 Defines the trait `boost::container_hash::is_tuple_like`.
@@ -803,4 +763,44 @@ template<class T> struct is_tuple_like
 is valid.
 
 Users are allowed to specialize `is_tuple_like` for their types
+if the default behavior does not deduce the correct value.
+
+== <boost/container_hash/{zwsp}is_described_class.hpp>
+
+Defines the trait `boost::container_hash::is_described_class`.
+
+[source]
+----
+namespace boost
+{
+
+namespace container_hash
+{
+
+template<class T> struct is_described_class;
+
+} // namespace container_hash
+
+} // namespace boost
+----
+
+=== is_described_class<T>
+
+[source]
+----
+template<class T> struct is_described_class
+{
+    static constexpr bool value = /* see below */;
+};
+----
+
+`is_described_class<T>::value` is `true` when
+
+* `T` is a class type that is not a union,
+* `is_range<T>::value` is `false`,
+* `is_tuple_like<T>::value` is `false`,
+* `boost::describe::has_describe_bases<T>::value` is `true`, and
+* `boost::describe::has_describe_members<T>::value` is `true`.
+
+Users are allowed to specialize `is_described_class` for their types
 if the default behavior does not deduce the correct value.
