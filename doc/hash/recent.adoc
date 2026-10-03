@@ -8,6 +8,11 @@ https://www.boost.org/LICENSE_1_0.txt
 = Recent Changes
 :idprefix: recent_
 
+== Boost 1.93.0
+
+* `is_described_class<T>::value` now defaults to `false` when `is_range<T>::value` is `true` or `is_tuple_like<T>::value` is `true`.
+  (A lot more classes become described when {cpp}26 reflection support is enabled in Boost.Describe, which causes ambiguities with the range and tuple-like overloads.)
+
 == Boost 1.92.0
 
 * Hashing a valueless `std::variant` instance no longer throws.
