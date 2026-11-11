@@ -143,3 +143,5 @@ run is_described_class_test4.cpp
 
 run is_described_class_test5.cpp
   : : : <warnings>extra ;
+
+run is_contiguous_range_test4.cpp ;
