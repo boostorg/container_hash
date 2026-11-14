@@ -303,21 +303,29 @@ int main()
     BOOST_TEST_EQ( hv((void*)0x200014A0), 603985716U );
 
     // complex<int>
+#if defined(BOOST_MSSTL_VERSION)
+
+    // The effects of instantiating std::complex<Integer> are unspecified
+    // in the standard and newer MSSTL versions make it an error.
+
+#else
+
     BOOST_TEST_EQ( hv(std::complex<int>(0, 0)), 0U );
     BOOST_TEST_EQ( hv(std::complex<int>(+1, 0)), 1U );
 
-#if SIZE_MAX == 4294967295U
+# if SIZE_MAX == 4294967295U
 
     BOOST_TEST_EQ( hv(std::complex<int>(0, +1)), 2261973619U );
     BOOST_TEST_EQ( hv(std::complex<int>(-1, 0)), 4294967295U );
     BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 2578835075U );
 
-#else
+# else
 
     BOOST_TEST_EQ( hv(std::complex<int>(0, +1)), 4326460912318144697U );
     BOOST_TEST_EQ( hv(std::complex<int>(-1, 0)), 18446744073709551615ULL );
     BOOST_TEST_EQ( hv(std::complex<int>(0, -1)), 10400452472442790416ULL );
 
+# endif
 #endif
 
     // complex<float>

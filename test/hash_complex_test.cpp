@@ -106,21 +106,26 @@ template<class T> void complex_grid_test( short N )
 
 int main()
 {
-    // I've comments out the short and unsigned short tests
-    // as they cause warnings and don't really test
-    // anything that the other tests already deal with.
-
     complex_float_tests((float*) 0);
     complex_float_tests((double*) 0);
     complex_float_tests((long double*) 0);
-    //complex_integral_tests((short*) 0);
+
+#if defined(BOOST_MSSTL_VERSION)
+
+    // The effects of instantiating std::complex<Integer> are unspecified
+    // in the standard and newer MSSTL versions make it an error.
+
+#else
+
     complex_integral_tests((int*) 0);
     complex_integral_tests((long*) 0);
-    //complex_integral_tests((unsigned short*) 0);
     complex_integral_tests((unsigned int*) 0);
     complex_integral_tests((unsigned long*) 0);
 
     complex_grid_test<int>( 16 );
+
+#endif
+
     complex_grid_test<float>( 16 );
     complex_grid_test<double>( 16 );
     complex_grid_test<long double>( 16 );
