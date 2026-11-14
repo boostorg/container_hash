@@ -3,8 +3,6 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING
-
 #include "./config.hpp"
 
 #if !defined(BOOST_HASH_TEST_EXTENSIONS)
@@ -31,7 +29,6 @@ int main() {}
                                 // 'const std::complex<float>::_Ty'
 #pragma warning(disable:4309)   // truncation of constant value
 #pragma warning(disable:4512)   // assignment operator could not be generated
-#pragma warning(disable:4996)   // std::complex<Integer> is deprecated
 #if BOOST_MSVC < 1400
 #pragma warning(disable:4267)   // conversion from 'size_t' to 'unsigned int',
                                 // possible loss of data
